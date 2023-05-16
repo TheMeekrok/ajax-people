@@ -1,0 +1,24 @@
+<div class="dialog-container">
+  <p mat-dialog-title>📬 Проверьте почту</p>
+  <div mat-dialog-content>
+    <p mat-typography class="dialog-text">
+      Письмо с кодом подтверждения отправлено на <strong>{{ data.email }}</strong>. Если
+      его нет, проверьте спам.
+    </p>
+    <mat-form-field appearance="fill">
+      <mat-label>Введите код</mat-label>
+      <input 
+        matInput 
+        placeholder="YFDJYD" 
+        maxlength="6" 
+        type="text" 
+        [(ngModel)]="data.code" 
+        (input)="codeToUpperCase()"
+      />
+    </mat-form-field>
+  </div>
+  <p class="mat-typography text-red-500 text-center text-xs m-0">{{ data.errorMessage }}</p>
+  <div mat-dialog-actions>
+    <button mat-button [mat-dialog-close]="data.code">Подтвердить</button>
+  </div>
+</div>

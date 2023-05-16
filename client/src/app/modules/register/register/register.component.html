@@ -1,0 +1,12 @@
+<app-register-user 
+  *ngIf="isRegisterUserVisible" 
+  (userIdEventEmitter)="onRegisterSuccess($event)"
+  >
+</app-register-user>
+
+<app-register-profile-info [userId]="userId">
+</app-register-profile-info>
+
+<app-register-interests [userId]="userId">
+
+</app-register-interests>
