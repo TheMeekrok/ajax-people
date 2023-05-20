@@ -1,8 +1,5 @@
 import { Component, Inject, OnInit } from "@angular/core";
-import { AbstractControl, FormControl } from "@angular/forms";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
-import { tap } from "rxjs";
-import { RegisterService } from "src/app/shared/services/register.service";
 
 export interface IDialogData {
   email: string,
@@ -31,8 +28,6 @@ export class RegisterUserModal implements OnInit {
 
   ngOnInit(): void {}
 
-  codeToUpperCase() {
-    this.data.code = this.data.code.toUpperCase();
-  }
+  codeToUpperCase() { this.data.code = this.data.code.toUpperCase(); }
 
 }

@@ -58,26 +58,26 @@
 
         <mat-form-field appearance="fill">
           <mat-label>Школа (институт)</mat-label>
-          <input type="text" matInput formControlName="school" [matAutocomplete]="auto">
+          <input type="text" matInput formControlName="school" [matAutocomplete]="autoSchools">
           <mat-autocomplete 
-            #auto="matAutocomplete" 
+            #autoSchools="matAutocomplete" 
             [displayWith]="displayFunctionSchool"
             >
-            <mat-option *ngFor="let option of filteredSchools | async" [value]="option">
-              {{option.fullTitle}}
+            <mat-option *ngFor="let school of filteredSchools | async" [value]="school">
+              {{ school.title }}
             </mat-option>
           </mat-autocomplete>
         </mat-form-field>
 
         <mat-form-field appearance="fill">
           <mat-label>Направление подготовки</mat-label>
-          <input type="text" matInput formControlName="faculty" [matAutocomplete]="auto">
+          <input type="text" matInput formControlName="faculty" [matAutocomplete]="autoFaculties">
           <mat-autocomplete 
-            #auto="matAutocomplete" 
+            #autoFaculties="matAutocomplete"
             [displayWith]="displayFunctionFaculty" 
           >
-            <mat-option *ngFor="let option of filteredFaculties | async" [value]="option">
-              {{option.title}}
+            <mat-option *ngFor="let faculty of filteredFaculties | async" [value]="faculty">
+              {{ faculty.title }}
             </mat-option>
           </mat-autocomplete>
         </mat-form-field>

@@ -4,7 +4,7 @@ import { Observable, catchError, delay, dematerialize, map, materialize, retry, 
 import { IFaculty } from '../models/Faculty';
 import { ISchool } from '../models/School';
 import { User } from "../models/User";
-import { baseUrl, defaultResponseDelay, defaultRetryRate } from './register.service';
+import { baseUrl, defaultResponseDelay, defaultRetryRate } from './servicesConfig';
 import { ErrorMessage } from './ErrorsEnum';
 import { IInterest } from '../models/Interest';
 
@@ -16,7 +16,7 @@ export class UserDataService {
   constructor(private http: HttpClient) {}
 
   getFaculties(): Observable<IFaculty[]> {
-    return this.http.get<IFaculty[]>(baseUrl + 'api/register-data/faculties')
+    return this.http.get<IFaculty[]>('/api/register-data/faculties')
       .pipe(
         delay(defaultResponseDelay),
         catchError(this._handleError),
@@ -25,7 +25,7 @@ export class UserDataService {
   }
 
   getSchools(): Observable<ISchool[]> {
-    return this.http.get<ISchool[]>(baseUrl + 'api/register-data/schools')
+    return this.http.get<ISchool[]>('/api/register-data/schools')
       .pipe(
         delay(defaultResponseDelay),
         catchError(this._handleError),
@@ -34,7 +34,7 @@ export class UserDataService {
   }
 
   getInterests(): Observable<IInterest[]> {
-    return this.http.get<IInterest[]>(baseUrl + 'api/register-data/interests')
+    return this.http.get<IInterest[]>('/api/register-data/interests')
       .pipe(
         delay(defaultResponseDelay),
         catchError(this._handleError),

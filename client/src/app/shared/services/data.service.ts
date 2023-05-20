@@ -4,7 +4,7 @@ import {catchError, delay, dematerialize, materialize, Observable, retry, throwE
 import {IPost} from "../models/Post";
 import {IUser} from "../models/IUser";
 import {IInterest} from "../models/Interest";
-import {baseUrl, defaultResponseDelay} from "./register.service";
+import {baseUrl, defaultResponseDelay} from "./servicesConfig";
 import {ErrorMessage} from "./ErrorsEnum";
 
 @Injectable({
