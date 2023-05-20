@@ -1,21 +1,28 @@
-<form class="form" [formGroup]="form" (ngSubmit)="onSubmit()">
+<form class="form" [formGroup]="form">
   <mat-card>
     <mat-card-header>
       <mat-card-title>Написать пост</mat-card-title>
     </mat-card-header>
-    <mat-form-field>
-      <mat-label>Заголовок</mat-label>
-      <input matInput type="text"  formControlName="title" />
-      <mat-error>{{ getTitleErrorString() }}</mat-error>
-    </mat-form-field>
-
     <mat-form-field [style.height.vh]='40' appearance="fill">
       <mat-label>Текст</mat-label>
-      <textarea class="text-input" matInput formControlName="text"></textarea>
+      <textarea class="text-input" matInput  formControlName="text"></textarea>
       <mat-error>{{ getTextErrorString() }}</mat-error>
     </mat-form-field>
-    <div>
-      <button color="warn" mat-flat-button>Post</button>
-    </div>
+
+      <h4>Выберите теги</h4>
+        <mat-chip-listbox  multiple="true" formControlName="tags">
+          <mat-chip-option *ngFor="let i of interests" [value]="i">{{i.title}}</mat-chip-option>
+        </mat-chip-listbox>
+      <mat-error *ngIf="isInterestsValid">Минимум 1 тег</mat-error>
   </mat-card>
+
+
+    <div>
+      <button
+        mat-raised-button color="primary"
+        (click)="onPostClick()"
+      >
+        Post
+      </button>
+    </div>
 </form>

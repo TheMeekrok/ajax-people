@@ -1,0 +1,9 @@
+.post-modal {
+  width: 30vw;
+}
+
+.cross-button {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  }
