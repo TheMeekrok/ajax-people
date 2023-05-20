@@ -1,7 +1,9 @@
+import {IInterest} from "./Interest";
+
 export interface IPost {
-  title: string
-  author: string
+  userId: number
   text: string
-  data: Date
+  publicationTime?: Date
+  tags: IInterest[]
 }
 

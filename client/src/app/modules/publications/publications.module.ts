@@ -10,11 +10,14 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
 import {MatCardModule} from "@angular/material/card";
 import {PostModule} from "../post/post.module";
+import {CreatePostComponent} from "./create-post/create-post.component";
+import {MatChipsModule} from "@angular/material/chips";
 
 
 @NgModule({
   declarations: [
     PublicationsPageComponent,
+    CreatePostComponent
   ],
   imports: [
     CommonModule,
@@ -26,7 +29,8 @@ import {PostModule} from "../post/post.module";
     MatButtonModule,
     MatIconModule,
     MatCardModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatChipsModule
   ]
 })
 export class PublicationsModule { }
