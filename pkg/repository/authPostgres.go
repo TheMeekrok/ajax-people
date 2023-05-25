@@ -33,6 +33,13 @@ func (r *AuthPostgres) CreateUser(user user.User) (int, error) {
 	if err := row.Scan(&id); err != nil {
 		return 0, err
 	}
+
+	query = fmt.Sprintf("INSERT INTO %s (user_id) values ($1) RETURNING id", personalData)
+	row = r.db.QueryRow(query, id)
+	if err := row.Err(); err != nil {
+		return 0, err
+	}
+
 	return id, nil
 
 }
