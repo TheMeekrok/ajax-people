@@ -23,11 +23,11 @@ type UserAction interface {
 }
 
 type RegisterData interface {
-	GetAllFaculties() ([]user.Faculty, error)
-	GetAllInterests() ([]user.Interest, error)
-	GetAllStatuses() []user.StatusUser
-	GetAllEdLevels() []user.EducationLevel
-	GetAllSchools() ([]user.School, error)
+	GetAllFaculties(id int) ([]user.Faculty, error)
+	GetAllInterests(id int) ([]user.Interest, error)
+	GetAllStatuses(id int) []user.StatusUser
+	GetAllEdLevels(id int) []user.EducationLevel
+	GetAllSchools(id int) ([]user.School, error)
 }
 
 type Mail interface {

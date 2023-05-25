@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
@@ -94,14 +93,13 @@ func CORSMiddleware() gin.HandlerFunc {
 func getUserId(c *gin.Context) (int, error) {
 
 	str := c.Param("id")
-	fmt.Println(str)
 
 	if str == "" {
 		return 0, nil
 	}
 	id, err := strconv.Atoi(str)
 	if err != nil {
-		panic(err)
+		return 0, err
 	}
 
 	return id, nil
