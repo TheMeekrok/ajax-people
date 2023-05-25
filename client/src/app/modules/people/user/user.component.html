@@ -1,39 +1,28 @@
 <mat-card>
 
-  <img src="../../../../assets/user/user-avatar.jpg" mat-card-lg-image>
 
   <mat-card-header>
-    <mat-card-title class="user-name">Артём Курпас, 19</mat-card-title>
+    <img src="../../../../assets/user/user-avatar.jpg" mat-card-avatar>
+    <mat-card-title class="user-name">{{ user.firstName }} {{ user.lastName }}, {{ user.age }}</mat-card-title>
     <mat-card-subtitle class="school">Институт математики и компьтерных технологий</mat-card-subtitle>
   </mat-card-header>
 
   <mat-card-content>
-
-    <p class="mat-typography faculty"><strong>Направление: </strong>Прикладная информатика</p>
-    <p class="mat-typography faculty"><strong>Направление: </strong>Прикладная информатика</p>
-    <p class="mat-typography faculty"><strong>Направление: </strong>Прикладная информатика</p>
-    <p class="mat-typography faculty"><strong>Направление: </strong>Прикладная информатика</p>
-    <p class="mat-typography faculty"><strong>Направление: </strong>Прикладная информатика</p>
-
-
+    <!-- <mat-chip-listbox>
+      <mat-chip>Инcsdfтерес 2</mat-chip>
+      <mat-chip>Интерsdес 3</mat-chip>
+      <mat-chip>Ирес 4</mat-chip>
+      <mat-chip>Иdfнтерес 5</mat-chip>
+      <mat-chip>Интdffерес 6</mat-chip>
+      <mat-chip>Интереdfс 6</mat-chip>
+      <mat-chip disabled>Интерес 1</mat-chip>
+    </mat-chip-listbox> -->
   </mat-card-content>
-
-  <mat-card-footer>
-    <mat-chip-listbox>
-      <mat-chip color="accent" disabled>Интерес 1</mat-chip>
-      <mat-chip color="accent">Интерес 2</mat-chip>
-      <mat-chip>Интерес 3</mat-chip>
-      <mat-chip>Интерес 4</mat-chip>
-      <mat-chip>Интерес 5</mat-chip>
-      <mat-chip>Интерес 6</mat-chip>
-      <mat-chip>Интерес 6</mat-chip>
-    </mat-chip-listbox>
-  </mat-card-footer>
 
   <mat-divider></mat-divider>
 
   <mat-card-actions>
-    <button mat-button>Показать контакты</button>
+    <button mat-button (click)="openDialog()">Показать информацию</button>
   </mat-card-actions>
 
 </mat-card>

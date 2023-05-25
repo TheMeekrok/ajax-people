@@ -1,15 +1,10 @@
 mat-card {
   margin: 30px;
   padding: 10px;
-  display: flex;
-  flex-direction: row;
+  min-width: 60vw;
 }
 
 img {
-  border-radius: 50%;
-}
-
-mat-card-content {
-  display: flex;
-  flex-wrap: row;
+  width: 100px;
+  height: 100px;
 }

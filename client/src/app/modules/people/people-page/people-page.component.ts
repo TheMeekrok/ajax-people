@@ -5,7 +5,6 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { ISchool } from '../../../shared/models/School';
 import { IFaculty } from '../../../shared/models/Faculty';
 import { UserDataService } from '../../../shared/services/user-data.service';
-import { User } from '../../../shared/models/User';
 
 @Component({
   selector: 'app-people-page',
@@ -14,7 +13,7 @@ import { User } from '../../../shared/models/User';
 })
 export class PeoplePageComponent implements OnInit {
   form: FormGroup;
-  users$: User[];
+  // users$: User[];
   isFiltersUse: boolean;
   filtersButtonText: string;
 
@@ -32,9 +31,9 @@ export class PeoplePageComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.userDataService.getUsers().subscribe((data) => {
-      this.users$ = data;
-    });
+    // this.userDataService.getUsers().subscribe((data) => {
+    //   this.users$ = data;
+    // });
     this.isFiltersUse = false;
     this.filtersButtonText = 'Добавить фильтры';
     this.courses = Array.apply(undefined, Array(6)).map((e, i) => i + 1);
@@ -78,15 +77,15 @@ export class PeoplePageComponent implements OnInit {
       ? 'Убрать фильтры'
       : 'Добавить фильтры';
     if (!this.isFiltersUse) {
-      this.userDataService.getUsers().subscribe((data) => {
-        this.users$ = data;
-      });
+      // this.userDataService.getUsers().subscribe((data) => {
+      //   this.users$ = data;
+      // });
     }
   }
 
-  openUserProfile(user: User) {
-    this.router.navigate(['/main/profile', user.id]);
-  }
+  // openUserProfile(user: User) {
+  //   this.router.navigate(['/main/profile', user.id]);
+  // }
 
   displayFunction(object: IFaculty | ISchool): string {
     return object?.title || '';
@@ -107,15 +106,5 @@ export class PeoplePageComponent implements OnInit {
   }
 
   onSelect(event: any) {
-    let form = this.form.controls;
-    this.userDataService
-      .getUsersWithParameters(
-        form['school'].value.id,
-        form['faculty'].value.id,
-        form['course'].value
-      )
-      .subscribe((data) => {
-        this.users$ = data;
-      });
   }
 }

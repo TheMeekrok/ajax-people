@@ -12,6 +12,7 @@ import { UserComponent } from './user/user.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatBadgeModule } from '@angular/material/badge';
 
 @NgModule({
   declarations: [PeoplePageComponent, UserComponent],
@@ -27,6 +28,7 @@ import { MatDividerModule } from '@angular/material/divider';
     MatCardModule,
     MatChipsModule,
     MatDividerModule,
+    MatBadgeModule,
   ],
 })
 export class PeopleModule {}
