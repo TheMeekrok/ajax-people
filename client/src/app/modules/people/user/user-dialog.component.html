@@ -1,15 +1,51 @@
 <mat-card>
   <mat-card-header>
-    <mat-card-subtitle>Dog Breed</mat-card-subtitle>
-    <mat-card-title>{{ data.user.firstName }}</mat-card-title>
+    <img src="../../../../assets/user/default_avatar.svg" mat-card-avatar>
+    <mat-card-title>
+      <span *ngIf="data.user.isAdmin">⭐️ </span>
+      <span>{{ data.user.firstName }}</span>
+      <span *ngIf="data.user.lastName"> {{ data.user.lastName }}</span> 
+      <span>, {{ data.user.age }}</span>
+    </mat-card-title>
+    <mat-card-subtitle *ngIf="data.userStatus">🎓 {{ data.userStatus }}</mat-card-subtitle>
   </mat-card-header>
-  <mat-card-content>
-    <p>This card has divider and indeterminate progress as footer</p>
-    <mat-divider></mat-divider>
+
+  <mat-card-content class="my-2">
+    <mat-chip-set role="list">
+      <mat-chip role="listitem" *ngIf="data.school">🏫 {{ data.school }}</mat-chip>
+      <mat-chip role="listitem" *ngIf="data.user.admissionYear">📅 {{ data.user.admissionYear }}</mat-chip>
+      <mat-chip role="listitem" *ngIf="data.faculty">📄 {{ data.faculty }}</mat-chip>
+      <mat-chip role="listitem" *ngIf="data.educationLevel">💫 {{ data.educationLevel }}</mat-chip>
+    </mat-chip-set>
   </mat-card-content>
-  <mat-card-actions>
-    <button mat-button>Закрыть</button>
+
+  <mat-card-content class="my-2">
+    <div>Интересы</div>
+    <mat-chip-set role="list">
+      <mat-chip role="listitem" *ngFor="let interest of data.interests">{{ interest }}</mat-chip>
+    </mat-chip-set>
+  </mat-card-content>
+
+  <mat-divider></mat-divider>
+
+  <mat-card-content class="my-2">
+    <mat-chip-set role="list">
+      <mat-chip role="listitem" *ngIf="data.user.personalData?.telegram">
+        <img matChipAvatar src="../../../../assets/user/telegram.png"/>{{ data.user.personalData?.telegram }}
+      </mat-chip>
+      <mat-chip role="listitem" *ngIf="data.user.personalData?.vk">
+        <img matChipAvatar src="../../../../assets/user/vk.png"/>{{ data.user.personalData?.vk }}
+      </mat-chip>
+      <mat-chip role="listitem" *ngIf="data.user.personalData?.telephone">
+        <img matChipAvatar src="../../../../assets/user/phone.png"/>{{ data.user.personalData?.telephone }}
+      </mat-chip>
+    </mat-chip-set>
+  </mat-card-content>
+
+  <div *ngIf="loading" class="float-right"><mat-spinner class="max-h-12"></mat-spinner></div>
+
+  <mat-card-actions class="flex justify-center">
+    <button mat-button (click)="onCloseClick()">Закрыть</button>
   </mat-card-actions>
-  <mat-card-footer>
-  </mat-card-footer>
+
 </mat-card>

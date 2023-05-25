@@ -1,4 +1,4 @@
-<h1>Список людей</h1>
+<h2>Поиск людей</h2>
 <!-- <form [formGroup]="form">
   <mat-form-field appearance="fill" *ngIf="isFiltersUse">
     <mat-label>Школа (институт)</mat-label>
@@ -66,6 +66,6 @@
   </div>
 </div> -->
 
-<app-user></app-user>
-<app-user></app-user>
-<app-user></app-user>
+<div class="user-list">
+  <app-user *ngFor="let user of users" [user]="user"></app-user>  
+</div>
