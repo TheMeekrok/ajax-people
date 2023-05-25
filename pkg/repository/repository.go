@@ -27,9 +27,9 @@ type Mail interface {
 }
 
 type RegisterData interface {
-	GetAllFaculties() ([]user.Faculty, error)
-	GetAllInterests() ([]user.Interest, error)
-	GetAllSchools() ([]user.School, error)
+	GetAllFaculties(id int) ([]user.Faculty, error)
+	GetAllInterests(id int) ([]user.Interest, error)
+	GetAllSchools(id int) ([]user.School, error)
 }
 
 type Post interface {

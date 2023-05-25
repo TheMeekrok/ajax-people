@@ -3,12 +3,14 @@ package handler
 import (
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"strconv"
 )
 
 // Получение списка всех направлений подготовки
 func (h *Handler) getAllFaculties(c *gin.Context) {
-	facultiesList, err := h.services.GetAllFaculties()
+	id, _ := strconv.Atoi(c.Query("id"))
 
+	facultiesList, err := h.services.GetAllFaculties(id)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
@@ -19,7 +21,9 @@ func (h *Handler) getAllFaculties(c *gin.Context) {
 
 // Получение списка всех интересов
 func (h *Handler) getAllInterests(c *gin.Context) {
-	interestsList, err := h.services.GetAllInterests()
+	id, _ := strconv.Atoi(c.Query("id"))
+
+	interestsList, err := h.services.GetAllInterests(id)
 
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
@@ -31,17 +35,23 @@ func (h *Handler) getAllInterests(c *gin.Context) {
 
 // Получение списка всех возможных состояний Пользователя
 func (h *Handler) getAllStatuses(c *gin.Context) {
-	c.JSON(http.StatusOK, h.services.GetAllStatuses())
+	id, _ := strconv.Atoi(c.Query("id"))
+
+	c.JSON(http.StatusOK, h.services.GetAllStatuses(id))
 }
 
 // Получение списка всех возможных уровней обучения
 func (h *Handler) getAllEdLevels(c *gin.Context) {
-	c.JSON(http.StatusOK, h.services.GetAllEdLevels())
+	id, _ := strconv.Atoi(c.Query("id"))
+
+	c.JSON(http.StatusOK, h.services.GetAllEdLevels(id))
 }
 
 // Получение списка всех школ
 func (h *Handler) getAllSchools(c *gin.Context) {
-	schoolsList, err := h.services.GetAllSchools()
+	id, _ := strconv.Atoi(c.Query("id"))
+
+	schoolsList, err := h.services.GetAllSchools(id)
 
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())

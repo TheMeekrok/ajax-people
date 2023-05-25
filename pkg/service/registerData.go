@@ -13,12 +13,12 @@ func NewRegisterDataService(repo repository.RegisterData) *RegisterDataService {
 	return &RegisterDataService{repo: repo}
 }
 
-func (s *RegisterDataService) GetAllFaculties() ([]user.Faculty, error) {
-	return s.repo.GetAllFaculties()
+func (s *RegisterDataService) GetAllFaculties(id int) ([]user.Faculty, error) {
+	return s.repo.GetAllFaculties(id)
 }
 
-func (s *RegisterDataService) GetAllInterests() ([]user.Interest, error) {
-	interests, err := s.repo.GetAllInterests()
+func (s *RegisterDataService) GetAllInterests(id int) ([]user.Interest, error) {
+	interests, err := s.repo.GetAllInterests(id)
 	if err != nil {
 		return interests, err
 	}
@@ -33,7 +33,7 @@ var statusesSlice = []user.StatusUser{
 	{3, "other"},
 }
 
-func (s *RegisterDataService) GetAllStatuses() []user.StatusUser {
+func (s *RegisterDataService) GetAllStatuses(id int) []user.StatusUser {
 	return statusesSlice
 }
 
@@ -44,10 +44,10 @@ var edLevelsSlice = []user.EducationLevel{
 	{3, "other"},
 }
 
-func (s *RegisterDataService) GetAllEdLevels() []user.EducationLevel {
+func (s *RegisterDataService) GetAllEdLevels(id int) []user.EducationLevel {
 	return edLevelsSlice
 }
 
-func (s *RegisterDataService) GetAllSchools() ([]user.School, error) {
-	return s.repo.GetAllSchools()
+func (s *RegisterDataService) GetAllSchools(id int) ([]user.School, error) {
+	return s.repo.GetAllSchools(id)
 }
