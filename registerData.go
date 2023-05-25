@@ -3,7 +3,6 @@ package user
 type Interest struct {
 	Id    int    `json:"id" db:"id"`
 	Title string `json:"title" db:"title"`
-	Color string `json:"color" db:"color"`
 }
 
 type Faculty struct {

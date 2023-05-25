@@ -44,13 +44,13 @@ func main() {
 	services := service.NewService(repos)
 	handlers := handler.NewHandler(services)
 
+	logrus.Println("WebSite Started - port:" + viper.GetString("port"))
+
 	srv := new(user.Server)
 	gin.SetMode(gin.ReleaseMode)
 	if err := srv.Run(viper.GetString("port"), handlers.InitRoutes()); err != nil {
 		log.Fatalf("error occured while ruunning http server: %s", err.Error())
 	}
-
-	logrus.Println("WebSite Started")
 
 	if err := srv.Shutdown(context.Background()); err != nil {
 		logrus.Errorf("error occured on server shutting down: %s", err.Error())

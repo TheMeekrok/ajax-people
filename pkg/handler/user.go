@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
+	"strings"
 )
 
 func (h *Handler) createUser(c *gin.Context) {
@@ -119,15 +120,43 @@ func (h *Handler) checkActivationUser(c *gin.Context) {
 }
 
 func (h *Handler) selectUsers(c *gin.Context) {
-	var input user.UpdateUserInput
+	var input user.User
 
-	if err := c.BindJSON(&input); err != nil {
-		fmt.Printf("Failed to selected a user: %s\n", err.Error())
-		c.JSON(http.StatusBadRequest, "Failed to selected users")
-		return
+	var inputSelect user.UpdateUserInput
+
+	input.Id, _ = strconv.Atoi(c.Query("id"))
+	input.Age, _ = strconv.Atoi(c.Query("age"))
+	input.FirstName = c.Query("firstName")
+	input.LastName = c.Query("lastName")
+	input.StatusUserId, _ = strconv.Atoi(c.Query("statusUser"))
+	input.EducationLevelId, _ = strconv.Atoi(c.Query("educationLevel"))
+	input.SchoolId, _ = strconv.Atoi(c.Query("schoolId"))
+	input.AdmissionYear, _ = strconv.Atoi(c.Query("admissionYear"))
+	input.GraduationYear, _ = strconv.Atoi(c.Query("graduationYear"))
+	interests := strings.Split(c.Query("idInterests"), `,`)
+	for _, s := range interests {
+		num, err := strconv.Atoi(s)
+		if err == nil {
+			inputSelect.IdsInterests = append(inputSelect.IdsInterests, num)
+		}
 	}
 
-	userList, err := h.services.SelectedDataUser(input)
+	inputSelect.Id = &input.Id
+	inputSelect.SchoolId = &input.SchoolId
+	inputSelect.Age = &input.Age
+	fmt.Println(*inputSelect.Id)
+	if input.LastName != "" {
+		inputSelect.LastName = &input.FirstName
+	}
+	if input.FirstName != "" {
+		inputSelect.FirstName = &input.FirstName
+	}
+	inputSelect.StatusUser = &input.StatusUserId
+	inputSelect.EducationLevel = &input.EducationLevelId
+	inputSelect.AdmissionYear = &input.AdmissionYear
+	inputSelect.GraduationYear = &input.GraduationYear
+
+	userList, err := h.services.SelectedDataUser(inputSelect)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
