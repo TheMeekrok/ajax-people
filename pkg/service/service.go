@@ -36,7 +36,7 @@ type Mail interface {
 }
 
 type Post interface {
-	CreatePost(text string, tags []int, userId int) (int, error)
+	CreatePost(text string, tags []int, userId int, isAdmin bool) (int, error)
 	GetPostById(id int) (user.Post, error)
 	GetPostByPage(filter user.PostFilter, page int, items int, isAdmin bool, idUser int) ([]user.Post, error)
 	GetAllPosts(filter user.PostFilter, isAdmin bool, idUser int) ([]user.Post, error)

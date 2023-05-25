@@ -33,7 +33,7 @@ type RegisterData interface {
 }
 
 type Post interface {
-	CreatePost(post user.Post, tags []int) (int, error)
+	CreatePost(post user.Post, tags []int, isAdmin bool) (int, error)
 	GetPostById(id int) (user.Post, error)
 	GetPostByPage(filter user.PostFilter, page int, items int, isAdmin bool, idUser int) ([]user.Post, error)
 	GetAllPosts(filter user.PostFilter, isAdmin bool, idUser int) ([]user.Post, error)

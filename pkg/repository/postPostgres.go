@@ -17,7 +17,7 @@ func NewPostPostgres(db *sqlx.DB) *PostPostgres {
 	return &PostPostgres{db: db}
 }
 
-func (r *PostPostgres) CreatePost(post user.Post, tags []int) (int, error) {
+func (r *PostPostgres) CreatePost(post user.Post, tags []int, isAdmin bool) (int, error) {
 	var postId int
 
 	query := fmt.Sprintf(
@@ -35,7 +35,7 @@ func (r *PostPostgres) CreatePost(post user.Post, tags []int) (int, error) {
 	timeNowParseUnix := timeNowParse.Unix()
 	timeDeltaNowPost := (timeNowParseUnix - timePostUnix) / 3600
 
-	if timeDeltaNowPost < 12 {
+	if timeDeltaNowPost < 12 && isAdmin == false {
 		err := errors.New("it hasn't been 12 hours since the last post")
 		return 0, err
 	}
