@@ -17,12 +17,17 @@ func NewUserActionPostgres(db *sqlx.DB) *UserActionPostgres {
 }
 
 func (r *UserActionPostgres) CreateUser(user user.User) (int, error) {
-	var id int
+	var id, ids int
 
 	query := fmt.Sprintf("INSERT INTO %s (firstname, lastname, password, mail) values ($1, $2, $3, $4) RETURNING id", userTable)
-
 	row := r.db.QueryRow(query, user.FirstName, user.LastName, user.Password, user.Mail)
 	if err := row.Scan(&id); err != nil {
+		return 0, err
+	}
+
+	query = fmt.Sprintf("INSERT INTO %s (user_id) values ($1) RETURNING id", personalData)
+	row = r.db.QueryRow(query, id)
+	if err := row.Scan(ids); err != nil {
 		return 0, err
 	}
 
