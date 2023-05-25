@@ -1,0 +1,29 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+
+div {
+  display: flex;
+  align-content: stretch;
+  justify-content: space-between;
+  flex-direction: column;
+  padding: 15px;
+}
+
+p {
+  text-align: center;
+}
+
+.dialog-container {
+  height: inherit;
+}
+
+.dialog-container div {
+  margin-top: 20px;
+}
+
+.dialog-text {
+  font-size: 0.9em;
+  margin-bottom: 20px;
+}

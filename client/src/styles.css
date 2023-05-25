@@ -1,0 +1,85 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --main-color: #24617E;
+  --main-color-accent: #3f51b5;
+  --main-color-dark: #2B5B6E;
+  --main-color-darker: #15394A;
+  --main-color-background: #348fbb;
+  --form-background: #FFFFFF;
+  --text-main-color: #FFFFFF;
+
+  --footer-height: 100px;
+}
+
+html, body { height: 100%; }
+body { 
+  margin: 0; font-family: 'Ubuntu', "Helvetica Neue", sans-serif; 
+}
+
+b {
+  background-color: var(--main-color-darker);
+  /* text-decoration: none; */
+  font-weight: 400;
+}
+
+a {
+  text-decoration: none;
+  position: relative;
+}
+
+p, h1, h2, h3, h4, h5, h6 {
+  font-smooth: auto;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 32pt;
+}
+
+h2 {
+  font-size: 30pt;
+}
+
+h3 {
+  font-size: 16pt;
+}
+
+p {
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 400;
+  font-size: 14pt;
+}
+
+li {
+  margin: 10px;
+}
+
+.wrapper-v {
+  min-height: calc(100vh - var(--footer-height));
+}
+
+.wrapper-h {
+  width: 80vw;
+  margin: auto;
+}
+
+.link::after {
+  border-top: .1em solid var(--text-main-color);
+  content: "";
+  position: absolute;
+  right: 100%;
+  bottom: .1em;
+  left: 0;
+  transition: right .4s cubic-bezier(0,.5,0,1);
+}
+
+.link:hover::after {
+  right: 0;
+}

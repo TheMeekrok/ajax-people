@@ -1,0 +1,25 @@
+<div class="form-layout">
+  <div class="form-layout-inner">
+    <h3>➡️ Вход</h3>
+    <div>
+      <form class="form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <mat-form-field (change)="getEmailErrorString()" appearance="fill">
+          <mat-label>Электронная почта</mat-label>
+          <input matInput type="text" formControlName="email" />
+          <mat-error>{{ emailErrorString }}</mat-error>
+        </mat-form-field>
+
+        <mat-form-field (change)="getPasswordErrorString()" appearance="fill">
+          <mat-label>Пароль</mat-label>
+          <input matInput type="password" formControlName="password" />
+          <mat-error>{{ passwordErrorString }}</mat-error>
+        </mat-form-field>
+
+        <button type="submit" mat-raised-button color="primary">Войти</button>
+      </form>
+    </div>
+    <p class="reg-link">
+      Ещё нет аккаунта? <a routerLink="/main/sign-up">Зарегистрироваться</a>
+    </p>
+  </div>
+</div>

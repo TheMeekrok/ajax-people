@@ -1,0 +1,13 @@
+mat-card {
+  width: 100ch;
+}
+
+
+.text-input {
+  font-size: 1.5em;
+  padding: 1em;
+  resize: none;
+  width: 50vw;
+  min-height: 200px;
+}
+
