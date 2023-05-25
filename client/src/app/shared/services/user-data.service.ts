@@ -7,6 +7,10 @@ import { User } from "../models/User";
 import { baseUrl, defaultResponseDelay, defaultRetryRate } from './servicesConfig';
 import { ErrorMessage } from './ErrorsEnum';
 import { IInterest } from '../models/Interest';
+import { EducationLevel } from '../Enums/EducationLevel';
+import { StatusUser } from '../Enums/StatusUser';
+import { IUser } from '../models/IUser';
+import { IResponseImage } from '../models/Response';
 
 @Injectable({
   providedIn: 'root',
@@ -17,36 +21,47 @@ export class UserDataService {
 
   getFaculties(): Observable<IFaculty[]> {
     return this.http.get<IFaculty[]>('/api/register-data/faculties')
-      .pipe(
-        delay(defaultResponseDelay),
-        catchError(this._handleError),
-        retry(defaultRetryRate),
-      );
+      .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
+  }
+
+  getFacultyById(id: number): Observable<IFaculty[]> {
+    return this.http.get<IFaculty[]>(`/api/register-data/faculties?id=${id}`)
+      .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
   }
 
   getSchools(): Observable<ISchool[]> {
     return this.http.get<ISchool[]>('/api/register-data/schools')
-      .pipe(
-        delay(defaultResponseDelay),
-        catchError(this._handleError),
-        retry(defaultRetryRate),
-      );
+      .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
+  }
+
+  getSchoolById(id: number): Observable<ISchool[]> {
+    return this.http.get<ISchool[]>(`/api/register-data/schools?id=${id}`)
+      .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
   }
 
   getInterests(): Observable<IInterest[]> {
     return this.http.get<IInterest[]>('/api/register-data/interests')
-      .pipe(
-        delay(defaultResponseDelay),
-        catchError(this._handleError),
-        retry(defaultRetryRate),
-      );
+      .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
   }
 
-  getUsers(): Observable<User[]> {
-    return this.http.get<User[]>(baseUrl + "users").pipe(
-      retry(2)
-    )
+  getInterestById(id: number): Observable<IInterest[]> {
+    return this.http.get<IInterest[]>(`/api/register-data/interests?id=${id}`)
+      .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
   }
+
+  getUsers(): Observable<IUser[]> {
+    return this.http.get<IUser[]>("/api/users")
+      .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
+  }
+
+  getUserAvatar(id: number): Observable<IResponseImage> {
+    return this.http.get<IResponseImage>(`/api/avatar/${id}`)
+      .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
+  }
+
+  userStatusFromId(id: number): string { return StatusUser[id]; }
+
+  educationLevelFromId(id: number): string { return EducationLevel[id]; }
 
   getUsersWithParameters(schoolId: number, facultyId: number, course: number) {
     let parameter = new HttpParams()

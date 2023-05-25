@@ -5,3 +5,7 @@ export interface IResponseId {
 export interface IResponseToken {
   token: string;
 }
+
+export interface IResponseImage {
+  byte64: string;
+}

@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { IUser } from 'src/app/shared/models/IUser';
 import { UserDialog } from './user-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { UserDataService } from 'src/app/shared/services/user-data.service';
+import { IResponseImage } from 'src/app/shared/models/Response';
 
 @Component({
   selector: 'app-user',
@@ -10,22 +12,28 @@ import { MatDialog } from '@angular/material/dialog';
 })
 export class UserComponent implements OnInit {
 
-  constructor(public dialog: MatDialog) {}
+  @Input() user: IUser;
+  userStatus: string = '';
+  avatarBytes: string;
+
+  constructor(public dialog: MatDialog, private userDataService: UserDataService) {}
 
   ngOnInit(): void {
+    if (this.user.statusUserId) {
+      this.userStatus = this.userDataService.userStatusFromId(this.user.statusUserId);
+    }
+
+    // if (this.user.avatarPath) {
+    //   this.userDataService.
+    // }
   }
 
-  openDialog(): void { this.dialog.open(UserDialog, { data: { user: this.user } }); }
-
-  user: IUser = {
-    firstName: 'Артём',
-    lastName: 'Курпас',
-    age: 15,
-    admissionYear: 2021,
-    statusUser: 1,
-    educationLevel: 1,
-    studyProgramId: 1,
-    schoolId: 25,
-    idInterests: [1, 2, 3],
+  showAllData(): void { this.dialog.open(UserDialog, { 
+    width: '450px', 
+    data: { 
+      user: this.user, 
+      userStatus: this.userStatus 
+    } 
+  }); 
   }
 }
