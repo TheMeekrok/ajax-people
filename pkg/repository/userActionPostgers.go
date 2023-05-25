@@ -201,8 +201,8 @@ func (r *UserActionPostgres) UpdateUser(id int, user user.UpdateUserInput) error
 	return nil
 }
 
-func (r *UserActionPostgres) SelectedDataUser(userSelect user.UpdateUserInput) ([]user.User, error) {
-	var userList []user.User
+func (r *UserActionPostgres) SelectedDataUser(userSelect user.UpdateUserInput, idUser int) ([]user.UserOutput, error) {
+	var userList []user.UserOutput
 
 	setInterests := make([]string, 0)
 	setValues := make([]string, 0)
@@ -269,6 +269,12 @@ func (r *UserActionPostgres) SelectedDataUser(userSelect user.UpdateUserInput) (
 		argId++
 	}
 
+	if idUser != 0 {
+		setValues = append(setValues, fmt.Sprintf("users.id!=$%d", argId))
+		args = append(args, idUser)
+		argId++
+	}
+
 	setQuery := strings.Join(setValues, " AND ")
 
 	flag := false
@@ -286,10 +292,10 @@ func (r *UserActionPostgres) SelectedDataUser(userSelect user.UpdateUserInput) (
 
 	var query string
 	if setQuery == "" {
-		query = fmt.Sprintf("SELECT id,firstname, lastname,mail,age,status_user, education_level,study_program_id,school_id,avatar_path FROM %s", userTable)
+		query = fmt.Sprintf("SELECT id,firstname, lastname,age,status_user, education_level,study_program_id,is_admin,school_id, admission_year, graduation_year FROM %s", userTable)
 	} else {
-		query = fmt.Sprintf(`SELECT DISTINCT users.id, firstname, lastname,mail,age,status_user, 
-                				education_level,study_program_id,school_id,avatar_path 
+		query = fmt.Sprintf(`SELECT DISTINCT users.id, firstname, lastname,age,status_user, 
+                				education_level,study_program_id,school_id,is_admin, admission_year, graduation_year
 								FROM %s JOIN %s ON users.id = users_interests.user_id
     							JOIN %s ON users_interests.interest_id = interest.id 
                                 WHERE %s`, userTable, usersInterests, interestsTable, setQuery)
@@ -298,6 +304,7 @@ func (r *UserActionPostgres) SelectedDataUser(userSelect user.UpdateUserInput) (
 	if err := r.db.Select(&userList, query, args...); err != nil {
 		return nil, err
 	}
+
 	for i := 0; i < len(userList); i++ {
 		query = fmt.Sprintf(`SELECT DISTINCT interest_id FROM %s
     								JOIN %s ON users.id = users_interests.user_id WHERE user_id = $1;`,

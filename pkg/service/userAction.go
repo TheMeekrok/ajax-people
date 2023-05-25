@@ -36,8 +36,8 @@ func (s *UserActionService) GetAllUsers() ([]user.User, error) {
 	return s.repo.GetAllUsers()
 }
 
-func (s *UserActionService) SelectedDataUser(userSelect user.UpdateUserInput) ([]user.User, error) {
-	return s.repo.SelectedDataUser(userSelect)
+func (s *UserActionService) SelectedDataUser(userSelect user.UpdateUserInput, idUser int) ([]user.UserOutput, error) {
+	return s.repo.SelectedDataUser(userSelect, idUser)
 }
 
 func (s *UserActionService) RequestСorrespondence(idSender int, emailRecipient string) (int, error) {
