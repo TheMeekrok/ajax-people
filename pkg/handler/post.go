@@ -97,12 +97,12 @@ func (h *Handler) createPost(c *gin.Context) {
 		return
 	}
 
-	userId, _, _, err := getJWT(h, c)
+	userId, isAdmin, _, err := getJWT(h, c)
 	if err != nil {
 		return
 	}
 
-	id, err := h.services.CreatePost(input.Text, input.Tags, userId)
+	id, err := h.services.CreatePost(input.Text, input.Tags, userId, isAdmin)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, "Failed data: "+err.Error())
 		return
