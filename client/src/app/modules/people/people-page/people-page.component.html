@@ -1,71 +1,75 @@
-<h1>Список людей</h1>
-<!-- <form [formGroup]="form">
-  <mat-form-field appearance="fill" *ngIf="isFiltersUse">
-    <mat-label>Школа (институт)</mat-label>
-    <input
-      type="text"
-      matInput
-      formControlName="school"
-      [matAutocomplete]="auto"
-      ngDefaultControl
-      (ngModelChange)="onSelect($event)"
-    />
-    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFunction">
-      <mat-option *ngFor="let s of filteredSchools | async" [value]="s">
-        {{ s.title }}
-      </mat-option>
-    </mat-autocomplete>
-  </mat-form-field>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Список людей</title>
+</head>
+<body>
+  <h1>Список людей</h1>
+  <form
+    [formGroup]="form"
+    class="example-form">
 
-  <mat-form-field appearance="fill" *ngIf="isFiltersUse">
-    <mat-label>Образовательная программа</mat-label>
-    <input
-      type="text"
-      matInput
-      formControlName="faculty"
-      [matAutocomplete]="auto"
-      ngDefaultControl
-      (ngModelChange)="onSelect($event)"
-    />
-    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFunction">
-      <mat-option *ngFor="let f of filteredFaculties | async" [value]="f">
-        {{ f.title }}
-      </mat-option>
-    </mat-autocomplete>
-  </mat-form-field>
+    <mat-form-field appearance="fill" *ngIf="isFiltersUse">
+      <mat-label>Школа (институт)</mat-label>
+      <input type="text"
+             matInput
+             formControlName="school"
+             [matAutocomplete]="auto"
+             ngDefaultControl
+             (ngModelChange)="onSelect($event)" >
+      <mat-autocomplete
+        #auto="matAutocomplete"
+        [displayWith]="displayFunction"
+        >
+        <mat-option *ngFor="let s of filteredSchools | async" [value]="s">
+          {{s.title}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
 
-  <mat-form-field appearance="fill" *ngIf="isFiltersUse">
-    <mat-label>Курс</mat-label>
-    <input
-      type="text"
-      matInput
-      [matAutocomplete]="auto"
-      formControlName="course"
-      ngDefaultControl
-      (ngModelChange)="onSelect($event)"
-    />
-    <mat-autocomplete #auto="matAutocomplete">
-      <mat-option *ngFor="let c of courses" [value]="c">{{ c }}</mat-option>
-    </mat-autocomplete>
-  </mat-form-field>
-  <button
-    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-    (click)="onUseFiltersClick()"
-  >
-    {{ filtersButtonText }}
-  </button>
-</form>
-<div *ngIf="users$ as users">
-  <div *ngFor="let user of users" class="friend">
-    <button (click)="openUserProfile(user)">
-      <img [src]="user.avatarPath" alt="Фото друга 1" />
+    <mat-form-field appearance="fill" *ngIf="isFiltersUse">
+      <mat-label>Образовательная программа</mat-label>
+      <input
+        type="text"
+        matInput
+        formControlName="faculty"
+        [matAutocomplete]="auto"
+        ngDefaultControl
+        (ngModelChange)="onSelect($event)" >
+      <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFunction">
+        <mat-option *ngFor="let f of filteredFaculties | async" [value]="f">
+          {{f.title}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" *ngIf="isFiltersUse">
+      <mat-label>Курс</mat-label>
+      <input
+        type="text"
+        matInput
+        [matAutocomplete]="auto"
+        formControlName="course"
+        ngDefaultControl
+        (ngModelChange)="onSelect($event)" >
+      <mat-autocomplete #auto="matAutocomplete">
+        <mat-option *ngFor="let c of courses" [value]="c">{{c}}</mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+    <button
+      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+      (click)="onUseFiltersClick()"
+    >
+      {{filtersButtonText}}
     </button>
-    <span>{{
-      user.statusUser + ": " + user.firstName + " " + user.lastName
-    }}</span>
+  </form>
+  <div *ngIf="users$ as users">
+    <div *ngFor="let user of users" class="friend">
+      <button (click)="openUserProfile(user)">
+        <img [src]="user.avatarPath" alt="Фото друга 1">
+      </button>
+      <span>{{user.statusUser + ": " + user.firstName + " " + user.lastName}}</span>
+    </div>
   </div>
-</div> -->
-
-<app-user></app-user>
-<app-user></app-user>
-<app-user></app-user>
+</body>
+</html>

@@ -1,9 +1,9 @@
 <div class="post">
-  <p>{{getShortText(post.text)}}</p>
-  <p>{{ user ? user.firstName : '' }}</p>
+  <h2>{{post.title}}</h2>
+  <p>Коканов Александр</p>
+  <p>{{post.text}}</p>
   <button
-    mat-raised-button color="primary"
-    (click)="onPostClick()"
+    class="flex justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm  text-white"
   >
     Подробнее
   </button>

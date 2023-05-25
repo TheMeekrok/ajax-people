@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ILoginUser } from "../../../shared/models/LoginUser";
-import { RegisterProfileInfoComponent } from '../../register/register-profile-info/register-profile-info.component';
+import {ILoginUser} from "../../../shared/models/LoginUser";
 
 @Component({
   selector: 'app-login-page',

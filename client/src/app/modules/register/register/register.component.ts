@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 
 enum RegisterState {
-  REGISTER_USER,
-  REGISTER_PROFILE_INFO,
-  REGISTER_INTERESTS,
+  RegisterUser,
+  RegisterProfileInfo,
+  RegisterInterests,
 }
 
 @Component({
@@ -12,19 +12,16 @@ enum RegisterState {
   styleUrls: ['../register.component.css']
 })
 export class RegisterComponent implements OnInit {
-
-  RegisterState = RegisterState;
-
+  isRegisterUserVisible: boolean = true;
   userId: number;
   registerState: RegisterState;
 
   ngOnInit(): void {
-      this.registerState = RegisterState.REGISTER_USER;
+      this.registerState = RegisterState.RegisterUser;
   }
 
   onRegisterSuccess(userId: number) {
     this.userId = userId;
-    this.registerState = RegisterState.REGISTER_PROFILE_INFO;
+    this.registerState = RegisterState.RegisterInterests;
   }
-
 }

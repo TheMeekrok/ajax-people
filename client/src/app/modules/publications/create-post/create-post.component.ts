@@ -1,10 +1,7 @@
-import {Component, EventEmitter, Inject, Input, Output, ViewChild} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {Component, Inject, Input} from '@angular/core';
+import {MAT_DIALOG_DATA} from "@angular/material/dialog";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {IPost} from "../../../shared/models/Post";
-import {IInterest} from "../../../shared/models/Interest";
-import {DataService} from "../../../shared/services/data.service";
-import {Observable} from "rxjs";
+import {Post} from "../publications-page/publications-page.component";
 
 
 @Component({
@@ -14,65 +11,67 @@ import {Observable} from "rxjs";
 })
 export class CreatePostComponent {
   form: FormGroup;
-  interests: IInterest[]
-  isInterestsValid: boolean
+
+  @Input('mat-dialog-close')
+  dialogResult: Post
 
   constructor(
-    private dataService: DataService,
-    public dialogRef: MatDialogRef<CreatePostComponent>,
-
-    @Inject(MAT_DIALOG_DATA) public data: IPost,
+  @Inject(MAT_DIALOG_DATA) public data: Post,
 
 ) {
     this.form = new FormGroup({
+      title: new FormControl('', [
+        Validators.required,
+          Validators.minLength(3),
+        Validators.pattern(/^[a-zA-Zа-яА-Я0-9\s\.":;,=-]*$/)
+      ]),
       text: new FormControl('',[
         Validators.required,
         Validators.pattern(/^[a-zA-Zа-яА-Я0-9\s\.":;,=-]*$/),
         Validators.minLength(10),
         Validators.maxLength(255)
       ]),
-      tags: new FormControl([], [Validators.minLength(1)])
     });
-    this.dataService.getInterests().subscribe(
-      data => {
-        this.interests = data
-      }
-    )
+  }
+
+  getTitleErrorString(): string {
+    let error = this.form.controls['title'].errors;
+    if (!error) {
+      return ''
+    }
+    if (error['required']) {
+      return 'Обязательное поле'
+    }
+    if (error['minlength']) {
+      return 'Минимум 3 символа'
+    }
+    if (error['pattern']) {
+      return 'Заголовок содержит недопустимые символы'
+    }
+    return ''
   }
 
   getTextErrorString() {
     let error = this.form.controls['text'].errors;
-    if (error?.['required']) {
+    if (!error) {
+      return ''
+    }
+    if (error['required']) {
       return 'Обязательное поле'
     }
-    if (error?.['pattern']) {
+    if (error['pattern']) {
       return 'Текст содержит недопустимые символы'
     }
-    if (error?.['minlength']) {
+    if (error['minlength']) {
       return 'Минимум 10 символов'
     }
-    if (error?.['maxlength']) {
+    if (error['maxlength']) {
       return 'Максимум 255 символов'
     }
     return ''
   }
 
-
-  onPostClick() {
-    if (this.form.controls['tags'].value.length < 1) {
-      this.isInterestsValid = true
-      return
-    }
-    else {
-      this.isInterestsValid = false
-    }
-    if (this.form.valid) {
-      this.data = {
-        text: this.form.controls['text']?.value,
-        tags: this.form.controls['tags']?.value,
-        userId: 1
-      }
-      this.dialogRef.close(this.data)
-    }
+  onSubmit() {
+    close()
   }
 }

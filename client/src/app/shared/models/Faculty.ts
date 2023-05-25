@@ -1,5 +1,6 @@
 export interface IFaculty
 {
-  id: number
+  id: string
   title: string
 }
+

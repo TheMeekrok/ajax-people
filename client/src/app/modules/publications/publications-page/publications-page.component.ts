@@ -2,34 +2,38 @@ import {Component, OnInit} from '@angular/core';
 import {MatDialog} from "@angular/material/dialog";
 import {CreatePostComponent} from "../create-post/create-post.component";
 import {IPost} from "../../../shared/models/Post";
-import {DataService} from "../../../shared/services/data.service";
-
+export class Post {
+  title: string;
+  text: string;
+}
 @Component({
   selector: 'app-publications-page',
   templateUrl: './publications-page.component.html',
   styleUrls: ['./publications-page.component.css']
 })
 export class PublicationsPageComponent implements OnInit{
-  posts: IPost[]
-  newPost: IPost
-  constructor(public dialog: MatDialog,
-              private dataService: DataService) {}
+  posts$: IPost[]
+  newPost: Post
+  constructor(public dialog: MatDialog) {}
 
   ngOnInit() {
-    this.dataService.getPosts().subscribe(data => {
-      this.posts = data
-      }
-    )
+    this.newPost = new Post()
+    this.posts$ = []
+    this.posts$.push(<IPost>this.newPost)
+    console.log(this.posts$)
   }
 
+  onCreatePostClick() {
+    this.openDialog()
+  }
 
-  onCreatePostClick(): void {
+  openDialog(): void {
     const dialogRef = this.dialog.open(CreatePostComponent, {
       data: this.newPost
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.dataService.savePost(result).subscribe()
+      alert(result.text + result.title)
     });
   }
 }

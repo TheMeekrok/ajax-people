@@ -8,13 +8,11 @@
   --main-color-dark: #2B5B6E;
   --main-color-darker: #15394A;
   --main-color-background: #348fbb;
-  --select-color: #c1c1c1;
   --form-background: #FFFFFF;
   --text-main-color: #FFFFFF;
 
   --footer-height: 100px;
 }
-
 
 html, body { height: 100%; }
 body { 
