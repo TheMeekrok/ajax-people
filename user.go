@@ -3,7 +3,7 @@ package user
 import "errors"
 
 type User struct {
-	Id               int          `json:"-" db:"id"`
+	Id               int          `json:"id" db:"id"`
 	FirstName        string       `json:"firstName"`
 	Mail             string       `json:"mail" binding:"required"`
 	Password         string       `json:"password" binding:"required"`
@@ -14,13 +14,29 @@ type User struct {
 	EducationLevelId int          `json:"educationLevelId" db:"education_level"`
 	StudyProgramId   int          `json:"studyProgramId" db:"study_program_id"`
 	SchoolId         int          `json:"schoolId" db:"school_id"`
-	AdmissionYear    int          `json:"admissionYear"`
-	GraduationYear   int          `json:"graduationYear"`
+	AdmissionYear    int          `json:"admissionYear" db:"admission_year"`
+	GraduationYear   int          `json:"graduationYear" db:"graduation_year"`
 	IsAdmin          bool         `json:"isAdmin" db:"is_admin"`
 	IsVerificated    bool         `json:"isVerificated" db:"is_verificated"`
 	IsVisible        bool         `json:"isVisible"`
 	AvatarPath       string       `json:"avatarPath" db:"avatar_path"`
 	IsModerated      bool         `json:"isModerated"`
+	PersonalData     PersonalData `json:"personalData"`
+}
+
+type UserOutput struct {
+	Id               int          `json:"id" db:"id"`
+	FirstName        string       `json:"firstName"`
+	Interests        []int        `json:"interests"`
+	LastName         string       `json:"lastName"`
+	Age              int          `json:"age"`
+	StatusUserId     int          `json:"statusUserId" db:"status_user"`
+	EducationLevelId int          `json:"educationLevelId" db:"education_level"`
+	StudyProgramId   int          `json:"studyProgramId" db:"study_program_id"`
+	SchoolId         int          `json:"schoolId" db:"school_id"`
+	AdmissionYear    int          `json:"admissionYear" db:"admission_year"`
+	GraduationYear   int          `json:"graduationYear" db:"graduation_year"`
+	IsAdmin          bool         `json:"isAdmin" db:"is_admin"`
 	PersonalData     PersonalData `json:"personalData"`
 }
 

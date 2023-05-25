@@ -122,6 +122,8 @@ func (h *Handler) checkActivationUser(c *gin.Context) {
 func (h *Handler) selectUsers(c *gin.Context) {
 	var input user.User
 
+	idUser, _, _, _ := getJWT(h, c)
+
 	var inputSelect user.UpdateUserInput
 
 	input.Id, _ = strconv.Atoi(c.Query("id"))
@@ -156,7 +158,7 @@ func (h *Handler) selectUsers(c *gin.Context) {
 	inputSelect.AdmissionYear = &input.AdmissionYear
 	inputSelect.GraduationYear = &input.GraduationYear
 
-	userList, err := h.services.SelectedDataUser(inputSelect)
+	userList, err := h.services.SelectedDataUser(inputSelect, idUser)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return

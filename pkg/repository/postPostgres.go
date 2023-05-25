@@ -101,7 +101,6 @@ func (r *PostPostgres) GetPostByPage(filter user.PostFilter, page int, items int
 		`SELECT DISTINCT po.id, po.user_id, po.text, po.is_moderated, po.publication_time FROM %s po
     					JOIN %s pt ON po.id = pt.post_id %s %s ORDER BY publication_time %s ;`,
 		postsTable, postsTagsTable, addQuery, isModer, orderType)
-	fmt.Println(query)
 
 	var postsList []user.Post
 	if err := r.db.Select(&postsList, query); err != nil {
@@ -111,7 +110,6 @@ func (r *PostPostgres) GetPostByPage(filter user.PostFilter, page int, items int
 		`SELECT DISTINCT po.id, po.user_id, po.text, po.is_moderated, po.publication_time FROM %s po
     					JOIN %s pt ON po.id = pt.post_id %s WHERE po.user_id = $1 AND po.is_moderated=false;`,
 		postsTable, postsTagsTable, addQuery)
-	fmt.Println(query)
 
 	var postsList1 []user.Post
 	if err := r.db.Select(&postsList1, query, idUser); err != nil {
