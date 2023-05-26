@@ -11,9 +11,11 @@ import { IInterest } from "src/app/shared/models/Interest";
 import { ISchool } from "src/app/shared/models/School";
 import { UserDataService } from "src/app/shared/services/user-data.service";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+import { Observable, forkJoin } from "rxjs";
 
 export interface IDialogData {
   user: IUser,
+  avatarPath: string;
   userStatus: string,
   educationLevel: string,
   faculty: string,
@@ -42,11 +44,9 @@ export class UserDialog implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: IDialogData,
   ) {}
 
-  loading: boolean = true;
+  loading: boolean = false;
 
-  ngOnInit(): void {
-    this._initUserData();
-  }
+  ngOnInit(): void { this._initUserData(); }
 
   private _initUserData() {
     this.data.educationLevel = '';
@@ -68,16 +68,17 @@ export class UserDialog implements OnInit {
         .subscribe({ next: (result: ISchool[]) => this.data.school = result[0]?.title });
     }
 
+    let interests$: Observable<IInterest[]>[] = []
     if (this.data.user.interests) {
-      this.data.user.interests.forEach(interestId => {
-        this.userDataService.getInterestById(interestId)
-          .subscribe({ 
-            next: (result: IInterest[]) => this.data.interests.push(result[0]?.title),
-            error: (error: Error) => console.log("interest:", error),
-            complete: () => this.loading = false,
-          })
-      });
+      this.data.user.interests
+        .forEach(interestId => interests$.push(this.userDataService.getInterestById(interestId)));
     }
+
+    this.loading = true;
+    forkJoin(interests$).subscribe({ 
+      next: (result) => result.forEach(element => this.data.interests.push(element?.[0]?.title)),
+      complete: () => this.loading = false,
+    });
   }
 
   onCloseClick(): void { this.dialogRef.close(); }

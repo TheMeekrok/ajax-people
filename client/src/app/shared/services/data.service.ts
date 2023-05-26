@@ -4,7 +4,7 @@ import {catchError, delay, dematerialize, materialize, Observable, retry, throwE
 import {IPost} from "../models/Post";
 import {IUser} from "../models/IUser";
 import {IInterest} from "../models/Interest";
-import {baseUrl, defaultResponseDelay} from "./servicesConfig";
+import {defaultResponseDelay} from "./servicesConfig";
 import {ErrorMessage} from "./ErrorsEnum";
 
 @Injectable({
@@ -14,20 +14,20 @@ export class DataService {
   constructor(private http: HttpClient) { }
 
   getPosts() {
-      return this.http.get<IPost[]>(baseUrl + "api/posts/").pipe(
+      return this.http.get<IPost[]>("api/posts/").pipe(
       retry(2),
     )
   }
 
   getUserById(id: number): Observable<IUser> {
-    return this.http.get<IUser>( baseUrl + 'api/users/' + id)
+    return this.http.get<IUser>('api/users/' + id)
       .pipe(
         retry(2)
       )
   }
 
   getInterests(): Observable<IInterest[]> {
-    return this.http.get<IInterest[]>(baseUrl + 'api/register-data/interests')
+    return this.http.get<IInterest[]>('api/register-data/interests')
       .pipe(
         retry(2)
       )
@@ -70,7 +70,7 @@ export class DataService {
     }
     return this.http
       .post<string>(
-        baseUrl + `api/posts/`,
+        `api/posts/`,
         JSON.stringify(body)
       ).pipe(
         delay(defaultResponseDelay),

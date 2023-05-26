@@ -4,7 +4,7 @@ import { Observable, catchError, delay, dematerialize, map, materialize, retry, 
 import { IFaculty } from '../models/Faculty';
 import { ISchool } from '../models/School';
 import { User } from "../models/User";
-import { baseUrl, defaultResponseDelay, defaultRetryRate } from './servicesConfig';
+import { defaultResponseDelay, defaultRetryRate } from './servicesConfig';
 import { ErrorMessage } from './ErrorsEnum';
 import { IInterest } from '../models/Interest';
 import { EducationLevel } from '../Enums/EducationLevel';
@@ -54,8 +54,8 @@ export class UserDataService {
       .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
   }
 
-  getUserAvatar(id: number): Observable<IResponseImage> {
-    return this.http.get<IResponseImage>(`/api/avatar/${id}`)
+  getUserAvatar(id: number): Observable<string> {
+    return this.http.get<string>(`/api/avatar/${id}`)
       .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
   }
 
@@ -74,7 +74,7 @@ export class UserDataService {
     if (course) {
       parameter = parameter.set('course', course)
     }
-    return this.http.get<User[]>(baseUrl + 'users', {params: parameter}).pipe(
+    return this.http.get<User[]>('users', {params: parameter}).pipe(
       retry(2)
     )
   }

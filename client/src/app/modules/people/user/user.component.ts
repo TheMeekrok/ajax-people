@@ -3,7 +3,6 @@ import { IUser } from 'src/app/shared/models/IUser';
 import { UserDialog } from './user-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { UserDataService } from 'src/app/shared/services/user-data.service';
-import { IResponseImage } from 'src/app/shared/models/Response';
 
 @Component({
   selector: 'app-user',
@@ -14,7 +13,8 @@ export class UserComponent implements OnInit {
 
   @Input() user: IUser;
   userStatus: string = '';
-  avatarBytes: string;
+  avatarBase: string = 'data:image/png;base64,';
+  avatarPath: string = '../../../../assets/user/default_avatar.svg';
 
   constructor(public dialog: MatDialog, private userDataService: UserDataService) {}
 
@@ -23,16 +23,22 @@ export class UserComponent implements OnInit {
       this.userStatus = this.userDataService.userStatusFromId(this.user.statusUserId);
     }
 
-    // if (this.user.avatarPath) {
-    //   this.userDataService.
-    // }
+    this._tryGetAvatar(this.user.id);
+  }
+
+  private _tryGetAvatar(userId: number | undefined) {
+    if (!userId) return;
+    this.userDataService.getUserAvatar(userId).subscribe({
+      next: (response: string) => this.avatarPath = this.avatarBase + response,
+    })
   }
 
   showAllData(): void { this.dialog.open(UserDialog, { 
     width: '450px', 
     data: { 
       user: this.user, 
-      userStatus: this.userStatus 
+      userStatus: this.userStatus,
+      avatarPath: this.avatarPath,
     } 
   }); 
   }

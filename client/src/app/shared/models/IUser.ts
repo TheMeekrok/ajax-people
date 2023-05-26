@@ -5,6 +5,7 @@ export interface IPersonalData {
 }
 
 export interface IUser {
+  id?: number;
   mail?: string;
   password?: string;
   firstName?: string;
@@ -17,6 +18,5 @@ export interface IUser {
   schoolId?: number;
   interests?: number[];
   isAdmin?: boolean;
-  avatarPath?: string;
   personalData?: IPersonalData;
 }
