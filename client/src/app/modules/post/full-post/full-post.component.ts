@@ -2,6 +2,7 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {IPost} from "../../../shared/models/Post";
 import {DataService} from "../../../shared/services/data.service";
+import {Tag} from "../../../shared/models/Tag";
 
 @Component({
   selector: 'app-full-post',
@@ -15,12 +16,12 @@ export class FullPostComponent implements OnInit{
     private dataService: DataService,
     public dialog: MatDialogRef<FullPostComponent>,
 
-    @Inject(MAT_DIALOG_DATA) public data: IPost,
+    @Inject(MAT_DIALOG_DATA) public post: IPost,
   ) {
   }
 
   ngOnInit(): void {
-    this.dataService.getUserById(this.data.userId).subscribe(result => {
+    this.dataService.getUserById(this.post.userId).subscribe(result => {
       this.author = result.firstName + " " + result.lastName
       console.log(result)
     });

@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core'
+import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core'
 import {IPost} from "../../../shared/models/Post";
 import {IUser} from "../../../shared/models/IUser";
 import {MatDialog} from "@angular/material/dialog";
@@ -11,12 +11,16 @@ import {DataService} from "../../../shared/services/data.service";
   styleUrls: ['./post.component.css']
 })
 export class PostComponent implements OnInit {
-  constructor(public dialog: MatDialog,
-  public dataService: DataService) { }
+
+
   @Input() post: IPost
+  constructor(
+    public dialog: MatDialog,
+    public dataService: DataService
+  ) {
 
+  }
   user: IUser;
-
   ngOnInit(): void {
     this.getAuthor(this.post.userId);
   }
