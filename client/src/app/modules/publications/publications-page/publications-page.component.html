@@ -4,14 +4,40 @@
   <title>Посты</title>
 </head>
   <body>
+  <div class="filter-place">
+    <h4>Выберите фильтры</h4>
+    <mat-chip-listbox multiple [(ngModel)]="selectedChips" (ngModelChange)="onFilterTagsChange()">
+      <mat-chip-option *ngFor="let t of tags" [value]="t">
+        {{ t.title }}
+      </mat-chip-option>
+    </mat-chip-listbox>
+    <button
+      mat-raised-button color="primary"
+      (click)="onOrderByButtonClick()"
+    >
+      {{orderBy ? "Сначала новые" : "Сначала старые"}}
+    </button>
+  </div>
+
     <button
       mat-raised-button color="primary"
       (click)="onCreatePostClick()"
     >
       Создать пост
     </button>
-    <app-post *ngFor="let post of posts"
+    <h3 *ngIf="isPostsEmpty">
+      По данному запросу не найдено ни одного поста
+    </h3>
+    <app-post *ngFor="let post of (posts ? posts : [])"
               [post]="post">
     </app-post>
+    <mat-paginator
+      (page)="onPageChange($event)"
+      [pageIndex]="pageIndex"
+      [length]="postsCount ? postsCount : 0"
+      [pageSize]="5"
+      [pageSizeOptions]="[1, 2, 3, 5, 10, 50]"
+      aria-label="Select page">
+    </mat-paginator>
   </body>
 </html>

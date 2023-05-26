@@ -1,9 +1,10 @@
 .post-modal {
   width: 30vw;
+  display: flex;
+  flex-direction: column;
 }
 
 .cross-button {
   width: 100%;
-  display: flex;
   justify-content: flex-end;
-  }
+}

@@ -13,6 +13,7 @@ import localeRu from '@angular/common/locales/ru';
 import {FullPostComponent} from "./full-post/full-post.component";
 import {MatDialogModule} from "@angular/material/dialog";
 import {MatListModule} from "@angular/material/list";
+import {MatProgressBarModule} from "@angular/material/progress-bar";
 
 registerLocaleData(localeRu, 'ru');
 
@@ -24,18 +25,19 @@ registerLocaleData(localeRu, 'ru');
   exports: [
     PostComponent
   ],
-  imports: [
-    CommonModule,
-    PostRoutingModule,
-    MatCardModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    MatChipsModule,
-    FormsModule,
-    MatButtonModule,
-    MatDialogModule,
-    MatListModule
-  ],
+    imports: [
+        CommonModule,
+        PostRoutingModule,
+        MatCardModule,
+        ReactiveFormsModule,
+        MatInputModule,
+        MatChipsModule,
+        FormsModule,
+        MatButtonModule,
+        MatDialogModule,
+        MatListModule,
+        MatProgressBarModule
+    ],
   providers: [
     { provide: LOCALE_ID, useValue: 'ru' }
   ]

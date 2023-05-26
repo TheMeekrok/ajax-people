@@ -1,4 +1,4 @@
-<mat-card class="example-card post-modal">
+<mat-card class="post-modal">
   <mat-card-actions class="cross-button">
     <div class="example-button-container" >
       <button mat-mini-fab color="warn"
@@ -9,11 +9,17 @@
   </mat-card-actions>
   <div class="post">
     <mat-card-header>
-      <mat-card-subtitle>{{data.publicationTime | date:  "dd.MM.YYYY HH:mm"}}</mat-card-subtitle>
+      <mat-card-subtitle>{{post.publicationTime | date:  "dd.MM.YYYY HH:mm"}}</mat-card-subtitle>
+      <mat-chip-listbox [selectable]="false">
+        <mat-chip *ngFor="let t of post.tags" [value]="t">
+          {{ t.title }}
+        </mat-chip>
+      </mat-chip-listbox>
+
       <mat-card-title>{{author}}</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <p>{{ data.text }}</p>
+      <p>{{ post.text }}</p>
       <mat-divider></mat-divider>
     </mat-card-content>
     <mat-card-actions>

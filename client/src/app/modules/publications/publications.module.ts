@@ -12,6 +12,7 @@ import {MatCardModule} from "@angular/material/card";
 import {PostModule} from "../post/post.module";
 import {CreatePostComponent} from "./create-post/create-post.component";
 import {MatChipsModule} from "@angular/material/chips";
+import {MatPaginatorModule} from "@angular/material/paginator";
 
 
 @NgModule({
@@ -19,18 +20,19 @@ import {MatChipsModule} from "@angular/material/chips";
     PublicationsPageComponent,
     CreatePostComponent
   ],
-  imports: [
-    CommonModule,
-    PublicationsRoutingModule,
-    PostModule,
-    MatInputModule,
-    FormsModule,
-    MatDialogModule,
-    MatButtonModule,
-    MatIconModule,
-    MatCardModule,
-    ReactiveFormsModule,
-    MatChipsModule
-  ]
+    imports: [
+        CommonModule,
+        PublicationsRoutingModule,
+        PostModule,
+        MatInputModule,
+        FormsModule,
+        MatDialogModule,
+        MatButtonModule,
+        MatIconModule,
+        MatCardModule,
+        ReactiveFormsModule,
+        MatChipsModule,
+        MatPaginatorModule
+    ]
 })
 export class PublicationsModule { }
