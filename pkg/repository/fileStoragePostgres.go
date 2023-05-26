@@ -1,9 +1,14 @@
 package repository
 
 import (
+	"bytes"
 	"encoding/base64"
 	"fmt"
 	"github.com/jmoiron/sqlx"
+	"github.com/nfnt/resize"
+	"image"
+	"image/jpeg"
+	"image/png"
 	"io/ioutil"
 )
 
@@ -27,11 +32,23 @@ func NewFileStorage(db *sqlx.DB) *FileStorage {
 func (r FileStorage) Upload(id int, input UploadInput) (string, error) {
 	var fileName string
 	pathDir := "assets/avatars"
+	buf := new(bytes.Buffer)
+	image, _, _ := image.Decode(bytes.NewReader(input.File))
+	newImage := resize.Resize(160, 0, image, resize.Lanczos3)
 
 	switch input.ContentType {
 	case "image/jpeg":
 		fileName = input.Name + ".jpeg"
+
+		if err := jpeg.Encode(buf, newImage, nil); err != nil {
+			return "", err
+		}
+
 	case "image/png":
+		if err := png.Encode(buf, newImage); err != nil {
+			return "", err
+		}
+
 		fileName = input.Name + ".png"
 	}
 
@@ -40,8 +57,9 @@ func (r FileStorage) Upload(id int, input UploadInput) (string, error) {
 		fmt.Println(err)
 	}
 	defer tempFile.Close()
-	tempFile.Write(input.File)
 
+	imageBytes := buf.Bytes()
+	tempFile.Write(imageBytes)
 	query := fmt.Sprintf("UPDATE %s SET avatar_path=$1 WHERE id=$2;", userTable)
 
 	_, err = r.db.Exec(query, tempFile.Name(), id)
@@ -59,6 +77,9 @@ func (r FileStorage) GetAvatar(id int) (string, error) {
 	err := r.db.Get(&avatarPath, query, id)
 	if err != nil {
 		return "", err
+	}
+	if avatarPath == "" {
+		return "no image", nil
 	}
 
 	dataBytes, err := ioutil.ReadFile(avatarPath)
