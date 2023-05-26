@@ -292,13 +292,15 @@ func (r *UserActionPostgres) SelectedDataUser(userSelect user.UpdateUserInput, i
 
 	var query string
 	if setQuery == "" {
-		query = fmt.Sprintf("SELECT id,firstname, lastname,age,status_user, education_level,study_program_id,is_admin,school_id, admission_year, graduation_year FROM %s", userTable)
+		query = fmt.Sprintf(`SELECT id,firstname, lastname,age,status_user, education_level,
+       								study_program_id,is_admin,school_id, admission_year, graduation_year
+									FROM %s WHERE is_verificated = true`, userTable)
 	} else {
 		query = fmt.Sprintf(`SELECT DISTINCT users.id, firstname, lastname,age,status_user, 
                 				education_level,study_program_id,school_id,is_admin, admission_year, graduation_year
 								FROM %s JOIN %s ON users.id = users_interests.user_id
     							JOIN %s ON users_interests.interest_id = interest.id 
-                                WHERE %s`, userTable, usersInterests, interestsTable, setQuery)
+                                WHERE is_verificated = true AND %s`, userTable, usersInterests, interestsTable, setQuery)
 	}
 
 	if err := r.db.Select(&userList, query, args...); err != nil {
