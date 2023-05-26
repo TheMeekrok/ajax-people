@@ -85,9 +85,7 @@ export class PublicationsPageComponent implements OnInit {
       },
       error: (error: any) => {
         console.log(error);
-        alert();
         if (error.status == 500) {
-          alert();
         }
       }
     })

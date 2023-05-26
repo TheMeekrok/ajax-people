@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpErrorResponse, HttpParams} from "@angular/common/http";
-import {catchError, delay, dematerialize, materialize, Observable, retry, throwError} from "rxjs";
-import {IPost} from "../models/Post";
-import {IUser} from "../models/IUser";
-import {IInterest} from "../models/Interest";
-import {defaultResponseDelay} from "./servicesConfig";
-import {ErrorMessage} from "./ErrorsEnum";
-import {Tag} from "../models/Tag";
-import {bootstrapApplication} from "@angular/platform-browser";
+import { HttpClient, HttpErrorResponse, HttpParams } from "@angular/common/http";
+import { catchError, delay, dematerialize, materialize, Observable, retry, throwError } from "rxjs";
+import { IPost } from "../models/Post";
+import { IUser } from "../models/IUser";
+import { IInterest } from "../models/Interest";
+import { defaultResponseDelay, defaultRetryRate } from "./servicesConfig";
+import { ErrorMessage} from "./ErrorsEnum";
+import { Tag } from "../models/Tag";
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
+
   constructor(private http: HttpClient) { }
 
   /**
@@ -36,14 +36,12 @@ export class DataService {
    * @param tags - массив тэгов-фильтров
    */
   getCountPosts(tags: Tag[]) {
-    let url = baseUrl + "api/posts/";
+    let url = "/api/posts/";
     if (tags && tags.length) {
       url += "?tags=" + this.tagsToString(tags);
     }
-    return this.http.get<IPost[]>(url).pipe(
-      retry(2),
-      catchError(this._handleError)
-    )
+    return this.http.get<IPost[]>(url)
+      .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
   }
 
   /**
@@ -54,15 +52,13 @@ export class DataService {
    * @param tags - массив тэгов-фильтров
    */
   getPosts(orderBy: number, page: number, items: number, tags: Tag[]) {
-    let url = baseUrl + "api/posts/?orderBy=" + orderBy + "&page=" + page + "&items=" + items;
+    let url = "/api/posts/?orderBy=" + orderBy + "&page=" + page + "&items=" + items;
     if (tags.length) {
       url += "&tags=" + this.tagsToString(tags);
     }
     console.log(url);
-    return this.http.get<IPost[]>(url).pipe(
-      retry(2),
-      catchError(this._handleError)
-    )
+    return this.http.get<IPost[]>(url)
+      .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
   }
 
   /**
@@ -70,11 +66,8 @@ export class DataService {
    * @param id - id пользователя
    */
   getUserById(id: number): Observable<IUser> {
-    return this.http.get<IUser>('api/users/' + id)
-      .pipe(
-        retry(2),
-        catchError(this._handleError)
-      )
+    return this.http.get<IUser>('/api/users/' + id)
+      .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
   }
 
   /**
@@ -82,28 +75,21 @@ export class DataService {
    */
   getInterests(): Observable<IInterest[]> {
     return this.http.get<IInterest[]>('api/register-data/interests')
-      .pipe(
-        retry(2),
-        catchError(this._handleError)
-      )
+      .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
   }
 
   /**
    * Метод для получения всех тэгов
    */
   getTags(): Observable<Tag[]> {
-    return this.http.get<IInterest[]>(baseUrl + 'api/tags/')
-      .pipe(
-        retry(2),
-        catchError(this._handleError)
-      )
+    return this.http.get<IInterest[]>('/api/tags/')
+      .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
   }
 
   /**
    * Обработчик ошибок
    */
   private _handleError(error: HttpErrorResponse) {
-    alert()
     let errorMessage = '';
     switch (error.status) {
       case 0:
