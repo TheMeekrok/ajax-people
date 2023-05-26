@@ -17,12 +17,17 @@ func NewUserActionPostgres(db *sqlx.DB) *UserActionPostgres {
 }
 
 func (r *UserActionPostgres) CreateUser(user user.User) (int, error) {
-	var id int
+	var id, ids int
 
 	query := fmt.Sprintf("INSERT INTO %s (firstname, lastname, password, mail) values ($1, $2, $3, $4) RETURNING id", userTable)
-
 	row := r.db.QueryRow(query, user.FirstName, user.LastName, user.Password, user.Mail)
 	if err := row.Scan(&id); err != nil {
+		return 0, err
+	}
+
+	query = fmt.Sprintf("INSERT INTO %s (user_id) values ($1) RETURNING id", personalData)
+	row = r.db.QueryRow(query, id)
+	if err := row.Scan(ids); err != nil {
 		return 0, err
 	}
 
@@ -68,6 +73,27 @@ func (r *UserActionPostgres) UpdateUser(id int, user user.UpdateUserInput) error
 	setValues := make([]string, 0)
 	args := make([]interface{}, 0)
 	argId := 1
+
+	setValuesPer := make([]string, 0)
+	argsPer := make([]interface{}, 0)
+	argIdPer := 1
+
+	if user.Telegram != nil {
+		setValuesPer = append(setValuesPer, fmt.Sprintf("telegram=$%d", argIdPer))
+		argsPer = append(argsPer, *user.Telegram)
+		argIdPer++
+	}
+
+	if user.Vk != nil {
+		setValuesPer = append(setValuesPer, fmt.Sprintf("vk=$%d", argIdPer))
+		argsPer = append(argsPer, *user.Vk)
+		argIdPer++
+	}
+	if user.Telephone != nil {
+		setValuesPer = append(setValuesPer, fmt.Sprintf("telephone=$%d", argIdPer))
+		argsPer = append(argsPer, *user.Telephone)
+		argIdPer++
+	}
 
 	if user.FirstName != nil {
 		setValues = append(setValues, fmt.Sprintf("firstname=$%d", argId))
@@ -150,25 +176,44 @@ func (r *UserActionPostgres) UpdateUser(id int, user user.UpdateUserInput) error
 	}
 
 	setQuery := strings.Join(setValues, ", ")
+	setQueryPer := strings.Join(setValuesPer, ", ")
+
+	if setQueryPer != "" {
+		query := fmt.Sprintf("UPDATE %s SET %s WHERE user_id=$%d;", personalData, setQueryPer, argIdPer)
+
+		argsPer = append(argsPer, id)
+		_, err := r.db.Exec(query, argsPer...)
+		if err != nil {
+			return err
+		}
+	}
 
 	if setQuery != "" {
 		query := fmt.Sprintf("UPDATE %s SET %s WHERE id=$%d;", userTable, setQuery, argId)
 
 		args = append(args, id)
 		_, err := r.db.Exec(query, args...)
-		return err
-
+		if err != nil {
+			return err
+		}
 	}
+
 	return nil
 }
 
-func (r *UserActionPostgres) SelectedDataUser(userSelect user.UpdateUserInput) ([]user.User, error) {
-	var userList []user.User
+func (r *UserActionPostgres) SelectedDataUser(userSelect user.UpdateUserInput, idUser int) ([]user.UserOutput, error) {
+	var userList []user.UserOutput
 
 	setInterests := make([]string, 0)
 	setValues := make([]string, 0)
 	args := make([]interface{}, 0)
 	argId := 1
+
+	if userSelect.Id != nil && *userSelect.Id != 0 {
+		setValues = append(setValues, fmt.Sprintf("users.id=$%d", argId))
+		args = append(args, *userSelect.Id)
+		argId++
+	}
 
 	if userSelect.FirstName != nil {
 		setValues = append(setValues, fmt.Sprintf("firstname=$%d", argId))
@@ -182,51 +227,51 @@ func (r *UserActionPostgres) SelectedDataUser(userSelect user.UpdateUserInput) (
 		argId++
 	}
 
-	if userSelect.StatusUser != nil {
+	if userSelect.StatusUser != nil && *userSelect.StatusUser != 0 {
 		setValues = append(setValues, fmt.Sprintf("status_user=$%d", argId))
 		args = append(args, *userSelect.StatusUser)
 		argId++
 	}
 
-	if userSelect.AdmissionYear != nil {
+	if userSelect.AdmissionYear != nil && *userSelect.AdmissionYear != 0 {
 		setValues = append(setValues, fmt.Sprintf("admission_year=$%d", argId))
 		args = append(args, *userSelect.AdmissionYear)
 		argId++
 	}
 
-	if userSelect.Age != nil {
+	if userSelect.Age != nil && *userSelect.Age != 0 {
 		setValues = append(setValues, fmt.Sprintf("age=$%d", argId))
 		args = append(args, *userSelect.Age)
 		argId++
 	}
 
-	if userSelect.EducationLevel != nil {
+	if userSelect.EducationLevel != nil && *userSelect.EducationLevel != 0 {
 		setValues = append(setValues, fmt.Sprintf("education_level=$%d", argId))
 		args = append(args, *userSelect.EducationLevel)
 		argId++
 	}
 
-	if userSelect.GraduationYear != nil {
+	if userSelect.GraduationYear != nil && *userSelect.GraduationYear != 0 {
 		setValues = append(setValues, fmt.Sprintf("graduation_year=$%d", argId))
 		args = append(args, *userSelect.GraduationYear)
 		argId++
 	}
 
-	if userSelect.StudyProgramId != nil {
+	if userSelect.StudyProgramId != nil && *userSelect.StudyProgramId != 0 {
 		setValues = append(setValues, fmt.Sprintf("study_program_id=$%d", argId))
 		args = append(args, *userSelect.StudyProgramId)
 		argId++
 	}
 
-	if userSelect.SchoolId != nil {
+	if userSelect.SchoolId != nil && *userSelect.SchoolId != 0 {
 		setValues = append(setValues, fmt.Sprintf("school_id=$%d", argId))
 		args = append(args, *userSelect.SchoolId)
 		argId++
 	}
 
-	if userSelect.AvatarPath != nil {
-		setValues = append(setValues, fmt.Sprintf("avatar_path=$%d", argId))
-		args = append(args, *userSelect.AvatarPath)
+	if idUser != 0 {
+		setValues = append(setValues, fmt.Sprintf("users.id!=$%d", argId))
+		args = append(args, idUser)
 		argId++
 	}
 
@@ -243,14 +288,20 @@ func (r *UserActionPostgres) SelectedDataUser(userSelect user.UpdateUserInput) (
 		setInterestsQuery += strings.Join(setInterests, " OR ")
 		setInterestsQuery += ")"
 		setQuery += setInterestsQuery
-
 	}
 
-	query := fmt.Sprintf(`SELECT DISTINCT users.id, firstname, lastname,mail,age,status_user, 
-                				education_level,study_program_id,school_id,avatar_path 
+	var query string
+	if setQuery == "" {
+		query = fmt.Sprintf(`SELECT id,firstname, lastname,age,status_user, education_level,
+       								study_program_id,is_admin,school_id, admission_year, graduation_year
+									FROM %s WHERE is_verificated = true`, userTable)
+	} else {
+		query = fmt.Sprintf(`SELECT DISTINCT users.id, firstname, lastname,age,status_user, 
+                				education_level,study_program_id,school_id,is_admin, admission_year, graduation_year
 								FROM %s JOIN %s ON users.id = users_interests.user_id
     							JOIN %s ON users_interests.interest_id = interest.id 
-                                WHERE %s`, userTable, usersInterests, interestsTable, setQuery)
+                                WHERE is_verificated = true AND %s`, userTable, usersInterests, interestsTable, setQuery)
+	}
 
 	if err := r.db.Select(&userList, query, args...); err != nil {
 		return nil, err
@@ -263,6 +314,15 @@ func (r *UserActionPostgres) SelectedDataUser(userSelect user.UpdateUserInput) (
 		if err := r.db.Select(&userList[i].Interests, query, userList[i].Id); err != nil {
 			return nil, err
 		}
+
+		query = fmt.Sprintf(`SELECT DISTINCT telegram, vk, telephone FROM %s
+    								JOIN %s ON users.id = personal_data.user_id WHERE user_id = $1;`,
+			userTable, personalData)
+
+		if err := r.db.Get(&userList[i].PersonalData, query, userList[i].Id); err != nil {
+			return nil, err
+		}
+
 	}
 
 	return userList, nil

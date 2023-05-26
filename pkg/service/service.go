@@ -17,17 +17,17 @@ type UserAction interface {
 	DeleteUser(id int) error
 	UpdateUser(id int, user user.UpdateUserInput) error
 	GetAllUsers() ([]user.User, error)
-	SelectedDataUser(userSelect user.UpdateUserInput) ([]user.User, error)
+	SelectedDataUser(userSelect user.UpdateUserInput, idUser int) ([]user.UserOutput, error)
 	RequestСorrespondence(idSender int, emailRecipient string) (int, error)
 	AcceptMessageRequest(idRequest int) error
 }
 
 type RegisterData interface {
-	GetAllFaculties() ([]user.Faculty, error)
-	GetAllInterests() ([]user.Interest, error)
-	GetAllStatuses() []user.StatusUser
-	GetAllEdLevels() []user.EducationLevel
-	GetAllSchools() ([]user.School, error)
+	GetAllFaculties(id int) ([]user.Faculty, error)
+	GetAllInterests(id int) ([]user.Interest, error)
+	GetAllStatuses(id int) []user.StatusUser
+	GetAllEdLevels(id int) []user.EducationLevel
+	GetAllSchools(id int) ([]user.School, error)
 }
 
 type Mail interface {
@@ -36,7 +36,7 @@ type Mail interface {
 }
 
 type Post interface {
-	CreatePost(text string, tags []int, userId int) (int, error)
+	CreatePost(text string, tags []int, userId int, isAdmin bool) (int, error)
 	GetPostById(id int) (user.Post, error)
 	GetPostByPage(filter user.PostFilter, page int, items int, isAdmin bool, idUser int) ([]user.Post, error)
 	GetAllPosts(filter user.PostFilter, isAdmin bool, idUser int) ([]user.Post, error)

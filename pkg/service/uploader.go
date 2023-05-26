@@ -10,7 +10,7 @@ import (
 const (
 	letterBytes      = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASFDGHJKLZXCVBNM"
 	fileNameLenght   = 16
-	timeFormatUpload = "2006-01-02_15:04:05"
+	timeFormatUpload = "2006-01-02_15-04-05"
 )
 
 type UploaderService struct {

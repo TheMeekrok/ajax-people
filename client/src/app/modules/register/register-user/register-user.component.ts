@@ -19,9 +19,8 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 })
 export class RegisterUserComponent implements OnInit {
 
-  /**
-   * Эммиттер, который выбрасывает ID Пользователя в родительский компонент
-   */
+  user: IUser;
+
   @Output() userIdEventEmitter = new EventEmitter<number>();
 
   constructor(
@@ -116,8 +115,6 @@ export class RegisterUserComponent implements OnInit {
 
     return errorMessage;
   }
-
-  user: IUser;
 
   /**
    * Метод, вызывающийся при нажатии кнопки "Подтвердить"

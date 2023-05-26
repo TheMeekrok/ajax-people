@@ -16,7 +16,7 @@ type UserAction interface {
 	GetAllUsers() ([]user.User, error)
 	DeleteUser(id int) error
 	UpdateUser(id int, user user.UpdateUserInput) error
-	SelectedDataUser(userSelect user.UpdateUserInput) ([]user.User, error)
+	SelectedDataUser(userSelect user.UpdateUserInput, idUser int) ([]user.UserOutput, error)
 	RequestСorrespondence(idSender int, emailRecipient, coincidenceTime string) (int, error)
 	AcceptMessageRequest(idRequest int) error
 }
@@ -27,13 +27,13 @@ type Mail interface {
 }
 
 type RegisterData interface {
-	GetAllFaculties() ([]user.Faculty, error)
-	GetAllInterests() ([]user.Interest, error)
-	GetAllSchools() ([]user.School, error)
+	GetAllFaculties(id int) ([]user.Faculty, error)
+	GetAllInterests(id int) ([]user.Interest, error)
+	GetAllSchools(id int) ([]user.School, error)
 }
 
 type Post interface {
-	CreatePost(post user.Post, tags []int) (int, error)
+	CreatePost(post user.Post, tags []int, isAdmin bool) (int, error)
 	GetPostById(id int) (user.Post, error)
 	GetPostByPage(filter user.PostFilter, page int, items int, isAdmin bool, idUser int) ([]user.Post, error)
 	GetAllPosts(filter user.PostFilter, isAdmin bool, idUser int) ([]user.Post, error)

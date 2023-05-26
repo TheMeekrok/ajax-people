@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-const MAX_UPLOAD_SIZE = 50 << 20
+const MAX_UPLOAD_SIZE = 80 << 20
 
 var IMAGE_TYPES = map[string]interface{}{
 	"image/jpeg": nil,
@@ -50,7 +50,8 @@ func (h *Handler) getAvatar(c *gin.Context) {
 
 	fileBase64, err := h.services.GetAvatar(userId)
 	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
 	}
 
 	c.JSON(http.StatusOK, fileBase64)

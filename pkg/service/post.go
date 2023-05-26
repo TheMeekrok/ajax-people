@@ -19,10 +19,10 @@ const (
 	timeFormat = "2006-01-02T15:04:05Z"
 )
 
-func (s *PostService) CreatePost(text string, tags []int, userId int) (int, error) {
+func (s *PostService) CreatePost(text string, tags []int, userId int, isAdmin bool) (int, error) {
 	pblTime := fmt.Sprintln(time.Now().Format(timeFormat))
 	newPost := user.Post{UserId: userId, Text: text, PublicationTime: pblTime}
-	return s.repo.CreatePost(newPost, tags)
+	return s.repo.CreatePost(newPost, tags, isAdmin)
 }
 
 func (s *PostService) GetPostById(id int) (user.Post, error) {

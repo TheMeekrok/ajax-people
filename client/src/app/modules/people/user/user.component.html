@@ -1,0 +1,23 @@
+<mat-card>
+
+  <mat-card-header>
+    <!-- <img src="../../../../assets/user/default_avatar.svg" mat-card-avatar> -->
+    <img src="{{ avatarPath }}" alt="{{ user.firstName }}" mat-card-avatar>
+    <mat-card-title class="user-name">
+      <span *ngIf="user.isAdmin">⭐️ </span>
+      <span>{{ user.firstName }}</span>
+      <span *ngIf="user.lastName"> {{ user.lastName }}</span> 
+      <span>, {{ user.age }}</span>
+    </mat-card-title>
+    <mat-card-subtitle *ngIf="userStatus">🎓 {{ userStatus }}</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-divider></mat-divider>
+
+  <!-- <p>{{ avatarBytes }}</p> -->
+
+  <mat-card-actions>
+    <button mat-button (click)="showAllData()">Показать информацию</button>
+  </mat-card-actions>
+
+</mat-card>

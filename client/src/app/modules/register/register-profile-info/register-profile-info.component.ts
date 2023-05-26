@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable, map, startWith } from 'rxjs';
 import { IFaculty } from 'src/app/shared/models/Faculty';
@@ -16,6 +16,7 @@ import { UserDataService } from 'src/app/shared/services/user-data.service';
 export class RegisterProfileInfoComponent implements OnInit {
 
   @Input() userId = 0;
+  @Output() continueRegister = new EventEmitter<any>();
 
   constructor(private uds: UserDataService, private rs: RegisterService) {}
 
@@ -74,7 +75,7 @@ export class RegisterProfileInfoComponent implements OnInit {
 
     // Загрузка данных (факультеты, школы) с сервера
     this.uds.getFaculties().subscribe({next: (data: IFaculty[]) => this.faculties = data});
-    this.uds.getSchools().subscribe({next: (data: any) => this.schools = data});
+    this.uds.getSchools().subscribe({next: (data: ISchool[]) => this.schools = data});
 
     // Обработка поиска в полях для выбора факультета и школы
     this.filteredFaculties = this.form.controls['faculty'].valueChanges.pipe(
@@ -92,9 +93,6 @@ export class RegisterProfileInfoComponent implements OnInit {
         return title ? this._filterSchools(title as string) : this.schools.slice();
       }),
     )
-
-    console.log(this.userId);
-
   }
 
   // Геттеры и обработчики ошибок для всех полей формы
@@ -163,7 +161,7 @@ export class RegisterProfileInfoComponent implements OnInit {
   // Обработчик для корректного отображения названия факультета/школы
   displayFunctionFaculty(object: IFaculty): string { return object?.title || ''; }
 
-  displayFunctionSchool(object: ISchool): string { return object?.fullTitle || ''; }
+  displayFunctionSchool(object: ISchool): string { return object?.title || ''; }
 
   private _filterFaculties(value: string): IFaculty[] {
     const filterValue = value.toLowerCase();
@@ -172,7 +170,7 @@ export class RegisterProfileInfoComponent implements OnInit {
 
   private _filterSchools(value: string): ISchool[] {
     const filterValue = value.toLowerCase();
-    return this.schools.filter(school => school.fullTitle.toLowerCase().includes(filterValue));
+    return this.schools.filter(school => school.title.toLowerCase().includes(filterValue));
   }
 
   proceed() {
@@ -181,8 +179,8 @@ export class RegisterProfileInfoComponent implements OnInit {
         firstName: String(this.firstName?.value),
         lastName: String(this.secondName?.value),
         age: Number(this.age?.value),
-        statusUser: Number(this.status?.value),
-        educationLevel: Number(this.educationLevel?.value), 
+        statusUserId: Number(this.status?.value),
+        educationLevelId: Number(this.educationLevel?.value), 
         admissionYear: Number(this.admissionYear?.value),
         schoolId: Number(this.school?.value?.id),
         studyProgramId: Number(this.faculty?.value?.id),
@@ -192,7 +190,10 @@ export class RegisterProfileInfoComponent implements OnInit {
 
       this.rs.updateUserData(user, this.userId).subscribe({
         error: (error: Error) => this.formErrorMessage = error.message,
-        complete: () => this.isLoading = false,
+        complete: () => { 
+          this.isLoading = false;
+          this.continueRegister.emit();
+        },
       });
     }
   }

@@ -3,7 +3,6 @@ package service
 import (
 	"backend_ajax-people/pkg/repository"
 	"fmt"
-	"github.com/gookit/color"
 	"math/rand"
 	"net/smtp"
 	"time"
@@ -31,7 +30,7 @@ func (s SendMessageService) SendCodeActivation(id int) error {
 	from := "ajax-people@mail.ru"
 	password := "EKgDHrLfHdPMpyT622dX"
 	subject := "Активации аккаунта"
-	template := fmt.Sprintf(color.Green.Sprint("%s")+", "+
+	template := fmt.Sprintf("%s"+", "+
 		"Это сообщение содержит код активации для активации вашего аккаунта ajax-people."+"\r\n"+
 		"Для завершения процесса активации вам необходимо ввести этот код в соответствующее поле на странице регистрации. "+"\r\n"+"\r\n"+
 		"Код активации: %s"+"\r\n"+"\r\n"+

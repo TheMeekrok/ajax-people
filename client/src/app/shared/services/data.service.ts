@@ -4,7 +4,7 @@ import {catchError, delay, dematerialize, materialize, Observable, retry, throwE
 import {IPost} from "../models/Post";
 import {IUser} from "../models/IUser";
 import {IInterest} from "../models/Interest";
-import {baseUrl, defaultResponseDelay} from "./register.service";
+import {defaultResponseDelay} from "./servicesConfig";
 import {ErrorMessage} from "./ErrorsEnum";
 import {Tag} from "../models/Tag";
 import {bootstrapApplication} from "@angular/platform-browser";
@@ -70,7 +70,7 @@ export class DataService {
    * @param id - id пользователя
    */
   getUserById(id: number): Observable<IUser> {
-    return this.http.get<IUser>( baseUrl + 'api/users/' + id)
+    return this.http.get<IUser>('api/users/' + id)
       .pipe(
         retry(2),
         catchError(this._handleError)
@@ -81,7 +81,7 @@ export class DataService {
    * Метод для получения всех интересов
    */
   getInterests(): Observable<IInterest[]> {
-    return this.http.get<IInterest[]>(baseUrl + 'api/register-data/interests')
+    return this.http.get<IInterest[]>('api/register-data/interests')
       .pipe(
         retry(2),
         catchError(this._handleError)
@@ -142,7 +142,7 @@ export class DataService {
     }
     return this.http
       .post<string>(
-        baseUrl + `api/posts/`,
+        `api/posts/`,
         JSON.stringify(body)
       ).pipe(
         delay(defaultResponseDelay),

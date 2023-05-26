@@ -4,10 +4,7 @@ import { IUser } from '../models/IUser';
 import { Observable, catchError, delay, dematerialize, materialize, retry, throwError } from 'rxjs';
 import { IResponseId } from '../models/Response';
 import { ErrorMessage } from './ErrorsEnum';
-
-export const baseUrl = 'http://localhost:8080/'
-export const defaultResponseDelay = 2000;
-export const defaultRetryRate = 0;
+import { defaultResponseDelay, defaultRetryRate } from './servicesConfig';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +14,7 @@ export class RegisterService {
 
   registerUser(userData: IUser): Observable<IResponseId> {
     return this.http
-      .post<IResponseId>(baseUrl + 'sign-up', userData)
+      .post<IResponseId>('/sign-up', userData)
       .pipe(
         delay(defaultResponseDelay), 
         catchError(this._handleError)

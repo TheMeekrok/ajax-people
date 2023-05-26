@@ -39,10 +39,10 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	router.POST("/sign-in", h.signIn)
 
 	/*
-		sign-in - Выход
+		sign-out - Выход
 		вход:
 		выход: Ok
-		Просто чистит куки от jwt токена
+		Чистит куки от jwt токена
 	*/
 	router.POST("/sign-out", h.signOut)
 
@@ -53,7 +53,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	{
 		/*
 			check/:id - Верификация пользователя по коду на почту
-			вход: параметр - id юзера, json - код
+			вход: параметр - id юзера, json:code - код
 			выход: Ok
 			Ошибки: 400 - неверные данные либо код не совпадает
 					500 - Нет доступа к серверу
@@ -71,14 +71,14 @@ func (h *Handler) InitRoutes() *gin.Engine {
 				выход: Все пользователи в структуре User
 				Ошибки: 500 - Нет доступа к серверу
 			*/
-			users.GET("/", h.getAllUsers)
+			//users.GET("/", h.getAllUsers) не нужно
 
 			/*
 				get - /:id - Получение пользователя по параметру - id
 				выход: Пользователь в виде структуры User
 				Ошибки: 500 - Нет доступа к серверу
 			*/
-			users.GET("/:id", h.getUserById)
+			//users.GET("/:id", h.getUserById) не нужно
 
 			/*
 				put - /:id - Изменение личных данных пользователя по параметру - id
@@ -96,7 +96,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 				Ошибки: 400 - Неверный формат данных
 						500 - Нет доступа к серверу
 			*/
-			users.POST("/select", h.selectUsers)
+			users.GET("/", h.selectUsers)
 		}
 
 		/*

@@ -75,7 +75,7 @@ export class RegisterInterestsComponent implements OnInit {
   }
 
   private _updateData() {
-    let userData: IUser = { idInterests: this._selectInterests() }
+    let userData: IUser = { interests: this._selectInterests() }
 
     this.isLoading = true;
 

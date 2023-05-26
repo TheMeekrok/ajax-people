@@ -1,14 +1,10 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { IUser } from '../models/IUser';
-import { baseUrl, defaultResponseDelay, defaultRetryRate } from './register.service';
+import { defaultResponseDelay, defaultRetryRate } from './servicesConfig';
 import { IResponseToken } from '../models/Response';
 import { delay, dematerialize, materialize, throwError, Observable, catchError, retry } from 'rxjs';
 import { ErrorMessage } from './ErrorsEnum';
-
-export function getToken() {
-  return localStorage.getItem('token');
-}
 
 @Injectable({
   providedIn: 'root'
@@ -18,10 +14,7 @@ export class AuthService {
   constructor(private http: HttpClient) { }
 
   authUser(userData: IUser): Observable<IResponseToken> {
-    const body = userData;
-
-    return this.http.post<IResponseToken>(baseUrl + 'sign-in', JSON.stringify(userData), 
-    { withCredentials: true })
+    return this.http.post<IResponseToken>('/sign-in', userData, { withCredentials: true })
       .pipe(
         delay(defaultResponseDelay),
         catchError(this._handleError),
