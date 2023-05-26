@@ -9,7 +9,7 @@ import (
 
 const (
 	letterBytes      = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASFDGHJKLZXCVBNM"
-	fileNameLength   = 16
+	fileNameLenght   = 16
 	timeFormatUpload = "2006-01-02_15-04-05"
 )
 
@@ -37,7 +37,7 @@ func (s UploaderService) GetAvatar(id int) (string, error) {
 }
 
 func (s UploaderService) generateFileName() string {
-	b := make([]byte, fileNameLength)
+	b := make([]byte, fileNameLenght)
 	for i := range b {
 		b[i] = letterBytes[rand.Intn(len(letterBytes))]
 	}
