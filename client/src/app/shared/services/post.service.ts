@@ -1,17 +1,17 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpParams } from "@angular/common/http";
+import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { catchError, delay, dematerialize, materialize, Observable, retry, throwError } from "rxjs";
 import { IPost } from "../models/Post";
 import { IUser } from "../models/IUser";
 import { IInterest } from "../models/Interest";
 import { defaultResponseDelay, defaultRetryRate } from "./servicesConfig";
-import { ErrorMessage} from "./ErrorsEnum";
+import { ErrorMessage } from "./ErrorsEnum";
 import { Tag } from "../models/Tag";
 
 @Injectable({
   providedIn: 'root'
 })
-export class DataService {
+export class PostService {
 
   constructor(private http: HttpClient) { }
 
@@ -56,7 +56,6 @@ export class DataService {
     if (tags.length) {
       url += "&tags=" + this.tagsToString(tags);
     }
-    console.log(url);
     return this.http.get<IPost[]>(url)
       .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
   }

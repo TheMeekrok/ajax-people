@@ -1,44 +1,68 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {MatDialog} from "@angular/material/dialog";
-import {CreatePostComponent} from "../create-post/create-post.component";
-import {IPost} from "../../../shared/models/Post";
-import {DataService} from "../../../shared/services/data.service";
-import {PageEvent} from "@angular/material/paginator";
-import {Tag} from "../../../shared/models/Tag";
-import {NgModel} from "@angular/forms";
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from "@angular/material/dialog";
+import { CreatePostComponent } from "../create-post/create-post.component";
+import { IPost } from "../../../shared/models/Post";
+import { PostService } from "../../../shared/services/post.service";
+import { MatPaginator, PageEvent } from "@angular/material/paginator";
+import { Tag } from "../../../shared/models/Tag";
+import { DecimalPipe } from "@angular/common";
+import { MatDrawer } from "@angular/material/sidenav";
+
 
 @Component({
   selector: 'app-publications-page',
   templateUrl: './publications-page.component.html',
-  styleUrls: ['./publications-page.component.css']
+  styleUrls: ['./publications-page.component.css'],
 })
-export class PublicationsPageComponent implements OnInit {
-  @ViewChild('myInput', { static: true }) ngModel: NgModel;
+
+export class PublicationsPageComponent implements OnInit  {
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild('drawer', { static: true }) public drawer: MatDrawer;
+
+  decimalPipe = new DecimalPipe(navigator.language);
 
   posts: IPost[]
   newPost: IPost
-  postsCount = 0;
-  pageSize = 5;
-  pageIndex = 0;
+  postsCount: number;
+  pageSize: number;
+  pageIndex: number;
   pageEvent: PageEvent;
   tags: Tag[];
-  selectedChips: Tag[] = [];
-  orderBy : number = 0;
-  isPostsEmpty : boolean = false;
+  selectedChips: Tag[];
+  orderBy : number;
+  areThereAnyPosts : boolean;
+  areFiltersOpen: boolean;
+
 
   constructor(public dialog: MatDialog,
-              private dataService: DataService) {}
+              private postService: PostService) {}
 
   ngOnInit() {
-    this.dataService.getPosts(this.orderBy, this.pageIndex + 1, this.pageSize, this.selectedChips).subscribe(data => {
+    this.postsCount = 0;
+    this.pageSize = 5;
+    this.pageIndex = 0;
+    this.selectedChips = [];
+    this.orderBy = 0;
+    this.areThereAnyPosts = false;
+    this.areFiltersOpen = false;
+    this.paginator._intl.itemsPerPageLabel = 'На странице:';
+
+    this.paginator._intl.getRangeLabel = (page: number, pageSize: number, length: number) => {
+      const start = page * pageSize + 1;
+      const end = Math.min((page + 1) * pageSize, length);
+      return `${start} - ${end} из ${this.decimalPipe.transform(length)}`;
+    };
+
+    this.postService.getPosts(this.orderBy, this.pageIndex + 1, this.pageSize, this.selectedChips).subscribe(data => {
         this.posts = data;
         this.postsCount = data.length;
+        console.log(data);
       }
     )
-    this.dataService.getTags().subscribe(result => {
+    this.postService.getTags().subscribe(result => {
       this.tags = result;
     })
-    this.dataService.getCountPosts(this.selectedChips).subscribe(result => {
+    this.postService.getCountPosts(this.selectedChips).subscribe(result => {
       this.postsCount = result.length;
     })
   }
@@ -53,25 +77,24 @@ export class PublicationsPageComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.dataService.savePost(result).subscribe()
+      this.postService.savePost(result).subscribe()
     });
   }
 
-
   /**
-   * Метод, дызываемый при людом изменении массива постов:
+   * Метод, вызываемый при людом изменении массива постов:
    * при изменении тэгов-фильтров, сортировки по времени или страницы
    */
   changePosts() {
-    this.dataService.getPosts(this.orderBy, this.pageIndex + 1, this.pageSize, this.selectedChips).subscribe({
+    this.postService.getPosts(this.orderBy, this.pageIndex + 1, this.pageSize, this.selectedChips).subscribe({
       next: (data) => {
         this.posts = data;
-        this.isPostsEmpty = false;
+        this.areThereAnyPosts = false;
       },
       error: (error: any) => {
         if (error.status == 500) {
           this.posts = [];
-          this.isPostsEmpty = true;
+          this.areThereAnyPosts = true;
         }
         else {
           console.log(error);
@@ -79,7 +102,7 @@ export class PublicationsPageComponent implements OnInit {
       }
     })
 
-    this.dataService.getCountPosts(this.selectedChips).subscribe({
+    this.postService.getCountPosts(this.selectedChips).subscribe({
       next: (data) => {
         this.postsCount = data ? data.length : 0;
       },
@@ -118,5 +141,17 @@ export class PublicationsPageComponent implements OnInit {
   onFilterTagsChange() {
     this.pageIndex = 0;
     this.changePosts();
+  }
+
+  /**
+   * Метод, вызываемый при открытии / закрытии бокового меню с фильтрами
+   */
+  onAddFiltersClick() {
+    if (this.areFiltersOpen) {
+      this.selectedChips = [];
+      this.changePosts();
+    }
+    this.areFiltersOpen = !this.areFiltersOpen;
+    this.drawer.toggle();
   }
 }
