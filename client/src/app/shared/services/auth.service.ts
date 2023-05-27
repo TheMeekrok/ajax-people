@@ -33,6 +33,10 @@ export class AuthService {
         errorMessage = ErrorMessage.INVALID_DATA;
         break;
 
+      case 401:
+        errorMessage = ErrorMessage.UNAUTHORIZED;
+        break;
+
       case 500:
         errorMessage = ErrorMessage.INTERNAL_SERVER_ERROR;
         break;
@@ -44,7 +48,7 @@ export class AuthService {
 
     return throwError(() => new Error(errorMessage)).pipe(
       materialize(),
-      delay(2000),
+      delay(defaultResponseDelay),
       dematerialize()
     );
   }

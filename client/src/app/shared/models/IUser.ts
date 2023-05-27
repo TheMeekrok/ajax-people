@@ -1,3 +1,8 @@
+export interface ILoginUser {
+  mail: string
+  password: string
+}
+
 export interface IPersonalData {
   telegram?: string;
   vk?: string;

@@ -1,40 +1,95 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpErrorResponse, HttpParams} from "@angular/common/http";
-import {catchError, delay, dematerialize, materialize, Observable, retry, throwError} from "rxjs";
-import {IPost} from "../models/Post";
-import {IUser} from "../models/IUser";
-import {IInterest} from "../models/Interest";
-import {defaultResponseDelay} from "./servicesConfig";
-import {ErrorMessage} from "./ErrorsEnum";
+import { HttpClient, HttpErrorResponse, HttpParams } from "@angular/common/http";
+import { catchError, delay, dematerialize, materialize, Observable, retry, throwError } from "rxjs";
+import { IPost } from "../models/Post";
+import { IUser } from "../models/IUser";
+import { IInterest } from "../models/Interest";
+import { defaultResponseDelay, defaultRetryRate } from "./servicesConfig";
+import { ErrorMessage} from "./ErrorsEnum";
+import { Tag } from "../models/Tag";
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
+
   constructor(private http: HttpClient) { }
 
-  getPosts() {
-      return this.http.get<IPost[]>("api/posts/").pipe(
-      retry(2),
-    )
+  /**
+   * Метод, переводящий массив тэгов к строке типа '1,2,3'
+   * @param array - массив тэгов
+   */
+  tagsToString(array: Tag[]): string {
+    let s : string = "";
+    if (array && !array.length) {
+      return s;
+    }
+    for (let i = 0; i < array.length - 1; i++) {
+      s += array[i].id + ',';
+    }
+    s += array[array.length - 1]?.id;
+    return s;
   }
 
+  /**
+   * Метод для получения количеста постов
+   * @param tags - массив тэгов-фильтров
+   */
+  getCountPosts(tags: Tag[]) {
+    let url = "/api/posts/";
+    if (tags && tags.length) {
+      url += "?tags=" + this.tagsToString(tags);
+    }
+    return this.http.get<IPost[]>(url)
+      .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
+  }
+
+  /**
+   * Метод для получения постов с заданными фильтрами
+   * @param orderBy - статус кнопки сначала новые / старые
+   * @param page - интекс страница
+   * @param items - количество элементов на стрнице
+   * @param tags - массив тэгов-фильтров
+   */
+  getPosts(orderBy: number, page: number, items: number, tags: Tag[]) {
+    let url = "/api/posts/?orderBy=" + orderBy + "&page=" + page + "&items=" + items;
+    if (tags.length) {
+      url += "&tags=" + this.tagsToString(tags);
+    }
+    console.log(url);
+    return this.http.get<IPost[]>(url)
+      .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
+  }
+
+  /**
+   * Метод для получения пользователя по его id
+   * @param id - id пользователя
+   */
   getUserById(id: number): Observable<IUser> {
-    return this.http.get<IUser>('api/users/' + id)
-      .pipe(
-        retry(2)
-      )
+    return this.http.get<IUser>('/api/users/' + id)
+      .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
   }
 
+  /**
+   * Метод для получения всех интересов
+   */
   getInterests(): Observable<IInterest[]> {
     return this.http.get<IInterest[]>('api/register-data/interests')
-      .pipe(
-        retry(2)
-      )
+      .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
   }
 
+  /**
+   * Метод для получения всех тэгов
+   */
+  getTags(): Observable<Tag[]> {
+    return this.http.get<IInterest[]>('/api/tags/')
+      .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
+  }
+
+  /**
+   * Обработчик ошибок
+   */
   private _handleError(error: HttpErrorResponse) {
-    alert()
     let errorMessage = '';
     switch (error.status) {
       case 0:
@@ -62,7 +117,10 @@ export class DataService {
     );
   }
 
-
+  /**
+   * Метод, вызываемый для сохранении поста
+   * @param post - новый пост
+   */
   savePost(post: IPost): Observable<string> {
     const body = {
       text: post.text,
