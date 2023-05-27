@@ -54,5 +54,10 @@ func (h *Handler) getAvatar(c *gin.Context) {
 		return
 	}
 
+	if fileBase64 == "no image" {
+		newResponse(c, http.StatusNoContent, fileBase64)
+		return
+	}
+
 	c.JSON(http.StatusOK, fileBase64)
 }
