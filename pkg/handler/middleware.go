@@ -41,12 +41,9 @@ func getJWT(h *Handler, c *gin.Context) (int, bool, bool, error) {
 
 func (h *Handler) userIdentify(c *gin.Context) {
 	_, _, isVerificated, err := getJWT(h, c)
-	if err != nil {
+	if err != nil || !isVerificated {
 		newErrorResponse(c, http.StatusUnauthorized, "Unauthorized")
 		return
-	}
-	if !isVerificated {
-		newErrorResponse(c, http.StatusUnauthorized, "Your account is not verified")
 	}
 }
 
@@ -55,6 +52,7 @@ func (h *Handler) userIdentifyById(c *gin.Context) {
 	getId, err := getUserId(c)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
 	}
 	if userId != getId {
 		if getId == 0 {
@@ -70,23 +68,6 @@ func (h *Handler) userIdentifyAdmin(c *gin.Context) {
 	if checkAdmin(h, c) == false {
 		newErrorResponse(c, http.StatusForbidden, "Forbidden")
 		return
-	}
-}
-
-func CORSMiddleware() gin.HandlerFunc {
-	return func(c *gin.Context) {
-
-		c.Header("Access-Control-Allow-Origin", "*")
-		c.Header("Access-Control-Allow-Credentials", "true")
-		c.Header("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
-		c.Header("Access-Control-Allow-Methods", "POST,HEAD,PATCH, OPTIONS, GET, PUT")
-
-		if c.Request.Method == "OPTIONS" {
-			c.AbortWithStatus(204)
-			return
-		}
-
-		c.Next()
 	}
 }
 

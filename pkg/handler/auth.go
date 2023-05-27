@@ -49,7 +49,18 @@ func (h *Handler) signIn(c *gin.Context) {
 
 	token, err := h.services.Authorization.GenerateToken(input.Email, input.Password)
 	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	_, _, isVerificated, err := h.services.ParseToken(token)
+	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	if !isVerificated {
+		newErrorResponse(c, http.StatusUnauthorized, "Unauthorized")
 		return
 	}
 
