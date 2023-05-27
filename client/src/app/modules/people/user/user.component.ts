@@ -29,7 +29,9 @@ export class UserComponent implements OnInit {
   private _tryGetAvatar(userId: number | undefined) {
     if (!userId) return;
     this.userDataService.getUserAvatar(userId).subscribe({
-      next: (response: string) => this.avatarPath = this.avatarBase + response,
+      next: (response: string) => { 
+        if (response !== 'no image') this.avatarPath = this.avatarBase + response; 
+      },
     })
   }
 

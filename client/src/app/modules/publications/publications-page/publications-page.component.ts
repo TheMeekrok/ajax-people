@@ -5,7 +5,7 @@ import {IPost} from "../../../shared/models/Post";
 import {DataService} from "../../../shared/services/data.service";
 import {PageEvent} from "@angular/material/paginator";
 import {Tag} from "../../../shared/models/Tag";
-import {NgModel} from "@angular/forms";
+import { NgModel} from "@angular/forms";
 
 @Component({
   selector: 'app-publications-page',

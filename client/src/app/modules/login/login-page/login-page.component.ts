@@ -1,19 +1,28 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ILoginUser } from "../../../shared/models/LoginUser";
-import { RegisterProfileInfoComponent } from '../../register/register-profile-info/register-profile-info.component';
+import { ILoginUser } from "../../../shared/models/IUser";
+import { AuthService } from 'src/app/shared/services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login-page',
   templateUrl: './login-page.component.html',
   styleUrls: ['./login-page.component.css'],
 })
-export class LoginPageComponent {
-  loginForm: FormGroup;
+export class LoginPageComponent implements OnInit {
 
-  constructor() {
-    this.loginForm = new FormGroup({
-      email: new FormControl('', [Validators.email, Validators.required]),
+  form: FormGroup;
+  isLoading: boolean = false;
+  formErrorMessage: string = '';
+
+  constructor(private authService: AuthService, private router: Router) {};
+
+  ngOnInit(): void {
+    this.form = new FormGroup({
+      email: new FormControl('', [
+        // Validators.pattern('^[a-zA-Z]+[.][a-zA-Z]+@[a-zA-z]*[.]*dvfu.ru$'),
+        Validators.required,
+      ]),
       password: new FormControl('', [
         Validators.maxLength(32),
         Validators.minLength(8),
@@ -23,45 +32,56 @@ export class LoginPageComponent {
     });
   }
 
-  emailErrorString: string = '';
-  getEmailErrorString() {
-    let error = this.loginForm.controls['email'].errors;
-    if (!error) return;
+  onSubmit() { this._tryLogin(); }
 
-    let errorString: string = '';
+  get email() {
+    return this.form.controls['email'];
+  }
+  get emailErrorMessage(): string {
+    let errors = this.email?.errors;
+    let errorMessage = '';
 
-    if (error['email']) errorString = 'Неверный формат почты';
-    else if (error['required']) errorString = 'Обязательное поле';
+    if (errors?.['required']) errorMessage = 'Обязательное поле';
+    else if (errors?.['pattern']) errorMessage = 'Не является почтой ДВФУ';
 
-    this.emailErrorString = errorString;
+    return errorMessage;
   }
 
-  passwordErrorString: string = '';
-  getPasswordErrorString() {
-    let error = this.loginForm.controls['password'].errors;
-    if (!error) return;
+  get password() {
+    return this.form.controls['password'];
+  }
+  get passwordErrorMessage(): string {
+    let errors = this.password?.errors;
+    let errorMessage = '';
 
-    let errorString: string = '';
+    if (errors?.['required']) errorMessage = 'Обязательное поле';
+    else if (errors?.['pattern'])
+      errorMessage = 'Использованы недопустимые символы';
+    else if (errors?.['minlength'])
+      errorMessage = 'Минимальное количество символов - 8';
+    else if (errors?.['maxlength'])
+      errorMessage = 'Максимальное количество символов - 32';
 
-    if (error['required']) errorString = 'Обязательное поле';
-    else if (error['maxlength']) errorString = 'Максимальная длина 32 символа';
-    else if (error['minlength']) errorString = 'Минимальная длина 8 символов';
-    else if (error['pattern']) errorString = 'Латинские буквы, цифры и символы';
-
-    this.passwordErrorString = errorString;
+    return errorMessage;
   }
 
-  onSubmit() {
-    if (this.loginForm.status === 'VALID') {
-      let user: ILoginUser = {
-        email: String(this.loginForm.value['email']),
-        password: String(this.loginForm.value['password']),
-      };
-      console.log(user);
-      return;
-    }
+  private _tryLogin() {
+    const user: ILoginUser = {
+      mail: String(this.email.value),
+      password: String(this.password.value),
+    };
 
-    this.getEmailErrorString();
-    this.getPasswordErrorString();
+    this.isLoading = true;
+
+    this.authService.authUser(user).subscribe({
+      error: (error: Error) => { 
+        this.isLoading = false;
+        this.formErrorMessage = error.message;
+      },
+      complete: () => { 
+        this.isLoading = false;
+        this.router.navigate(['/main/people']);
+      }
+    });
   }
 }
