@@ -27,7 +27,7 @@
         mat-raised-button color="primary"
         (click)="onAddFiltersClick()"
       >
-        Добавить фильтры
+        {{areFiltersOpen ? "Убрать фильтры" : "Добавить фильтры"}}
       </button>
       <button
         mat-raised-button color="primary"

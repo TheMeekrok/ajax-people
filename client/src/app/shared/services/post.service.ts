@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from "@angular/common/http";
+import { HttpClient, HttpErrorResponse, HttpParams } from "@angular/common/http";
 import { catchError, delay, dematerialize, materialize, Observable, retry, throwError } from "rxjs";
 import { IPost } from "../models/Post";
 import { IUser } from "../models/IUser";
@@ -7,6 +7,7 @@ import { IInterest } from "../models/Interest";
 import { defaultResponseDelay, defaultRetryRate } from "./servicesConfig";
 import { ErrorMessage } from "./ErrorsEnum";
 import { Tag } from "../models/Tag";
+import { User } from "../models/User";
 
 @Injectable({
   providedIn: 'root'
@@ -36,11 +37,11 @@ export class PostService {
    * @param tags - массив тэгов-фильтров
    */
   getCountPosts(tags: Tag[]) {
-    let url = "/api/posts/";
+    let parameter = new HttpParams();
     if (tags && tags.length) {
-      url += "?tags=" + this.tagsToString(tags);
+      parameter = parameter.set('tags', this.tagsToString(tags))
     }
-    return this.http.get<IPost[]>(url)
+    return this.http.get<IPost[]>('/api/posts/', {params: parameter})
       .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
   }
 
@@ -52,11 +53,14 @@ export class PostService {
    * @param tags - массив тэгов-фильтров
    */
   getPosts(orderBy: number, page: number, items: number, tags: Tag[]) {
-    let url = "/api/posts/?orderBy=" + orderBy + "&page=" + page + "&items=" + items;
+    let parameters = new HttpParams()
+    parameters = parameters.set('orderBy', orderBy);
+    parameters = parameters.set('page', page);
+    parameters = parameters.set('items', items);
     if (tags.length) {
-      url += "&tags=" + this.tagsToString(tags);
+      parameters = parameters.set('tags', this.tagsToString(tags));
     }
-    return this.http.get<IPost[]>(url)
+    return this.http.get<IPost[]>('/api/posts/', {params: parameters})
       .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
   }
 

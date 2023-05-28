@@ -14,8 +14,7 @@ import { PostService } from "../../../shared/services/post.service";
 export class CreatePostComponent {
   form: FormGroup;
   interests: IInterest[]
-  isInterestsValid: boolean
-
+  isTagSelected: boolean
   constructor(
     private postService: PostService,
     public dialogRef: MatDialogRef<CreatePostComponent>,
@@ -57,11 +56,11 @@ export class CreatePostComponent {
 
   onPostClick() {
     if (this.form.controls['tags'].value.length < 1) {
-      this.isInterestsValid = true
+      this.isTagSelected = true
       return
     }
     else {
-      this.isInterestsValid = false
+      this.isTagSelected = false
     }
     if (this.form.valid) {
       this.data = {
