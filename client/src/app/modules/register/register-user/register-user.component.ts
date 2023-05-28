@@ -29,9 +29,6 @@ export class RegisterUserComponent implements OnInit {
     public dialog: MatDialog,
   ) {}
 
-  /**
-   * Форма, её инициализация и валидация
-   */
   form: FormGroup;
   ngOnInit() {
 
@@ -53,9 +50,6 @@ export class RegisterUserComponent implements OnInit {
     );
   }
 
-  /**
-   * Валидатор, осуществляющий проверку введённых паролей на совпадение
-   */
   private _passwordValidation(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: boolean } | null => {
       let password = control.get('password')?.value;
@@ -64,9 +58,6 @@ export class RegisterUserComponent implements OnInit {
     };
   }
 
-  /**
-   * Геттеры для получения полей и ошибок в них
-   */
   get email() {
     return this.form.controls['email'];
   }
@@ -116,10 +107,6 @@ export class RegisterUserComponent implements OnInit {
     return errorMessage;
   }
 
-  /**
-   * Метод, вызывающийся при нажатии кнопки "Подтвердить"
-   * Вызывает цепочку регистрации Пользовалеля
-   */
   proceed() {
     this.user = {
       mail: String(this.email.value),
@@ -129,11 +116,6 @@ export class RegisterUserComponent implements OnInit {
     this._trySendRequest();
   }
 
-  /**
-   * Обработка ошибок всей формы: проверка на совпадение введённых паролей
-   *
-   * Используется кастомный валидатор _passwordValidation
-   */
   get formErrorMessage(): string {
     let errors = this.form.errors;
     let errorMessage = '';
@@ -145,18 +127,12 @@ export class RegisterUserComponent implements OnInit {
     return errorMessage;
   }
 
-  /**
-   * Переменная содержит текст ошибки, возникающей при взаимодействии с сервером
-   */
   private _sendDataErrorMessage: string = '';
 
   isLoading: boolean = false;
 
   private userId: number;
 
-  /**
-   * Метод осуществляет запрос на сервер для регистрации нового пользователя
-   */
   private _trySendRequest() {
 
     this.isLoading = true;
@@ -177,11 +153,6 @@ export class RegisterUserComponent implements OnInit {
     });
   }
 
-  /**
-   * Метод открывает модальное окно для ввода кода подтверждения.
-   * 
-   * @param [errorMessage=''] Ошибка, которая будет выведена в окне
-   */
   private _openDialog(errorMessage: string = ''): void {
     const dialogRef = this.dialog.open(RegisterUserModal, {
       data: { email: this.email.value, errorMessage: errorMessage },
@@ -192,11 +163,7 @@ export class RegisterUserComponent implements OnInit {
     dialogRef.afterClosed().subscribe(userCode => this._tryVerifyUser(userCode));
   }
 
-  /**
-   * Метод осуществляет проверку пользовательского кода.
-   * 
-   * @param [userCode] Пользовательский код
-   */
+
   private _tryVerifyUser(userCode: string) {
     this.isLoading = true;
 

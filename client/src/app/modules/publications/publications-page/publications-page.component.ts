@@ -7,7 +7,9 @@ import { MatPaginator, PageEvent } from "@angular/material/paginator";
 import { Tag } from "../../../shared/models/Tag";
 import { DecimalPipe } from "@angular/common";
 import { MatDrawer } from "@angular/material/sidenav";
-
+import { DataService } from "../../../shared/services/data.service";
+import { PageEvent } from "@angular/material/paginator";
+import { NgModel } from "@angular/forms";
 
 @Component({
   selector: 'app-publications-page',
@@ -67,10 +69,6 @@ export class PublicationsPageComponent implements OnInit  {
     })
   }
 
-  /**
-   * Метод, вызываемый при клике на кнопку создая поста. Открывет модальное окно для создания поста
-   */
-
   onCreatePostClick(): void {
     const dialogRef = this.dialog.open(CreatePostComponent, {
       data: this.newPost
@@ -81,10 +79,6 @@ export class PublicationsPageComponent implements OnInit  {
     });
   }
 
-  /**
-   * Метод, вызываемый при людом изменении массива постов:
-   * при изменении тэгов-фильтров, сортировки по времени или страницы
-   */
   changePosts() {
     this.postService.getPosts(this.orderBy, this.pageIndex + 1, this.pageSize, this.selectedChips).subscribe({
       next: (data) => {
@@ -115,10 +109,6 @@ export class PublicationsPageComponent implements OnInit  {
 
   }
 
-  /**
-   * Метод, вызываемый при изменении страницы. Меняет настройки пагинатора и обновляет посты
-   * @param e  - событие изменения пагинатора
-   */
   onPageChange(e: PageEvent) {
     this.pageEvent = e;
     this.pageSize = e.pageSize;
@@ -126,26 +116,17 @@ export class PublicationsPageComponent implements OnInit  {
     this.changePosts();
   }
 
-  /**
-   * Метод, вызываемый при клине на кнопку сначала новые / старые. Меняет статус кнопки, обнуляет страницу и обновляет посты
-   */
   onOrderByButtonClick() {
     this.orderBy = this.orderBy == 1 ? 0 : 1;
     this.pageIndex = 0;
     this.changePosts();
   }
 
-  /**
-   * Метод, вызываемый при выборе тэгов-фильтров. Обнуляет страницу и обновляет посты
-   */
   onFilterTagsChange() {
     this.pageIndex = 0;
     this.changePosts();
   }
 
-  /**
-   * Метод, вызываемый при открытии / закрытии бокового меню с фильтрами
-   */
   onAddFiltersClick() {
     if (this.areFiltersOpen) {
       this.selectedChips = [];
