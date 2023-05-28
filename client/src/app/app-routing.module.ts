@@ -43,10 +43,6 @@ const routes: Routes = [
         path: 'publications',
         loadChildren: () => import('./modules/publications/publications.module').then(m => m.PublicationsModule)
       },
-      {
-        path: 'post',
-        loadChildren: () => import('./modules/post/post.module').then(m => m.PostModule)
-      },
     ]
   },
   ];

@@ -1,9 +1,9 @@
-import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core'
-import {IPost} from "../../../shared/models/Post";
-import {IUser} from "../../../shared/models/IUser";
-import {MatDialog} from "@angular/material/dialog";
-import {FullPostComponent} from "../full-post/full-post.component";
-import {DataService} from "../../../shared/services/data.service";
+import { Component, Input, OnInit } from '@angular/core'
+import { IPost } from "../../../shared/models/Post";
+import { IUser } from "../../../shared/models/IUser";
+import { MatDialog } from "@angular/material/dialog";
+import { FullPostComponent } from "../full-post/full-post.component";
+import { PostService } from "../../../shared/services/post.service";
 
 @Component({
   selector: 'app-post',
@@ -16,7 +16,7 @@ export class PostComponent implements OnInit {
   @Input() post: IPost
   constructor(
     public dialog: MatDialog,
-    public dataService: DataService
+    public dataService: PostService
   ) {
 
   }

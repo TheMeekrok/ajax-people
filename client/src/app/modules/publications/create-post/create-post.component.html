@@ -5,7 +5,7 @@
     </mat-card-header>
     <mat-form-field [style.height.vh]='40' appearance="fill">
       <mat-label>Текст</mat-label>
-      <textarea class="text-input" matInput  formControlName="text"></textarea>
+      <textarea class="text-input" matInput formControlName="text"></textarea>
       <mat-error>{{ getTextErrorString() }}</mat-error>
     </mat-form-field>
 
@@ -13,10 +13,8 @@
         <mat-chip-listbox  multiple="true" formControlName="tags">
           <mat-chip-option *ngFor="let i of interests" [value]="i">{{i.title}}</mat-chip-option>
         </mat-chip-listbox>
-      <mat-error *ngIf="isInterestsValid">Минимум 1 тег</mat-error>
+      <mat-error *ngIf="isTagSelected">Минимум 1 тег</mat-error>
   </mat-card>
-
-
     <div>
       <button
         mat-raised-button color="primary"

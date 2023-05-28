@@ -19,6 +19,11 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { FooterModule } from './modules/footer/footer.module';
 import { HeaderModule } from './modules/header/header.module';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatPaginatorModule } from "@angular/material/paginator";
+import { registerLocaleData } from "@angular/common";
+import localeRu from "@angular/common/locales/ru";
+
+registerLocaleData(localeRu, 'ru');
 
 @NgModule({
   declarations: [
@@ -45,6 +50,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
     FooterModule,
     MatDialogModule,
     MatSidenavModule,
+    MatPaginatorModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

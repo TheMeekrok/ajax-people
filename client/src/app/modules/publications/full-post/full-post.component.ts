@@ -1,8 +1,7 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {IPost} from "../../../shared/models/Post";
-import {DataService} from "../../../shared/services/data.service";
-import {Tag} from "../../../shared/models/Tag";
+import { Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
+import { IPost } from "../../../shared/models/Post";
+import { PostService } from "../../../shared/services/post.service";
 
 @Component({
   selector: 'app-full-post',
@@ -13,7 +12,7 @@ export class FullPostComponent implements OnInit{
   author: string
   date: Date
   constructor(
-    private dataService: DataService,
+    private dataService: PostService,
     public dialog: MatDialogRef<FullPostComponent>,
 
     @Inject(MAT_DIALOG_DATA) public post: IPost,
