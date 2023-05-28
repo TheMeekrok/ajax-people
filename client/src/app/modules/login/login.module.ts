@@ -17,5 +17,6 @@ import { CommonModule } from '@angular/common';
     MatButtonModule,
     MatProgressSpinnerModule,
   ],
+  exports: [LoginPageComponent],
 })
 export class LoginModule {}

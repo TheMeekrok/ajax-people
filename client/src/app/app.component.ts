@@ -1,11 +1,8 @@
-import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {Component} from '@angular/core';
-import {MatChipEditedEvent, MatChipInputEvent} from '@angular/material/chips';
 
 export interface Fruit {
   name: string;
 }
-
 
 @Component({
   selector: 'app-root',

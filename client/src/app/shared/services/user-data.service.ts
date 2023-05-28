@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, catchError, delay, dematerialize, map, materialize, retry, throwError } from 'rxjs';
+import { Observable, catchError, delay, dematerialize, materialize, retry, throwError } from 'rxjs';
 import { IFaculty } from '../models/Faculty';
 import { ISchool } from '../models/School';
 import { User } from "../models/User";
@@ -10,7 +10,6 @@ import { IInterest } from '../models/Interest';
 import { EducationLevel } from '../Enums/EducationLevel';
 import { StatusUser } from '../Enums/StatusUser';
 import { IUser } from '../models/IUser';
-import { IResponseImage } from '../models/Response';
 
 @Injectable({
   providedIn: 'root',
@@ -84,6 +83,10 @@ export class UserDataService {
     switch (error.status) {
       case 0:
         errorMessage = ErrorMessage.NETWORK_ERROR;
+        break;
+
+      case 204:
+        errorMessage = ErrorMessage.NO_CONTENT;
         break;
 
       case 401:

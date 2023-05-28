@@ -11,6 +11,7 @@ import { RegisterService } from 'src/app/shared/services/register.service';
 import { MatDialog } from '@angular/material/dialog';
 import { RegisterUserModal } from './register-user-modal.component';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { IResponseId } from 'src/app/shared/models/Response';
 
 @Component({
   selector: 'app-register-user',
@@ -52,8 +53,8 @@ export class RegisterUserComponent implements OnInit {
 
   private _passwordValidation(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: boolean } | null => {
-      let password = control.get('password')?.value;
-      let passwordRepeat = control.get('passwordRepeat')?.value;
+      const password = control.get('password')?.value;
+      const passwordRepeat = control.get('passwordRepeat')?.value;
       return password === passwordRepeat ? null : { notSame: true };
     };
   }
@@ -62,7 +63,7 @@ export class RegisterUserComponent implements OnInit {
     return this.form.controls['email'];
   }
   get emailErrorMessage(): string {
-    let errors = this.email?.errors;
+    const errors = this.email?.errors;
     let errorMessage = '';
 
     if (errors?.['required']) errorMessage = 'Обязательное поле';
@@ -75,7 +76,7 @@ export class RegisterUserComponent implements OnInit {
     return this.form.controls['password'];
   }
   get passwordErrorMessage(): string {
-    let errors = this.password?.errors;
+    const errors = this.password?.errors;
     let errorMessage = '';
 
     if (errors?.['required']) errorMessage = 'Обязательное поле';
@@ -93,7 +94,7 @@ export class RegisterUserComponent implements OnInit {
     return this.form.controls['passwordRepeat'];
   }
   get passwordRepeatErrorMessage(): string {
-    let errors = this.passwordRepeat?.errors;
+    const errors = this.passwordRepeat?.errors;
     let errorMessage = '';
 
     if (errors?.['required']) errorMessage = 'Обязательное поле';
@@ -117,7 +118,7 @@ export class RegisterUserComponent implements OnInit {
   }
 
   get formErrorMessage(): string {
-    let errors = this.form.errors;
+    const errors = this.form.errors;
     let errorMessage = '';
 
     if (errors?.['notSame']) errorMessage = 'Пароли не совпадают';
@@ -127,9 +128,9 @@ export class RegisterUserComponent implements OnInit {
     return errorMessage;
   }
 
-  private _sendDataErrorMessage: string = '';
+  private _sendDataErrorMessage = '';
 
-  isLoading: boolean = false;
+  isLoading = false;
 
   private userId: number;
 
@@ -138,7 +139,7 @@ export class RegisterUserComponent implements OnInit {
     this.isLoading = true;
 
     return this.rs.registerUser(this.user).subscribe({
-      next: (response: any) => { 
+      next: (response: IResponseId) => { 
         this.userId = response.id;
         this._openDialog();
       },
@@ -153,7 +154,7 @@ export class RegisterUserComponent implements OnInit {
     });
   }
 
-  private _openDialog(errorMessage: string = ''): void {
+  private _openDialog(errorMessage = ''): void {
     const dialogRef = this.dialog.open(RegisterUserModal, {
       data: { email: this.email.value, errorMessage: errorMessage },
       width: '450px',

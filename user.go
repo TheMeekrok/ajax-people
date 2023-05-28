@@ -48,12 +48,12 @@ type PersonalData struct {
 
 type UpdateUserInput struct {
 	Id             *int    `json:"id"`
-	IdsInterests   []int   `json:"idInterests"`
+	IdsInterests   []int   `json:"interests"`
 	FirstName      *string `json:"firstName"`
 	LastName       *string `json:"lastName"`
 	Age            *int    `json:"age"`
-	StatusUser     *int    `json:"statusUser"`
-	EducationLevel *int    `json:"educationLevel"`
+	StatusUser     *int    `json:"statusUserId"`
+	EducationLevel *int    `json:"educationLevelId"`
 	StudyProgramId *int    `json:"studyProgramId"`
 	SchoolId       *int    `json:"schoolId"`
 	AdmissionYear  *int    `json:"admissionYear"`

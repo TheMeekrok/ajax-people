@@ -21,7 +21,7 @@ export class PostService {
    * @param array - массив тэгов
    */
   tagsToString(array: Tag[]): string {
-    let s : string = "";
+    let s  = "";
     if (array && !array.length) {
       return s;
     }

@@ -22,10 +22,9 @@ export class RegisterProfileInfoComponent implements OnInit {
 
   form: FormGroup;
   
-  formErrorMessage: string = '';
+  formErrorMessage = '';
   isLoading = false;
 
-  // Определяет появление других полей для ввода
   userStatus: string;
 
   private faculties: IFaculty[] = [];
@@ -36,7 +35,6 @@ export class RegisterProfileInfoComponent implements OnInit {
 
   ngOnInit(): void {
 
-    // Инициализация формы
     this.form = new FormGroup({
 
       firstName: new FormControl('', [
@@ -46,7 +44,6 @@ export class RegisterProfileInfoComponent implements OnInit {
       ]),
 
       secondName: new FormControl('', [
-        Validators.required, 
         Validators.pattern('[а-яёА-яa-zA-z]+-?[а-яёА-яa-zA-z]+'), 
         Validators.maxLength(16)
       ]),
@@ -60,24 +57,34 @@ export class RegisterProfileInfoComponent implements OnInit {
 
       admissionYear: new FormControl('', [
         Validators.pattern('[0-9]*'),
-        Validators.required,
         Validators.max((new Date()).getFullYear()),
         Validators.min(1900),
       ]),
 
       userStatus: new FormControl('', [Validators.required]),
       courseNumber: new FormControl(),
-      educationLevel: new FormControl(),
+      educationLevel: new FormControl('', [Validators.required]),
       faculty: new FormControl(),
-      school: new FormControl()
+      school: new FormControl(),
 
+      telegram: new FormControl('', [
+        Validators.maxLength(32),
+        Validators.pattern('@[0-9a-zA-z]+'),
+      ]),
+
+      vk: new FormControl('', [
+        Validators.maxLength(32),
+        Validators.pattern('vk.com/[0-9a-zA-z_-]+'),
+      ]),
+
+      phoneNumber: new FormControl('', [
+        Validators.pattern('[\+7][0-9]{11}'),
+      ]),
     });
 
-    // Загрузка данных (факультеты, школы) с сервера
     this.uds.getFaculties().subscribe({next: (data: IFaculty[]) => this.faculties = data});
     this.uds.getSchools().subscribe({next: (data: ISchool[]) => this.schools = data});
 
-    // Обработка поиска в полях для выбора факультета и школы
     this.filteredFaculties = this.form.controls['faculty'].valueChanges.pipe(
       startWith(''),
       map(value => {
@@ -95,10 +102,9 @@ export class RegisterProfileInfoComponent implements OnInit {
     )
   }
 
-  // Геттеры и обработчики ошибок для всех полей формы
   get firstName() { return this.form.get('firstName'); }
   get firstNameErrorMessage(): string {
-    let errors = this.firstName?.errors;
+    const errors = this.firstName?.errors;
     let errorMessage = '';
 
     if (errors?.['required']) errorMessage = "Обязательное поле";
@@ -110,11 +116,10 @@ export class RegisterProfileInfoComponent implements OnInit {
 
   get secondName() { return this.form.get('secondName'); }
   get secondNameErrorMessage(): string {
-    let errors = this.secondName?.errors;
+    const errors = this.secondName?.errors;
     let errorMessage = '';
 
-    if (errors?.['required']) errorMessage = "Обязательное поле";
-    else if (errors?.['pattern']) errorMessage = "Только латиница или кириллица";
+    if (errors?.['pattern']) errorMessage = "Только латиница или кириллица";
     else if (errors?.['maxlength']) errorMessage = "Не более 16 символов";
 
     return errorMessage;
@@ -122,7 +127,7 @@ export class RegisterProfileInfoComponent implements OnInit {
 
   get age() { return this.form.get('age'); }
   get ageErrorMessage(): string {
-    let errors = this.age?.errors;
+    const errors = this.age?.errors;
     let errorMessage = '';
 
     if (errors?.['required']) errorMessage = "Обязательное поле";
@@ -134,7 +139,7 @@ export class RegisterProfileInfoComponent implements OnInit {
 
   get admissionYear() { return this.form.get('admissionYear'); }
   get admissionYearErrorMessage(): string {
-    let errors = this.admissionYear?.errors;
+    const errors = this.admissionYear?.errors;
     let errorMessage = '';
 
     if (errors?.['required']) errorMessage = "Обязательное поле";
@@ -145,7 +150,7 @@ export class RegisterProfileInfoComponent implements OnInit {
 
   get status() { return this.form.get('userStatus'); }
   get statusErrorMessage(): string {
-    let errors = this.age?.errors;
+    const errors = this.status?.errors;
     let errorMessage = '';
 
     if (errors?.['required']) errorMessage = "Обязательное поле";
@@ -157,10 +162,40 @@ export class RegisterProfileInfoComponent implements OnInit {
   get school() { return this.form.get('school'); }
   get faculty() { return this.form.get('faculty'); }
   
+  get telegram() { return this.form.get('telegram'); }
+  get telegramErrorMessage(): string {
+    const errors = this.telegram?.errors;
+    let errorMessage = '';
 
-  // Обработчик для корректного отображения названия факультета/школы
+    if (errors?.['pattern']) errorMessage = "Только латиница и цифры";
+    else if (errors?.['maxlength']) errorMessage = "Не более 32 символов";
+
+    return errorMessage;
+  }
+
+  get vk() { return this.form.get('vk'); }
+  get vkErrorMessage(): string {
+    const errors = this.vk?.errors;
+    let errorMessage = '';
+
+    if (errors?.['pattern']) errorMessage = "Не является ссылкой";
+    else if (errors?.['maxlength']) errorMessage = "Не более 32 символов";
+
+    return errorMessage;
+  }
+
+  get phoneNumber() { return this.form.get('phoneNumber'); }
+  get phoneNumberErrorMessage(): string {
+    const errors = this.phoneNumber?.errors;
+    let errorMessage = '';
+
+    if (errors?.['pattern']) errorMessage = "Не является номером телефона";
+
+    return errorMessage;
+  }
+
+
   displayFunctionFaculty(object: IFaculty): string { return object?.title || ''; }
-
   displayFunctionSchool(object: ISchool): string { return object?.title || ''; }
 
   private _filterFaculties(value: string): IFaculty[] {
@@ -173,28 +208,31 @@ export class RegisterProfileInfoComponent implements OnInit {
     return this.schools.filter(school => school.title.toLowerCase().includes(filterValue));
   }
 
-  proceed() {
-    if (this.form.valid) {
-      let user: IUser = {
-        firstName: String(this.firstName?.value),
-        lastName: String(this.secondName?.value),
-        age: Number(this.age?.value),
-        statusUserId: Number(this.status?.value),
-        educationLevelId: Number(this.educationLevel?.value), 
-        admissionYear: Number(this.admissionYear?.value),
-        schoolId: Number(this.school?.value?.id),
-        studyProgramId: Number(this.faculty?.value?.id),
-      }
+  onSubmitData() { this.tryUpdateUserData(); }
 
-      this.isLoading = true;
-
-      this.rs.updateUserData(user, this.userId).subscribe({
-        error: (error: Error) => this.formErrorMessage = error.message,
-        complete: () => { 
-          this.isLoading = false;
-          this.continueRegister.emit();
-        },
-      });
+  private tryUpdateUserData() {
+    const user: IUser = {
+      firstName: String(this.firstName?.value),
+      lastName: String(this.secondName?.value),
+      age: Number(this.age?.value),
+      statusUserId: Number(this.status?.value),
+      educationLevelId: Number(this.educationLevel?.value), 
+      admissionYear: Number(this.admissionYear?.value),
+      schoolId: Number(this.school?.value?.id),
+      studyProgramId: Number(this.faculty?.value?.id),
+      telegram: String(this.telegram?.value),
+      vk: String(this.vk?.value),
+      telephone: String(this.phoneNumber?.value),
     }
+
+    this.isLoading = true;
+
+    this.rs.updateUserData(user, this.userId).subscribe({
+      error: (error: Error) => this.formErrorMessage = error.message,
+      complete: () => { 
+        this.isLoading = false;
+        this.continueRegister.emit();
+      },
+    });
   }
 }

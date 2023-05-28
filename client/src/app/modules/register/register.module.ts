@@ -16,6 +16,8 @@ import { RegisterComponent } from './register/register.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RegisterInterestsComponent } from './register-interests/register-interests.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDividerModule } from '@angular/material/divider';
 
 @NgModule({
   declarations: [
@@ -39,6 +41,8 @@ import { RegisterInterestsComponent } from './register-interests/register-intere
     HttpClientModule,
     MatDialogModule,
     MatProgressSpinnerModule,
+    MatCheckboxModule,
+    MatDividerModule,
   ],
   providers: [
     MatDialog,

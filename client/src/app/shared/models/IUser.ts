@@ -24,4 +24,7 @@ export interface IUser {
   interests?: number[];
   isAdmin?: boolean;
   personalData?: IPersonalData;
+  telegram?: string,
+  vk?: string,
+  telephone?: string,
 }

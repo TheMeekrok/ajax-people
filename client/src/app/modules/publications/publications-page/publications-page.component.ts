@@ -3,13 +3,11 @@ import { MatDialog } from "@angular/material/dialog";
 import { CreatePostComponent } from "../create-post/create-post.component";
 import { IPost } from "../../../shared/models/Post";
 import { PostService } from "../../../shared/services/post.service";
-import { MatPaginator, PageEvent } from "@angular/material/paginator";
+import { MatPaginator } from "@angular/material/paginator";
 import { Tag } from "../../../shared/models/Tag";
 import { DecimalPipe } from "@angular/common";
 import { MatDrawer } from "@angular/material/sidenav";
-import { DataService } from "../../../shared/services/data.service";
 import { PageEvent } from "@angular/material/paginator";
-import { NgModel } from "@angular/forms";
 
 @Component({
   selector: 'app-publications-page',

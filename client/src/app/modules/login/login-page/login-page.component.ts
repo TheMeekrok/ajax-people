@@ -12,10 +12,10 @@ import { Router } from '@angular/router';
 export class LoginPageComponent implements OnInit {
 
   form: FormGroup;
-  isLoading: boolean = false;
-  formErrorMessage: string = '';
+  isLoading = false;
+  formErrorMessage = '';
 
-  constructor(private authService: AuthService, private router: Router) {};
+  constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
     this.form = new FormGroup({
@@ -38,7 +38,7 @@ export class LoginPageComponent implements OnInit {
     return this.form.controls['email'];
   }
   get emailErrorMessage(): string {
-    let errors = this.email?.errors;
+    const errors = this.email?.errors;
     let errorMessage = '';
 
     if (errors?.['required']) errorMessage = 'Обязательное поле';
@@ -51,7 +51,7 @@ export class LoginPageComponent implements OnInit {
     return this.form.controls['password'];
   }
   get passwordErrorMessage(): string {
-    let errors = this.password?.errors;
+    const errors = this.password?.errors;
     let errorMessage = '';
 
     if (errors?.['required']) errorMessage = 'Обязательное поле';
@@ -80,7 +80,7 @@ export class LoginPageComponent implements OnInit {
       },
       complete: () => { 
         this.isLoading = false;
-        this.router.navigate(['/main/people']);
+        this.router.navigate(['/people']);
       }
     });
   }

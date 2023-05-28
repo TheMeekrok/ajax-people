@@ -82,6 +82,30 @@
           </mat-autocomplete>
         </mat-form-field>
 
+        <mat-form-field appearance="fill">
+          <mat-label>Telegram</mat-label>
+          <input matInput type="text" formControlName="telegram" placeholder="@ivanov2030" />
+          <mat-error *ngIf="telegram?.invalid && (telegram?.dirty || telegram?.touched)">
+            {{ telegramErrorMessage }}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>ВКонтакте</mat-label>
+          <input matInput type="text" formControlName="vk" placeholder="vk.com/ivanov2030" />
+          <mat-error *ngIf="vk?.invalid && (vk?.dirty || vk?.touched)">
+            {{ vkErrorMessage }}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Номер телефона</mat-label>
+          <input matInput type="text" formControlName="phoneNumber" placeholder="+7" />
+          <mat-error *ngIf="phoneNumber?.invalid && (phoneNumber?.dirty || phoneNumber?.touched)">
+            {{ phoneNumberErrorMessage }}
+          </mat-error>
+        </mat-form-field>
+
         <p *ngIf="!isLoading" class="mat-typography text-red-500 text-center text-xs m-0">{{ formErrorMessage }}</p>
         <div *ngIf="isLoading" class="spinner"><mat-spinner></mat-spinner></div>
 
@@ -90,7 +114,7 @@
           mat-raised-button 
           color="primary" 
           [disabled]="form.invalid || isLoading" 
-          (click)="proceed()"
+          (click)="onSubmitData()"
         >
           Продолжить</button>
       </form>

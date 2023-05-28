@@ -15,11 +15,7 @@ export class AuthService {
 
   authUser(userData: IUser): Observable<IResponseToken> {
     return this.http.post<IResponseToken>('/sign-in', userData, { withCredentials: true })
-      .pipe(
-        delay(defaultResponseDelay),
-        catchError(this._handleError),
-        retry(defaultRetryRate),
-      );
+      .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
   }
 
   private _handleError(error: HttpErrorResponse) {

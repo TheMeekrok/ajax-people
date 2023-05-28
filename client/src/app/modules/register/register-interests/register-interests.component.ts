@@ -14,8 +14,8 @@ export class RegisterInterestsComponent implements OnInit {
 
   @Input() userId = 0;
 
-  isLoading: boolean = false;
-  formErrorMessage: string = '';
+  isLoading = false;
+  formErrorMessage = '';
   form: FormGroup;
 
   interests: IInterest[] = [];
@@ -36,7 +36,7 @@ export class RegisterInterestsComponent implements OnInit {
 
   private _initForm() {
     this.form = new FormGroup({
-      interestsChips: new FormControl(new Array(), [Validators.required]),
+      interestsChips: new FormControl([], [Validators.required]),
     })
   }
 
@@ -56,18 +56,18 @@ export class RegisterInterestsComponent implements OnInit {
     });
   }
 
-  get interestsChips() { return this.form.get('interestsChips') };
+  get interestsChips() { return this.form.get('interestsChips') }
   get interestsChipsErrorMessage(): string {
-    let errors = this.interestsChips?.errors;
+    const errors = this.interestsChips?.errors;
     if (errors?.['required']) { return 'Выберите хотя бы один Интерес'; }
     return '';
   }
 
   private _selectInterests() {
-    let interestsIds: number[] = [];
+    const interestsIds: number[] = [];
 
     this.interestsChips?.value.forEach((chip: string) => {
-      let id = this.interests.find(element => element.title === chip)?.id;
+      const id = this.interests.find(element => element.title === chip)?.id;
       if (id) interestsIds.push(id);
     });
 
@@ -75,7 +75,7 @@ export class RegisterInterestsComponent implements OnInit {
   }
 
   private _updateData() {
-    let userData: IUser = { interests: this._selectInterests() }
+    const userData: IUser = { interests: this._selectInterests() }
 
     this.isLoading = true;
 

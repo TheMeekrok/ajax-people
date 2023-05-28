@@ -7,27 +7,17 @@ export interface IDialogData {
   errorMessage: string;
 }
 
-/**
- * Компонент модального окна
- * 
- * Открывается, если пользователь успешно прошёл регистрацию
- * 
- * @data содержит данные этого компонента
- */
 @Component({
-  selector: 'register-user-modal',
-  templateUrl: './register-user-modal.html',
+  selector: 'register-user-modal.component',
+  templateUrl: './register-user-modal.component.html',
   styleUrls: ['./register-user-modal.css'],
 })
-export class RegisterUserModal implements OnInit {
+export class RegisterUserModal {
 
   constructor(
     public dialogRef: MatDialogRef<RegisterUserModal>,
     @Inject(MAT_DIALOG_DATA) public data: IDialogData,
   ) {}
 
-  ngOnInit(): void {}
-
   codeToUpperCase() { this.data.code = this.data.code.toUpperCase(); }
-
 }

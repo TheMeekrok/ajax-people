@@ -29,9 +29,11 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	{
 		activation.PUT("/check/:id", h.checkActivationUser)
 	}
-	apiPublic := router.Group("/api", h.userIdentify)
+	//apiPublic := router.Group("/api", h.userIdentify)
+	apiPublic := router.Group("/api")
 	{
-		users := apiPublic.Group("/users", h.userIdentifyById)
+		//users := apiPublic.Group("/users", h.userIdentifyById)
+		users := apiPublic.Group("/users")
 		{
 			users.PUT("/:id", h.updateUser)
 

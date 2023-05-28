@@ -12,9 +12,8 @@ import { UserDataService } from 'src/app/shared/services/user-data.service';
 export class UserComponent implements OnInit {
 
   @Input() user: IUser;
-  userStatus: string = '';
-  avatarBase: string = 'data:image/png;base64,';
-  avatarPath: string = '../../../../assets/user/default_avatar.svg';
+  userStatus = '';
+  avatarPath = '../../../../assets/user/default_avatar.svg';
 
   constructor(public dialog: MatDialog, private userDataService: UserDataService) {}
 
@@ -29,8 +28,8 @@ export class UserComponent implements OnInit {
   private _tryGetAvatar(userId: number | undefined) {
     if (!userId) return;
     this.userDataService.getUserAvatar(userId).subscribe({
-      next: (response: string) => { 
-        if (response !== 'no image') this.avatarPath = this.avatarBase + response; 
+      next: (response: string) => {
+        if (response) this.avatarPath = `data:image/png;base64,${response}`
       },
     })
   }

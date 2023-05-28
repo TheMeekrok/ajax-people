@@ -37,7 +37,7 @@ export class CreatePostComponent {
   }
 
   getTextErrorString() {
-    let error = this.form.controls['text'].errors;
+    const error = this.form.controls['text'].errors;
     if (error?.['required']) {
       return 'Обязательное поле'
     }

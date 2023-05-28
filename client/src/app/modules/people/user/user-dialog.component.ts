@@ -44,7 +44,7 @@ export class UserDialog implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: IDialogData,
   ) {}
 
-  loading: boolean = false;
+  loading = false;
 
   ngOnInit(): void { this._initUserData(); }
 
@@ -68,7 +68,7 @@ export class UserDialog implements OnInit {
         .subscribe({ next: (result: ISchool[]) => this.data.school = result[0]?.title });
     }
 
-    let interests$: Observable<IInterest[]>[] = []
+    const interests$: Observable<IInterest[]>[] = []
     if (this.data.user.interests) {
       this.data.user.interests
         .forEach(interestId => interests$.push(this.userDataService.getInterestById(interestId)));

@@ -40,9 +40,6 @@ export class RegisterService {
       );
   }
 
-  /**
-   * Обрабочтик ошибок, возникающих при регистрации нового пользователя
-   */
   private _handleError(error: HttpErrorResponse) {
     let errorMessage = '';
     switch (error.status) {

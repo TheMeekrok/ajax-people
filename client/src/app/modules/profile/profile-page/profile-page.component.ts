@@ -63,7 +63,7 @@ export class ProfilePageComponent implements OnInit{
   }
 
   getNameErrorString(): string {
-    let error = this.form.controls['name'].errors;
+    const error = this.form.controls['name'].errors;
     if (!error) {
       return ''
     }
@@ -80,7 +80,7 @@ export class ProfilePageComponent implements OnInit{
   }
 
   getSurnameErrorString(): string {
-    let error = this.form.controls['surname'].errors;
+    const error = this.form.controls['surname'].errors;
     if (!error) {
       return ''
     }
@@ -96,7 +96,7 @@ export class ProfilePageComponent implements OnInit{
     return ''
   }
   getAgeErrorString(): string {
-    let error = this.form.controls['age'].errors;
+    const error = this.form.controls['age'].errors;
     if (!error) {
       return ''
     }
