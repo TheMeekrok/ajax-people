@@ -201,9 +201,9 @@ func (r *UserActionPostgres) UpdateUser(id int, user user.UpdateUserInput) error
 	return nil
 }
 
-func (r *UserActionPostgres) SelectedDataUser(userSelect user.UpdateUserInput, idUser int) ([]user.UserOutput, error) {
+func (r *UserActionPostgres) SelectedDataUser(userSelect user.UpdateUserInput, idUser, page, items int) ([]user.UserOutput, error) {
+	var userListPage []user.UserOutput
 	var userList []user.UserOutput
-
 	setInterests := make([]string, 0)
 	setValues := make([]string, 0)
 	args := make([]interface{}, 0)
@@ -325,7 +325,24 @@ func (r *UserActionPostgres) SelectedDataUser(userSelect user.UpdateUserInput, i
 
 	}
 
-	return userList, nil
+	if page == -1 || items == 0 {
+		return userList, nil
+	}
+
+	var lastItems int
+	if page*items+items-len(userList) > 0 && items-((page*items)+items-len(userList)) <= 0 {
+		return userListPage, nil
+	} else if page*items+items > len(userList) {
+		lastItems = items - ((page * items) + items - len(userList))
+	} else {
+		lastItems = items
+	}
+
+	for i := page * items; i < page*items+lastItems; i++ {
+		userListPage = append(userListPage, userList[i])
+	}
+
+	return userListPage, nil
 }
 
 func (r *UserActionPostgres) RequestСorrespondence(idSender int, emailRecipient, coincidenceTime string) (int, error) {

@@ -126,6 +126,8 @@ func (h *Handler) selectUsers(c *gin.Context) {
 
 	var inputSelect user.UpdateUserInput
 
+	items, _ := strconv.Atoi(c.Query("items"))
+	page, _ := strconv.Atoi(c.Query("page"))
 	input.Id, _ = strconv.Atoi(c.Query("id"))
 	input.Age, _ = strconv.Atoi(c.Query("age"))
 	input.FirstName = c.Query("firstName")
@@ -146,7 +148,6 @@ func (h *Handler) selectUsers(c *gin.Context) {
 	inputSelect.Id = &input.Id
 	inputSelect.SchoolId = &input.SchoolId
 	inputSelect.Age = &input.Age
-	fmt.Println(*inputSelect.Id)
 	if input.LastName != "" {
 		inputSelect.LastName = &input.FirstName
 	}
@@ -158,7 +159,7 @@ func (h *Handler) selectUsers(c *gin.Context) {
 	inputSelect.AdmissionYear = &input.AdmissionYear
 	inputSelect.GraduationYear = &input.GraduationYear
 
-	userList, err := h.services.SelectedDataUser(inputSelect, idUser)
+	userList, err := h.services.SelectedDataUser(inputSelect, idUser, page, items)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
