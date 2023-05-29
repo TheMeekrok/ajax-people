@@ -16,7 +16,7 @@ type UserAction interface {
 	GetAllUsers() ([]user.User, error)
 	DeleteUser(id int) error
 	UpdateUser(id int, user user.UpdateUserInput) error
-	SelectedDataUser(userSelect user.UpdateUserInput, idUser int) ([]user.UserOutput, error)
+	SelectedDataUser(userSelect user.UpdateUserInput, idUser, page, items int) ([]user.UserOutput, error)
 	RequestСorrespondence(idSender int, emailRecipient, coincidenceTime string) (int, error)
 	AcceptMessageRequest(idRequest int) error
 }
