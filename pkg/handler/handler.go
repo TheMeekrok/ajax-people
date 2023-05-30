@@ -72,8 +72,6 @@ func (h *Handler) InitRoutes() *gin.Engine {
 
 			posts.POST("/", h.createPost)
 
-			posts.PUT("/:id", h.updatePost)
-
 			posts.DELETE("/:id", h.deletePost)
 		}
 
@@ -82,10 +80,6 @@ func (h *Handler) InitRoutes() *gin.Engine {
 			tags.GET("/:id", h.getTagById)
 
 			tags.GET("/", h.getAllTags)
-
-			tags.POST("/", h.createTag)
-
-			tags.DELETE("/:id", h.deleteTag)
 		}
 	}
 
@@ -94,10 +88,18 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		users := apiPrivate.Group("/users")
 		{
 			users.POST("/", h.createUser)
-			users.GET("/", h.getAllUsers)
-			users.GET("/:id", h.getUserById)
+
 			users.DELETE("/:id", h.deleteUser)
-			users.PUT("/:id", h.updateUser)
+		}
+		tags := apiPublic.Group("/tags")
+		{
+			tags.POST("/", h.createTag)
+
+			tags.DELETE("/:id", h.deleteTag)
+		}
+		posts := apiPublic.Group("/posts")
+		{
+			posts.PUT("/:id", h.updatePost)
 		}
 	}
 
