@@ -15,13 +15,14 @@ export class PostComponent implements OnInit {
   constructor(
     public dialog: MatDialog,
     public dataService: PostService
-  ) {
-
-  }
+  ) {}
   user: IUser;
   ngOnInit(): void {
+
+    this.dataService.getUserById(this.post.userId).subscribe(result => {
+      this.user = result;
+    });
     this.getAuthor(this.post.userId);
-    console.log(this.user);
   }
 
   getAuthor(id: number) {
@@ -31,12 +32,6 @@ export class PostComponent implements OnInit {
     });
   }
 
-  getShortText(text: string): string {
-    if (text.length < 40) {
-      return text
-    }
-    return text.slice(0, 40) + "..."
-  }
   onPostClick(): void {
     const dialogRef = this.dialog.open(FullPostComponent, {
       data: this.post

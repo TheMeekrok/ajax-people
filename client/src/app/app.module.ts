@@ -15,6 +15,8 @@ import { MatPaginatorModule } from "@angular/material/paginator";
 import { registerLocaleData } from "@angular/common";
 import { LoginModule } from './modules/login/login.module';
 import localeRu from "@angular/common/locales/ru";
+import { SuccessPostComponent } from './modules/publications/success-post/success-post.component';
+import { MatButtonModule } from "@angular/material/button";
 
 registerLocaleData(localeRu, 'ru');
 
@@ -24,6 +26,7 @@ registerLocaleData(localeRu, 'ru');
     AppComponent,
     HomePageLayoutComponent,
     MainLayoutComponent,
+    SuccessPostComponent,
   ],
   imports: [
     BrowserModule,
@@ -38,6 +41,7 @@ registerLocaleData(localeRu, 'ru');
     MatSidenavModule,
     MatPaginatorModule,
     LoginModule,
+    MatButtonModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

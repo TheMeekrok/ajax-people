@@ -70,7 +70,7 @@ export class PostService {
    * @param id - id пользователя
    */
   getUserById(id: number): Observable<IUser> {
-    return this.http.get<IUser>('/api/users?id=' + id)
+    return this.http.get<IUser>('/api/users', {params: new HttpParams().set('id', id)})
       .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
   }
 

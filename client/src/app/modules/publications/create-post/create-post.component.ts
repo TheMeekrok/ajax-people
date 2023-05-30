@@ -1,9 +1,10 @@
 import { Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { IPost } from "../../../shared/models/Post";
 import { IInterest } from "../../../shared/models/Interest";
 import { PostService } from "../../../shared/services/post.service";
+import { SuccessPostComponent } from "../success-post/success-post.component";
 
 
 @Component({
@@ -16,6 +17,7 @@ export class CreatePostComponent {
   interests: IInterest[]
   isTagSelected: boolean
   constructor(
+    public dialog: MatDialog,
     private postService: PostService,
     public dialogRef: MatDialogRef<CreatePostComponent>,
     @Inject(MAT_DIALOG_DATA) public data: IPost,
@@ -71,5 +73,9 @@ export class CreatePostComponent {
       }
       this.dialogRef.close(this.data)
     }
+    const dialogRef = this.dialog.open(SuccessPostComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+    });
   }
 }
