@@ -11,8 +11,6 @@ import { PostService } from "../../../shared/services/post.service";
   styleUrls: ['./post.component.css']
 })
 export class PostComponent implements OnInit {
-
-
   @Input() post: IPost
   constructor(
     public dialog: MatDialog,
@@ -23,6 +21,7 @@ export class PostComponent implements OnInit {
   user: IUser;
   ngOnInit(): void {
     this.getAuthor(this.post.userId);
+    console.log(this.user);
   }
 
   getAuthor(id: number) {
@@ -44,7 +43,6 @@ export class PostComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log("!!!")
     });
   }
 }

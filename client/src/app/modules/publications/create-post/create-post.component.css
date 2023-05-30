@@ -9,4 +9,5 @@ mat-card {
   resize: none;
   width: 50vw;
   min-height: 200px;
+  margin: 3px;
 }

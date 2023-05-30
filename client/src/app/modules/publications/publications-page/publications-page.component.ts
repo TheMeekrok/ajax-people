@@ -16,6 +16,7 @@ import { PageEvent } from "@angular/material/paginator";
 })
 
 export class PublicationsPageComponent implements OnInit  {
+  loading: boolean = true;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild('drawer', { static: true }) public drawer: MatDrawer;
 
@@ -56,7 +57,7 @@ export class PublicationsPageComponent implements OnInit  {
     this.postService.getPosts(this.orderBy, this.pageIndex + 1, this.pageSize, this.selectedChips).subscribe(data => {
         this.posts = data;
         this.postsCount = data.length;
-        console.log(data);
+        this.loading = false;
       }
     )
     this.postService.getTags().subscribe(result => {
@@ -65,6 +66,8 @@ export class PublicationsPageComponent implements OnInit  {
     this.postService.getCountPosts(this.selectedChips).subscribe(result => {
       this.postsCount = result.length;
     })
+
+
   }
 
   onCreatePostClick(): void {
@@ -104,7 +107,6 @@ export class PublicationsPageComponent implements OnInit  {
         }
       }
     })
-
   }
 
   onPageChange(e: PageEvent) {

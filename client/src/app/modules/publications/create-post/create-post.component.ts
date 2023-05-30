@@ -29,7 +29,7 @@ export class CreatePostComponent {
       ]),
       tags: new FormControl([], [Validators.minLength(1)])
     });
-    this.postService.getInterests().subscribe(
+    this.postService.getTags().subscribe(
       data => {
         this.interests = data
       }
@@ -66,7 +66,8 @@ export class CreatePostComponent {
       this.data = {
         text: this.form.controls['text']?.value,
         tags: this.form.controls['tags']?.value,
-        userId: 1
+        author: '',
+        userId: 1,
       }
       this.dialogRef.close(this.data)
     }

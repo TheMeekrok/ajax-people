@@ -6,7 +6,7 @@
   <body>
   <mat-drawer-container class="example-container" autosize>
     <mat-drawer #drawer class="example-sidenav" mode="side">
-      <div class="filter-place">
+      <div>
         <h3>Выберите фильтры</h3>
         <button
           mat-raised-button color="primary"
@@ -42,8 +42,8 @@
                 [post]="post">
       </app-post>
     </div>
-
   </mat-drawer-container>
+  <mat-spinner class="spinner"  *ngIf="loading"></mat-spinner>
   <mat-paginator
     [pageSize]="5"
     [pageIndex]="0"

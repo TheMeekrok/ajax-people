@@ -8,6 +8,7 @@ import { defaultResponseDelay, defaultRetryRate } from "./servicesConfig";
 import { ErrorMessage } from "./ErrorsEnum";
 import { Tag } from "../models/Tag";
 import { User } from "../models/User";
+import { data } from "autoprefixer";
 
 @Injectable({
   providedIn: 'root'
@@ -69,15 +70,7 @@ export class PostService {
    * @param id - id пользователя
    */
   getUserById(id: number): Observable<IUser> {
-    return this.http.get<IUser>('/api/users/' + id)
-      .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
-  }
-
-  /**
-   * Метод для получения всех интересов
-   */
-  getInterests(): Observable<IInterest[]> {
-    return this.http.get<IInterest[]>('api/register-data/interests')
+    return this.http.get<IUser>('/api/users?id=' + id)
       .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
   }
 
@@ -130,10 +123,7 @@ export class PostService {
       tags: post.tags.map(i => i.id)
     }
     return this.http
-      .post<string>(
-        `api/posts/`,
-        JSON.stringify(body)
-      ).pipe(
+      .post<string>(`api/posts/`, body).pipe(
         delay(defaultResponseDelay),
         catchError(this._handleError),
       );
