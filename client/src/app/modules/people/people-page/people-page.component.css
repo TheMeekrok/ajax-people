@@ -4,7 +4,7 @@ mat-form-field {
 
 mat-drawer-container mat-drawer {
   box-shadow: none !important;
-  width: 320px;
+  width: 350px;
 }
 
 mat-drawer-container div {
