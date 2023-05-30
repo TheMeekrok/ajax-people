@@ -204,6 +204,7 @@ func (r *UserActionPostgres) UpdateUser(id int, user user.UpdateUserInput) error
 func (r *UserActionPostgres) SelectedDataUser(userSelect user.UpdateUserInput, idUser, page, items int) ([]user.UserOutput, error) {
 	var userListPage []user.UserOutput
 	var userList []user.UserOutput
+	var setInterestsQuery string
 	setInterests := make([]string, 0)
 	setValues := make([]string, 0)
 	args := make([]interface{}, 0)
@@ -269,7 +270,7 @@ func (r *UserActionPostgres) SelectedDataUser(userSelect user.UpdateUserInput, i
 		argId++
 	}
 
-	if idUser != 0 {
+	if idUser != 0 && idUser != *userSelect.Id {
 		setValues = append(setValues, fmt.Sprintf("users.id!=$%d", argId))
 		args = append(args, idUser)
 		argId++
@@ -282,8 +283,6 @@ func (r *UserActionPostgres) SelectedDataUser(userSelect user.UpdateUserInput, i
 		setInterests = append(setInterests, "users_interests.interest_id="+strconv.Itoa(userSelect.IdsInterests[i]))
 		flag = true
 	}
-
-	var setInterestsQuery string
 
 	if flag {
 		if setQuery != "" {

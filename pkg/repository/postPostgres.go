@@ -136,8 +136,7 @@ func (r *PostPostgres) GetPostByPage(filter user.PostFilter, page int, items int
 
 	var lastItems int
 	if page*items+items-len(postsList) > 0 && items-((page*items)+items-len(postsList)) <= 0 {
-		err := errors.New("There are no posts on this page")
-		return postsList, err
+		return postListPage, nil
 	} else if page*items+items > len(postsList) {
 		lastItems = items - ((page * items) + items - len(postsList))
 	} else {
@@ -179,7 +178,6 @@ func (r *PostPostgres) GetAllPosts(filter user.PostFilter, isAdmin bool, idUser 
     					JOIN %s pt ON po.id = pt.post_id %s WHERE po.user_id = $1 AND po.is_moderated=false ORDER BY publication_time %s;`,
 		postsTable, postsTagsTable, addQuery, orderType)
 
-	fmt.Println(query)
 	var postsList1 []user.Post
 	if err := r.db.Select(&postsList1, query, idUser); err != nil {
 		return nil, err

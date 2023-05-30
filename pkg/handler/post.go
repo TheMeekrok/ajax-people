@@ -2,7 +2,6 @@ package handler
 
 import (
 	user "backend_ajax-people"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
@@ -77,7 +76,6 @@ func (h *Handler) getPostsByPage(c *gin.Context) {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
-	fmt.Println(postsList)
 
 	c.JSON(http.StatusOK, postsList)
 
