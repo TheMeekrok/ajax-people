@@ -12,6 +12,7 @@ import { UserDataService } from 'src/app/shared/services/user-data.service';
 export class UserComponent implements OnInit {
 
   @Input() user: IUser;
+
   userStatus = '';
   avatarPath = '../../../../assets/user/default_avatar.svg';
 
@@ -22,10 +23,10 @@ export class UserComponent implements OnInit {
       this.userStatus = this.userDataService.userStatusFromId(this.user.statusUserId);
     }
 
-    this._tryGetAvatar(this.user.id);
+    this.tryGetAvatar(this.user.id);
   }
 
-  private _tryGetAvatar(userId: number | undefined) {
+  private tryGetAvatar(userId: number | undefined) {
     if (!userId) return;
     this.userDataService.getUserAvatar(userId).subscribe({
       next: (response: string) => {

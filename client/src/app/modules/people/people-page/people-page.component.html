@@ -1,71 +1,91 @@
-<h2>Поиск людей</h2>
-<!-- <form [formGroup]="form">
-  <mat-form-field appearance="fill" *ngIf="isFiltersUse">
-    <mat-label>Школа (институт)</mat-label>
-    <input
-      type="text"
-      matInput
-      formControlName="school"
-      [matAutocomplete]="auto"
-      ngDefaultControl
-      (ngModelChange)="onSelect($event)"
-    />
-    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFunction">
-      <mat-option *ngFor="let s of filteredSchools | async" [value]="s">
-        {{ s.title }}
-      </mat-option>
-    </mat-autocomplete>
-  </mat-form-field>
-
-  <mat-form-field appearance="fill" *ngIf="isFiltersUse">
-    <mat-label>Образовательная программа</mat-label>
-    <input
-      type="text"
-      matInput
-      formControlName="faculty"
-      [matAutocomplete]="auto"
-      ngDefaultControl
-      (ngModelChange)="onSelect($event)"
-    />
-    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFunction">
-      <mat-option *ngFor="let f of filteredFaculties | async" [value]="f">
-        {{ f.title }}
-      </mat-option>
-    </mat-autocomplete>
-  </mat-form-field>
-
-  <mat-form-field appearance="fill" *ngIf="isFiltersUse">
-    <mat-label>Курс</mat-label>
-    <input
-      type="text"
-      matInput
-      [matAutocomplete]="auto"
-      formControlName="course"
-      ngDefaultControl
-      (ngModelChange)="onSelect($event)"
-    />
-    <mat-autocomplete #auto="matAutocomplete">
-      <mat-option *ngFor="let c of courses" [value]="c">{{ c }}</mat-option>
-    </mat-autocomplete>
-  </mat-form-field>
-  <button
-    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-    (click)="onUseFiltersClick()"
+<mat-drawer-container 
+  class="min-h-screen" 
+  hasBackdrop="false" 
   >
-    {{ filtersButtonText }}
-  </button>
-</form>
-<div *ngIf="users$ as users">
-  <div *ngFor="let user of users" class="friend">
-    <button (click)="openUserProfile(user)">
-      <img [src]="user.avatarPath" alt="Фото друга 1" />
-    </button>
-    <span>{{
-      user.statusUser + ": " + user.firstName + " " + user.lastName
-    }}</span>
-  </div>
-</div> -->
+  <mat-drawer 
+    opened 
+    disableClose="true" 
+    mode="push" 
+    class="form-container p-5"
+    >
+      <h2>Поиск людей</h2>
+      <form class="form" [formGroup]="form">
+        <mat-form-field appearance="fill" class="mt-2">
+          <mat-label>Возраст</mat-label>
+          <input matInput type="text" formControlName="age" placeholder="18" />
+          <mat-error *ngIf="age?.invalid && (age?.dirty || age?.touched)">{{ ageErrorMessage }}</mat-error>
+        </mat-form-field>
 
-<div class="user-list">
-  <app-user *ngFor="let user of users" [user]="user"></app-user>  
-</div>
+        <mat-form-field appearance="fill" class="mt-2">
+          <mat-label>Статус</mat-label>
+          <mat-select formControlName="userStatus">
+            <mat-option>Нет</mat-option>
+            <mat-option value=1>Студент</mat-option>
+            <mat-option value=2>Преподаватель</mat-option>
+            <mat-option value=3>Другое</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="mt-2">
+          <mat-label>Уровень образования</mat-label>
+          <mat-select formControlName="educationLevel">
+            <mat-option>Нет</mat-option>
+            <mat-option value=1>Бакалавриат</mat-option>
+            <mat-option value=2>Магистратура</mat-option>
+            <mat-option value=3>Специалитет</mat-option>
+            <mat-option value=4>Другое</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="mt-2">
+          <mat-label>Год поступления</mat-label>
+          <input matInput type="text" formControlName="admissionYear" placeholder="2019" />
+          <mat-error *ngIf="admissionYear?.invalid 
+            && (admissionYear?.dirty || admissionYear?.touched)"
+            >
+            {{ admissionYearErrorMessage }}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="mt-2">
+          <mat-label>Школа (институт)</mat-label>
+          <input type="text" matInput formControlName="school" [matAutocomplete]="autoSchools">
+          <mat-autocomplete 
+            #autoSchools="matAutocomplete" 
+            [displayWith]="displayFunctionSchool"
+            >
+            <mat-option *ngFor="let school of filteredSchools | async" [value]="school">
+              {{ school.title }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="mt-2">
+          <mat-label>Направление подготовки</mat-label>
+          <input type="text" matInput formControlName="faculty" [matAutocomplete]="autoFaculties">
+          <mat-autocomplete 
+            #autoFaculties="matAutocomplete"
+            [displayWith]="displayFunctionFaculty" 
+          >
+            <mat-option *ngFor="let faculty of filteredFaculties | async" [value]="faculty">
+              {{ faculty.title }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+
+        <mat-chip-listbox multiple *ngIf="!interestsLoading" formControlName="interestsChips">
+          <mat-chip-option *ngFor="let interest of interests">
+            {{ interest.title }}
+          </mat-chip-option>
+        </mat-chip-listbox>
+
+        <div *ngIf="interestsLoading" class="spinner"><mat-spinner></mat-spinner></div>
+      </form>
+
+  </mat-drawer>
+  <div>
+    <app-user *ngFor="let user of users" [user]="user"></app-user>
+    <div *ngIf="usersLoading" class="spinner"><mat-spinner></mat-spinner></div>
+    <div *ngIf="usersEnd && !usersLoading" class="text-center">🏄‍♀️ Людей нет, попробуйте изменить фильтры</div>
+  </div>
+</mat-drawer-container>

@@ -22,6 +22,7 @@ export interface IUser {
   studyProgramId?: number;
   schoolId?: number;
   interests?: number[];
+  interestIds?: string;
   isAdmin?: boolean;
   personalData?: IPersonalData;
   telegram?: string,

@@ -11,8 +11,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { UserComponent } from './user/user.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatBadgeModule } from '@angular/material/badge';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   declarations: [PeoplePageComponent, UserComponent],
@@ -21,14 +22,17 @@ import { MatBadgeModule } from '@angular/material/badge';
     PeopleRoutingModule,
     MatInputModule,
     FormsModule,
+    ReactiveFormsModule,
     MatAutocompleteModule,
     ReactiveFormsModule,
     MatSidenavModule,
     MatButtonModule,
     MatCardModule,
     MatChipsModule,
+    MatProgressSpinnerModule,
     MatDividerModule,
-    MatBadgeModule,
+    MatAutocompleteModule,
+    MatSelectModule,
   ],
 })
 export class PeopleModule {}

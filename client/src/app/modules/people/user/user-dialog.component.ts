@@ -71,7 +71,7 @@ export class UserDialog implements OnInit {
     const interests$: Observable<IInterest[]>[] = []
     if (this.data.user.interests) {
       this.data.user.interests
-        .forEach(interestId => interests$.push(this.userDataService.getInterestById(interestId)));
+        .forEach((interestId) => interests$.push(this.userDataService.getInterestById(interestId)));
     }
 
     this.loading = true;

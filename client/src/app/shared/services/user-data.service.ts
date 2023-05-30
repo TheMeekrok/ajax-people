@@ -48,8 +48,37 @@ export class UserDataService {
       .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
   }
 
-  getUsers(): Observable<IUser[]> {
-    return this.http.get<IUser[]>("/api/users")
+  getUsers(items: number, page: number, usersFilter: IUser): Observable<IUser[]> {
+    let params = new HttpParams;
+
+    params = params.set('items', items);
+    params = params.set('page', page);
+
+    if (usersFilter.age) { 
+      params = params.set('age', usersFilter.age); 
+    }
+    if (usersFilter.statusUserId) { 
+      params = params.set('statusUserId', usersFilter.statusUserId);
+    }
+    if (usersFilter.educationLevelId) {
+      params = params.set('educationLevelId', usersFilter.educationLevelId);
+    }
+    if (usersFilter.admissionYear) {
+      params = params.set('admissionYear', usersFilter.admissionYear);
+    }
+    if (usersFilter.schoolId) { 
+      params = params.set('schoolId', usersFilter.schoolId);
+    }
+    if (usersFilter.studyProgramId) { 
+      params = params.set('studyProgramId', usersFilter.studyProgramId);
+    }
+    if (usersFilter.interestIds) { 
+      params = params.set('interests', usersFilter.interestIds);
+    }
+
+    console.log(`/api/users?${params.toString()}`)
+
+    return this.http.get<IUser[]>('/api/users', { params })
       .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
   }
 
