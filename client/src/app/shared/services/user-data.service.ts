@@ -73,7 +73,7 @@ export class UserDataService {
       params = params.set('studyProgramId', usersFilter.studyProgramId);
     }
     if (usersFilter.interestIds) { 
-      params = params.set('interests', usersFilter.interestIds);
+      params = params.set('interestsIds', usersFilter.interestIds);
     }
 
     console.log(`/api/users?${params.toString()}`)
