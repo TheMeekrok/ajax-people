@@ -132,12 +132,12 @@ func (h *Handler) selectUsers(c *gin.Context) {
 	input.Age, _ = strconv.Atoi(c.Query("age"))
 	input.FirstName = c.Query("firstName")
 	input.LastName = c.Query("lastName")
-	input.StatusUserId, _ = strconv.Atoi(c.Query("statusUser"))
-	input.EducationLevelId, _ = strconv.Atoi(c.Query("educationLevel"))
+	input.StatusUserId, _ = strconv.Atoi(c.Query("statusUserId"))
+	input.EducationLevelId, _ = strconv.Atoi(c.Query("educationLevelId"))
 	input.SchoolId, _ = strconv.Atoi(c.Query("schoolId"))
 	input.AdmissionYear, _ = strconv.Atoi(c.Query("admissionYear"))
 	input.GraduationYear, _ = strconv.Atoi(c.Query("graduationYear"))
-	interests := strings.Split(c.Query("idInterests"), `,`)
+	interests := strings.Split(c.Query("interests"), `,`)
 	for _, s := range interests {
 		num, err := strconv.Atoi(s)
 		if err == nil {

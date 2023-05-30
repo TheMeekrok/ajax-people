@@ -283,8 +283,13 @@ func (r *UserActionPostgres) SelectedDataUser(userSelect user.UpdateUserInput, i
 		flag = true
 	}
 
+	var setInterestsQuery string
+
 	if flag {
-		setInterestsQuery := " AND ("
+		if setQuery != "" {
+			setInterestsQuery += " AND "
+		}
+		setInterestsQuery += "("
 		setInterestsQuery += strings.Join(setInterests, " OR ")
 		setInterestsQuery += ")"
 		setQuery += setInterestsQuery
@@ -303,6 +308,7 @@ func (r *UserActionPostgres) SelectedDataUser(userSelect user.UpdateUserInput, i
                                 WHERE is_verificated = true AND %s`, userTable, usersInterests, interestsTable, setQuery)
 	}
 
+	fmt.Println(query)
 	if err := r.db.Select(&userList, query, args...); err != nil {
 		return nil, err
 	}
