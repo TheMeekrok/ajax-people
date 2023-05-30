@@ -308,7 +308,6 @@ func (r *UserActionPostgres) SelectedDataUser(userSelect user.UpdateUserInput, i
                                 WHERE is_verificated = true AND %s`, userTable, usersInterests, interestsTable, setQuery)
 	}
 
-	fmt.Println(query)
 	if err := r.db.Select(&userList, query, args...); err != nil {
 		return nil, err
 	}

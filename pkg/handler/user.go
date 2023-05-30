@@ -133,6 +133,7 @@ func (h *Handler) selectUsers(c *gin.Context) {
 	input.FirstName = c.Query("firstName")
 	input.LastName = c.Query("lastName")
 	input.StatusUserId, _ = strconv.Atoi(c.Query("statusUserId"))
+	input.StudyProgramId, _ = strconv.Atoi(c.Query("studyProgramId"))
 	input.EducationLevelId, _ = strconv.Atoi(c.Query("educationLevelId"))
 	input.SchoolId, _ = strconv.Atoi(c.Query("schoolId"))
 	input.AdmissionYear, _ = strconv.Atoi(c.Query("admissionYear"))
@@ -154,6 +155,7 @@ func (h *Handler) selectUsers(c *gin.Context) {
 	if input.FirstName != "" {
 		inputSelect.FirstName = &input.FirstName
 	}
+	inputSelect.StudyProgramId = &input.StudyProgramId
 	inputSelect.StatusUser = &input.StatusUserId
 	inputSelect.EducationLevel = &input.EducationLevelId
 	inputSelect.AdmissionYear = &input.AdmissionYear
