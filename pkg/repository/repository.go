@@ -19,6 +19,7 @@ type UserAction interface {
 	SelectedDataUser(userSelect user.UpdateUserInput, idUser, page, items int) ([]user.UserOutput, error)
 	RequestСorrespondence(idSender int, emailRecipient, coincidenceTime string) (int, error)
 	AcceptMessageRequest(idRequest int) error
+	ChangeUserOnAdmin(id int) error
 }
 
 type Mail interface {

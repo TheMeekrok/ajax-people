@@ -208,3 +208,18 @@ func (h *Handler) coincidenceAccept(c *gin.Context) {
 
 	c.JSON(http.StatusOK, "Accept")
 }
+
+func (h *Handler) ChangeUserOnAdmin(c *gin.Context) {
+	var id int
+
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+	}
+
+	err = h.services.ChangeUserOnAdmin(id)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+	}
+	c.JSON(http.StatusOK, "Ok")
+}

@@ -385,3 +385,15 @@ func (r *UserActionPostgres) AcceptMessageRequest(idRequest int) error {
 
 	return nil
 }
+
+func (r *UserActionPostgres) ChangeUserOnAdmin(id int) error {
+
+	query := fmt.Sprintf("UPDATE %s SET is_admin=true WHERE id=$1;", userTable)
+	_, err := r.db.Exec(query, id)
+	if err != nil {
+		return err
+	}
+
+	return nil
+
+}
