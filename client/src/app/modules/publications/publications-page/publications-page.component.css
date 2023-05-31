@@ -1,6 +1,17 @@
-.filter-place {
+.posts-spinner {
+  margin: auto;
 }
 
 .tags {
-  max-width: 50px;
+  max-width: 100px;
+}
+
+mat-drawer {
+  overflow: auto;
+  margin-top: 75px;
+  width: 280px;
+}
+
+.big {
+  height: 1000px;
 }

@@ -16,6 +16,7 @@ import { MatSidenavModule } from "@angular/material/sidenav";
 import { PostComponent } from "./post/post.component";
 import { MatListModule } from "@angular/material/list";
 import { FullPostComponent } from "./full-post/full-post.component";
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 
 
 @NgModule({
@@ -25,20 +26,21 @@ import { FullPostComponent } from "./full-post/full-post.component";
     PublicationsPageComponent,
     FullPostComponent
   ],
-  imports: [
-    CommonModule,
-    PublicationsRoutingModule,
-    MatInputModule,
-    FormsModule,
-    MatDialogModule,
-    MatButtonModule,
-    MatIconModule,
-    MatCardModule,
-    ReactiveFormsModule,
-    MatChipsModule,
-    MatPaginatorModule,
-    MatSidenavModule,
-    MatListModule,
-  ]
+    imports: [
+        CommonModule,
+        PublicationsRoutingModule,
+        MatInputModule,
+        FormsModule,
+        MatDialogModule,
+        MatButtonModule,
+        MatIconModule,
+        MatCardModule,
+        ReactiveFormsModule,
+        MatChipsModule,
+        MatPaginatorModule,
+        MatSidenavModule,
+        MatListModule,
+        MatProgressSpinnerModule,
+    ]
 })
 export class PublicationsModule { }

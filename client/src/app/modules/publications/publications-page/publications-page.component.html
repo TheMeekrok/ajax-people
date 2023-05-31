@@ -4,9 +4,9 @@
   <title>Посты</title>
 </head>
   <body>
-  <mat-drawer-container class="example-container" autosize>
-    <mat-drawer #drawer class="example-sidenav" mode="side">
-      <div class="filter-place">
+  <mat-drawer-container class="big">
+    <mat-drawer fxFlex #drawer mode="side">
+      <div>
         <h3>Выберите фильтры</h3>
         <button
           mat-raised-button color="primary"
@@ -15,13 +15,14 @@
           {{orderBy ? "Сначала новые" : "Сначала старые"}}
         </button>
         <h3>Тэги</h3>
-        <mat-chip-listbox class="tags mat-mdc-chip-set-stacked" multiple [(ngModel)]="selectedChips" (ngModelChange)="onFilterTagsChange()">
-          <mat-chip-option *ngFor="let t of tags" [value]="t">
+        <mat-chip-listbox class="tags mat-mdc-chip-set-stacked filter-place" multiple [(ngModel)]="selectedChips" (ngModelChange)="onFilterTagsChange()">
+          <mat-chip-option class="tag" *ngFor="let t of tags" [value]="t">
             {{ t.title }}
           </mat-chip-option>
         </mat-chip-listbox>
       </div>
     </mat-drawer>
+
     <div class="example-sidenav-content">
       <button
         mat-raised-button color="primary"
@@ -35,6 +36,8 @@
       >
         Создать пост
       </button>
+      <mat-spinner class="posts-spinner"  *ngIf="loading"></mat-spinner>
+
       <h3 *ngIf="areThereAnyPosts">
         По данному запросу не найдено ни одного поста
       </h3>
@@ -42,7 +45,6 @@
                 [post]="post">
       </app-post>
     </div>
-
   </mat-drawer-container>
   <mat-paginator
     [pageSize]="5"

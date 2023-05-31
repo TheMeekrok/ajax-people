@@ -7,7 +7,6 @@ import { IInterest } from "../models/Interest";
 import { defaultResponseDelay, defaultRetryRate } from "./servicesConfig";
 import { ErrorMessage } from "./ErrorsEnum";
 import { Tag } from "../models/Tag";
-import { User } from "../models/User";
 
 @Injectable({
   providedIn: 'root'
@@ -41,7 +40,7 @@ export class PostService {
     if (tags && tags.length) {
       parameter = parameter.set('tags', this.tagsToString(tags))
     }
-    return this.http.get<IPost[]>('/api/posts/', {params: parameter})
+    return this.http.get<IPost[]>('/api/posts', {params: parameter})
       .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
   }
 
@@ -60,7 +59,7 @@ export class PostService {
     if (tags.length) {
       parameters = parameters.set('tags', this.tagsToString(tags));
     }
-    return this.http.get<IPost[]>('/api/posts/', {params: parameters})
+    return this.http.get<IPost[]>('/api/posts', {params: parameters})
       .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
   }
 
@@ -69,15 +68,7 @@ export class PostService {
    * @param id - id пользователя
    */
   getUserById(id: number): Observable<IUser> {
-    return this.http.get<IUser>('/api/users/' + id)
-      .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
-  }
-
-  /**
-   * Метод для получения всех интересов
-   */
-  getInterests(): Observable<IInterest[]> {
-    return this.http.get<IInterest[]>('api/register-data/interests')
+    return this.http.get<IUser>('/api/users', {params: new HttpParams().set('id', id)})
       .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
   }
 
@@ -130,10 +121,7 @@ export class PostService {
       tags: post.tags.map(i => i.id)
     }
     return this.http
-      .post<string>(
-        `api/posts/`,
-        JSON.stringify(body)
-      ).pipe(
+      .post<string>(`api/posts/`, body).pipe(
         delay(defaultResponseDelay),
         catchError(this._handleError),
       );

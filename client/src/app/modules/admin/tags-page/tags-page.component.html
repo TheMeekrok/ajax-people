@@ -1,0 +1,28 @@
+<h3>Тэги</h3>
+
+<form class="create-tag-form" [formGroup]="form">
+  <mat-form-field class="example-full-width">
+    <mat-label>Новый тэг</mat-label>
+    <input formControlName="newTag" matInput placeholder="Программирование на GoLang">
+    <mat-error>
+      {{ getTagErrorMessage }}
+    </mat-error>
+  </mat-form-field>
+  <div>
+    <button
+      mat-raised-button color="primary"
+      class="create-tag-btn"
+      (click)="onCreateTagClick()">
+      Сохранить
+    </button>
+  </div>
+
+
+</form>
+
+<mat-spinner class="tags-spinner" *ngIf="loading"></mat-spinner>
+
+<app-tag *ngFor="let tag of tags" [tag]="tag"></app-tag>
+
+
+

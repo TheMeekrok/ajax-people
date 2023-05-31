@@ -21,8 +21,10 @@ export class FullPostComponent implements OnInit{
 
   ngOnInit(): void {
     this.dataService.getUserById(this.post.userId).subscribe(result => {
-      this.author = result.firstName + " " + result.lastName
-      console.log(result)
+      console.log("2222");
+      console.log(result);
+      this.author = result.firstName + " " + result.lastName;
+      this.post.author = result.firstName + " " + result.lastName;
     });
   }
   onCloseClick() {

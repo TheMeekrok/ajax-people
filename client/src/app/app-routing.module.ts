@@ -39,9 +39,14 @@ const routes: Routes = [
           .then(m => m.PublicationsModule)
       },
       {
+        path: 'admin',
+        loadChildren: () => import('./modules/admin/admin.module')
+          .then(m => m.AdminModule)
+      },
+      {
         path: '**',
         component: NotFoundComponent,
-      }
+      },
     ],
   },
   ];
