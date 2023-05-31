@@ -47,6 +47,7 @@ type Post interface {
 	GetTagById(id int) (user.Tag, error)
 	GetAllTags() ([]user.Tag, error)
 	DeleteTag(id int) error
+	GetPostByPageNoModer(page int, items int) ([]user.Post, error)
 }
 
 type Uploader interface {

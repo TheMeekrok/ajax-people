@@ -209,7 +209,7 @@ func (h *Handler) coincidenceAccept(c *gin.Context) {
 	c.JSON(http.StatusOK, "Accept")
 }
 
-func (h *Handler) ChangeUserOnAdmin(c *gin.Context) {
+func (h *Handler) changeUserOnAdmin(c *gin.Context) {
 	var id int
 
 	id, err := strconv.Atoi(c.Param("id"))
@@ -222,4 +222,12 @@ func (h *Handler) ChangeUserOnAdmin(c *gin.Context) {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 	}
 	c.JSON(http.StatusOK, "Ok")
+}
+
+func (h *Handler) getId(c *gin.Context) {
+	userId, _, _, _ := getJWT(h, c)
+
+	c.JSON(http.StatusOK, map[string]interface{}{
+		"id": userId,
+	})
 }
