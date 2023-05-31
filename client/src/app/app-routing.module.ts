@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomePageLayoutComponent } from "./shared/layouts/home-page-layout/home-page-layout.component";
 import { MainLayoutComponent } from "./shared/layouts/main-layout/main-layout.component";
+import { NotFoundComponent } from './components/not-found/not-found.component';
 
 const routes: Routes = [
   {
@@ -27,7 +28,7 @@ const routes: Routes = [
           .then(m => m.PeopleModule)
       },
       {
-        path: 'profile/:id',
+        path: 'profile',
         pathMatch: 'full',
         loadChildren: () => import('./modules/profile/profile.module')
           .then(m => m.ProfileModule)
@@ -37,7 +38,11 @@ const routes: Routes = [
         loadChildren: () => import('./modules/publications/publications.module')
           .then(m => m.PublicationsModule)
       },
-    ]
+      {
+        path: '**',
+        component: NotFoundComponent,
+      }
+    ],
   },
   ];
 
