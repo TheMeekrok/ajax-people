@@ -20,6 +20,7 @@ type UserAction interface {
 	SelectedDataUser(userSelect user.UpdateUserInput, idUser, page, items int) ([]user.UserOutput, error)
 	RequestСorrespondence(idSender int, emailRecipient string) (int, error)
 	AcceptMessageRequest(idRequest int) error
+	ChangeUserOnAdmin(id int) error
 }
 
 type RegisterData interface {
@@ -46,6 +47,7 @@ type Post interface {
 	GetTagById(id int) (user.Tag, error)
 	GetAllTags() ([]user.Tag, error)
 	DeleteTag(id int) error
+	GetPostByPageNoModer(page int, items int) ([]user.Post, error)
 }
 
 type Uploader interface {

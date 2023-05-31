@@ -4,6 +4,7 @@ import (
 	user "backend_ajax-people"
 	"fmt"
 	"github.com/jmoiron/sqlx"
+	"github.com/sirupsen/logrus"
 	"strconv"
 	"strings"
 )
@@ -154,10 +155,17 @@ func (r *UserActionPostgres) UpdateUser(id int, user user.UpdateUserInput) error
 		args = append(args, *user.AvatarPath)
 		argId++
 	}
+	// отчистка интресов для новых
+	if len(user.IdsInterests) > 0 {
+		query := fmt.Sprintf(`DELETE FROM %s WHERE user_id=$1`, usersInterests)
+		_, err := r.db.Exec(query, id)
+		if err != nil {
+			logrus.Println("trublllll")
+		}
+	}
 
 	// добавление интересов
 	var plug int
-
 	for i := 0; i < len(user.IdsInterests); i++ {
 
 		var interestExists bool
@@ -168,7 +176,6 @@ func (r *UserActionPostgres) UpdateUser(id int, user user.UpdateUserInput) error
 		}
 
 		query = fmt.Sprintf("INSERT INTO %s (user_id, interest_id) values ($1, $2) RETURNING id", usersInterests)
-
 		row := r.db.QueryRow(query, id, user.IdsInterests[i])
 		if err := row.Scan(&plug); err != nil {
 			return err
@@ -384,4 +391,16 @@ func (r *UserActionPostgres) AcceptMessageRequest(idRequest int) error {
 	}
 
 	return nil
+}
+
+func (r *UserActionPostgres) ChangeUserOnAdmin(id int) error {
+
+	query := fmt.Sprintf("UPDATE %s SET is_admin=true WHERE id=$1;", userTable)
+	_, err := r.db.Exec(query, id)
+	if err != nil {
+		return err
+	}
+
+	return nil
+
 }

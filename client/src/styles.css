@@ -80,7 +80,7 @@ li {
 }
 
 .wrapper-v {
-  min-height: calc(100vh - var(--footer-height));
+  min-height: calc(100vh - 70px - var(--footer-height));
 }
 
 .wrapper-h {

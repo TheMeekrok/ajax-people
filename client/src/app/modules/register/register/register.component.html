@@ -1,20 +1,22 @@
-<app-register-user 
-  *ngIf="registerState === RegisterState.REGISTER_USER" 
-  (userIdEventEmitter)="onRegisterSuccess($event)"
+<div>
+  <app-register-user 
+    *ngIf="registerState === RegisterState.REGISTER_USER" 
+    (userIdEventEmitter)="onRegisterSuccess($event)"
+    >
+  </app-register-user>
+
+  <app-register-profile-info
+    *ngIf="registerState === RegisterState.REGISTER_PROFILE_INFO"
+    [userId]="userId"
+    (continueRegister)="registerState = RegisterState.REGISTER_INTERESTS"
+    >
+  </app-register-profile-info>
+
+  <!-- <app-register-profile-info></app-register-profile-info> -->
+
+  <app-register-interests
+    *ngIf="registerState === RegisterState.REGISTER_INTERESTS"
+    [userId]="userId"
   >
-</app-register-user>
-
-<app-register-profile-info
-  *ngIf="registerState === RegisterState.REGISTER_PROFILE_INFO"
-  [userId]="userId"
-  (continueRegister)="registerState = RegisterState.REGISTER_INTERESTS"
-  >
-</app-register-profile-info>
-
-<!-- <app-register-profile-info></app-register-profile-info> -->
-
-<app-register-interests
-  *ngIf="registerState === RegisterState.REGISTER_INTERESTS"
-  [userId]="userId"
->
-</app-register-interests>
+  </app-register-interests>
+</div>

@@ -138,7 +138,7 @@ func (h *Handler) selectUsers(c *gin.Context) {
 	input.SchoolId, _ = strconv.Atoi(c.Query("schoolId"))
 	input.AdmissionYear, _ = strconv.Atoi(c.Query("admissionYear"))
 	input.GraduationYear, _ = strconv.Atoi(c.Query("graduationYear"))
-	interests := strings.Split(c.Query("interests"), `,`)
+	interests := strings.Split(c.Query("interestsIds"), `,`)
 	for _, s := range interests {
 		num, err := strconv.Atoi(s)
 		if err == nil {
@@ -207,4 +207,27 @@ func (h *Handler) coincidenceAccept(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, "Accept")
+}
+
+func (h *Handler) changeUserOnAdmin(c *gin.Context) {
+	var id int
+
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+	}
+
+	err = h.services.ChangeUserOnAdmin(id)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+	}
+	c.JSON(http.StatusOK, "Ok")
+}
+
+func (h *Handler) getId(c *gin.Context) {
+	userId, _, _, _ := getJWT(h, c)
+
+	c.JSON(http.StatusOK, map[string]interface{}{
+		"id": userId,
+	})
 }

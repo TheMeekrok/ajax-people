@@ -19,6 +19,7 @@ type UserAction interface {
 	SelectedDataUser(userSelect user.UpdateUserInput, idUser, page, items int) ([]user.UserOutput, error)
 	RequestСorrespondence(idSender int, emailRecipient, coincidenceTime string) (int, error)
 	AcceptMessageRequest(idRequest int) error
+	ChangeUserOnAdmin(id int) error
 }
 
 type Mail interface {
@@ -36,6 +37,7 @@ type Post interface {
 	CreatePost(post user.Post, tags []int, isAdmin bool) (int, error)
 	GetPostById(id int) (user.Post, error)
 	GetPostByPage(filter user.PostFilter, page int, items int, isAdmin bool, idUser int) ([]user.Post, error)
+	GetPostByPageNoModer(page int, items int) ([]user.Post, error)
 	GetAllPosts(filter user.PostFilter, isAdmin bool, idUser int) ([]user.Post, error)
 	UpdatePost(id int, isModerated bool) error
 	DeletePost(id int) error

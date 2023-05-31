@@ -80,12 +80,23 @@
         </mat-chip-listbox>
 
         <div *ngIf="interestsLoading" class="spinner"><mat-spinner></mat-spinner></div>
-      </form>
 
+        <button 
+          type="submit"
+          class="mt-2"
+          mat-raised-button 
+          color="primary"
+          [disabled]="usersLoading || form.invalid"
+          (click)="onFilterButtonClick()"
+        >
+        Показать</button>
+      </form>
   </mat-drawer>
   <div>
     <app-user *ngFor="let user of users" [user]="user"></app-user>
     <div *ngIf="usersLoading" class="spinner"><mat-spinner></mat-spinner></div>
-    <div *ngIf="usersEnd && !usersLoading" class="text-center">🏄‍♀️ Людей нет, попробуйте изменить фильтры</div>
+    <div *ngIf="users.length === 0 && !usersLoading" class="text-center">
+      🏄‍♀️ Людей нет, попробуйте изменить фильтры
+    </div>
   </div>
 </mat-drawer-container>

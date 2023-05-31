@@ -17,6 +17,8 @@ import { LoginModule } from './modules/login/login.module';
 import localeRu from "@angular/common/locales/ru";
 import { SuccessPostComponent } from './modules/publications/success-post/success-post.component';
 import { MatButtonModule } from "@angular/material/button";
+import { NotFoundComponent } from './not-found/not-found.component';
+
 
 registerLocaleData(localeRu, 'ru');
 
@@ -27,6 +29,7 @@ registerLocaleData(localeRu, 'ru');
     HomePageLayoutComponent,
     MainLayoutComponent,
     SuccessPostComponent,
+    NotFoundComponent,
   ],
   imports: [
     BrowserModule,

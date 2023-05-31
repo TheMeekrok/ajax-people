@@ -37,17 +37,6 @@ export class PeoplePageComponent implements OnInit {
     this.initLists();
     this.initInterests();
     this.getUsers(this.currentPage);
-
-    merge(
-      ...Object.keys(this.form.controls).map(
-        (controlName: string) =>
-          this.form.get(controlName)?.valueChanges.pipe(
-            tap((value) => { 
-              this.filterUsers(controlName, value);
-            })
-          )
-      )
-    ).subscribe();
   }
 
   @HostListener("window:scroll", [])
@@ -120,47 +109,35 @@ export class PeoplePageComponent implements OnInit {
     });
   }
 
-  private filterUsers(controlName: string, value: any) {
+  onFilterButtonClick(): void {
     this.users = [];
     this.usersEnd = false;
     this.currentPage = 0;
 
-    switch (controlName) {
-      case 'interestsChips':
-        this.usersFilter.interestIds = this.selectInterests();
-        break;
-      case 'age':
-        this.usersFilter.age = Number(value);
-        break;
-      case 'admissionYear':
-        this.usersFilter.admissionYear = Number(value);
-        break;
-      case 'userStatus':
-        this.usersFilter.statusUserId = Number(value);
-        break;
-      case 'educationLevel':
-        this.usersFilter.educationLevelId = Number(value);
-        break;
-      case 'faculty':
-        this.usersFilter.studyProgramId = Number(value?.id | 0);
-        break;
-      case 'school':
-        this.usersFilter.schoolId = Number(value?.id | 0);
-        break;
+    this.usersFilter = {
+      age: Number(this.age?.value),
+      statusUserId: Number(this.status?.value),
+      educationLevelId: Number(this.educationLevel?.value), 
+      admissionYear: Number(this.admissionYear?.value),
+      schoolId: Number(this.school?.value?.id),
+      studyProgramId: Number(this.faculty?.value?.id),
+      interestIds: this.selectInterests(),
     }
 
     this.getUsers(this.currentPage);
   }
 
   private getUsers(page: number) {
+    if (this.usersEnd) {
+      return;
+    }
+
     this.usersLoading = true;
 
     this.userDataService.getUsers(5, page, this.usersFilter).subscribe({
       next: (result: IUser[]) => {
-        console.log(result)
         if (!result || result.length == 0) {
           this.usersEnd = true;
-          console.log(this.usersEnd);
           return;
         }
         this.users = this.users.concat(result);

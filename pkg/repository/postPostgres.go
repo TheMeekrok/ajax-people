@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/jmoiron/sqlx"
+	"github.com/sirupsen/logrus"
 	"strings"
 	"time"
 )
@@ -80,6 +81,56 @@ func (r *PostPostgres) GetPostById(id int) (user.Post, error) {
 }
 
 var orderTypesSql = []string{"DESC", "ASC"}
+
+func (r *PostPostgres) GetPostByPageNoModer(page int, items int) ([]user.Post, error) {
+	var postListPage []user.Post
+
+	orderType := orderTypesSql[0]
+	addQuery := ""
+	isModer := ""
+
+	query := fmt.Sprintf(
+		`SELECT DISTINCT po.id, po.user_id, po.text, po.is_moderated, po.publication_time FROM %s po
+    					JOIN %s pt ON po.id = pt.post_id %s %s WHERE po.is_moderated=false ORDER BY publication_time %s ;`,
+		postsTable, postsTagsTable, addQuery, isModer, orderType)
+
+	var postsList []user.Post
+	if err := r.db.Select(&postsList, query); err != nil {
+		return nil, err
+	}
+
+	for i := 0; i < len(postsList); i++ {
+		var tagsList []user.Tag
+		tagsQuery := fmt.Sprintf(
+			"SELECT id, title FROM %s WHERE id IN (SELECT tag_id FROM %s pst JOIN %s pt ON pst.id = pt.post_id WHERE pst.id = $1)",
+			tagsTable, postsTable, postsTagsTable)
+		err := r.db.Select(&tagsList, tagsQuery, postsList[i].Id)
+		if err != nil {
+			return postsList, err
+		}
+
+		postsList[i].Tags = tagsList
+	}
+
+	if page == -1 || items == 0 {
+		return postsList, nil
+	}
+
+	var lastItems int
+	if page*items+items-len(postsList) > 0 && items-((page*items)+items-len(postsList)) <= 0 {
+		return postListPage, nil
+	} else if page*items+items > len(postsList) {
+		lastItems = items - ((page * items) + items - len(postsList))
+	} else {
+		lastItems = items
+	}
+
+	for i := page * items; i < page*items+lastItems; i++ {
+		postListPage = append(postListPage, postsList[i])
+	}
+
+	return postListPage, nil
+}
 
 func (r *PostPostgres) GetPostByPage(filter user.PostFilter, page int, items int, isAdmin bool, idUser int) ([]user.Post, error) {
 	var postListPage []user.Post
@@ -209,6 +260,16 @@ func (r *PostPostgres) UpdatePost(id int, isModerated bool) error {
 func (r *PostPostgres) DeletePost(id int) error {
 	query := fmt.Sprintf("DELETE FROM %s WHERE id=$1", postsTable)
 	_, err := r.db.Exec(query, id)
+	if err != nil {
+		return err
+	}
+
+	query = fmt.Sprintf(`DELETE FROM %s WHERE user_id=$1`, usersInterests)
+	_, err = r.db.Exec(query, id)
+	if err != nil {
+		logrus.Println("trublllll")
+	}
+
 	return err
 }
 
