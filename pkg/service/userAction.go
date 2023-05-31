@@ -48,3 +48,7 @@ func (s *UserActionService) RequestСorrespondence(idSender int, emailRecipient 
 func (s *UserActionService) AcceptMessageRequest(idRequest int) error {
 	return s.repo.AcceptMessageRequest(idRequest)
 }
+
+func (s *UserActionService) ChangeUserOnAdmin(id int) error {
+	return s.repo.ChangeUserOnAdmin(id)
+}

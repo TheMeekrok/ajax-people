@@ -69,8 +69,6 @@ func (h *Handler) getPostsByPage(c *gin.Context) {
 		}
 	}
 
-	//fmt.Println(postPage, postQuantity, orderBy, tags)
-
 	postsList, err := h.services.GetPostByPage(filter, postPage-1, postQuantity, isAdmin, idUser)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
@@ -225,4 +223,20 @@ func (h *Handler) deleteTag(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, "OK")
+}
+
+func (h *Handler) getPostsNoModer(c *gin.Context) {
+	var postPage int
+	var postQuantity int
+
+	postPage, _ = strconv.Atoi(c.Query("page"))
+	postQuantity, _ = strconv.Atoi(c.Query("items"))
+
+	postsList, err := h.services.GetPostByPageNoModer(postPage-1, postQuantity)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, postsList)
 }

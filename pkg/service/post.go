@@ -33,6 +33,10 @@ func (s *PostService) GetPostByPage(filter user.PostFilter, page int, items int,
 	return s.repo.GetPostByPage(filter, page, items, isAdmin, idUser)
 }
 
+func (s *PostService) GetPostByPageNoModer(page int, items int) ([]user.Post, error) {
+	return s.repo.GetPostByPageNoModer(page, items)
+}
+
 func (s *PostService) GetAllPosts(filter user.PostFilter, isAdmin bool, idUser int) ([]user.Post, error) {
 	return s.repo.GetAllPosts(filter, isAdmin, idUser)
 }

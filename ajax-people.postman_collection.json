@@ -63,6 +63,14 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "Получение id пользователя под акком",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
 						}
 					]
 				},
@@ -484,64 +492,6 @@
 								}
 							},
 							"response": []
-						},
-						{
-							"name": "Модерирование поста ",
-							"request": {
-								"method": "PUT",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"isModerated\": true\n}"
-								},
-								"url": {
-									"raw": "http://localhost:8080/api/posts/:id",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "8080",
-									"path": [
-										"api",
-										"posts",
-										":id"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": null
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Удаление поста",
-							"request": {
-								"method": "DELETE",
-								"header": [],
-								"url": {
-									"raw": "http://localhost:8080/api/posts/:id",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "8080",
-									"path": [
-										"api",
-										"posts",
-										":id"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": null
-										}
-									]
-								}
-							},
-							"response": []
 						}
 					]
 				},
@@ -623,58 +573,6 @@
 								}
 							},
 							"response": []
-						},
-						{
-							"name": "Создание тэга",
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"title\":\"Название тэга\"\n}"
-								},
-								"url": {
-									"raw": "http://localhost:8080/api/tags/",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "8080",
-									"path": [
-										"api",
-										"tags",
-										""
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Удаление тэга",
-							"request": {
-								"method": "DELETE",
-								"header": [],
-								"url": {
-									"raw": "http://localhost:8080/api/tags/:id",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "8080",
-									"path": [
-										"api",
-										"tags",
-										":id"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": null
-										}
-									]
-								}
-							},
-							"response": []
 						}
 					]
 				},
@@ -708,6 +606,221 @@
 						}
 					},
 					"response": []
+				}
+			]
+		},
+		{
+			"name": "api-private",
+			"item": [
+				{
+					"name": "users",
+					"item": [
+						{
+							"name": "Делает админом пользователя",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api-private/users/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api-private",
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": null
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Удаляет пользователя",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api-private/users/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api-private",
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": null
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "tags",
+					"item": [
+						{
+							"name": "Создание тэга",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"title\":\"тэг\"\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8080/api-private/tags/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api-private",
+										"tags",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Удаление тэга",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api-private/tags/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api-private",
+										"tags",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": null
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "posts",
+					"item": [
+						{
+							"name": "Удаление поста",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api-private/posts/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api-private",
+										"posts",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": null
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Модерирование поста",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"isModerated\": true\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8080/api-private/posts/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api-private",
+										"posts",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": null
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Выборка постов которы не модерированы",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api-private/posts/?page=0&items=4",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api-private",
+										"posts",
+										""
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "0"
+										},
+										{
+											"key": "items",
+											"value": "4"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
 				}
 			]
 		},
@@ -754,7 +867,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"mail\":\"Почта@students.dvfu.ru\",\n    \"password\":\"Пароль\"\n}"
+					"raw": "{\n    \"mail\":\"Alex\",\n    \"password\":\"Alex\"\n}"
 				},
 				"url": {
 					"raw": "http://localhost:8080/sign-in",
