@@ -1,13 +1,29 @@
 mat-card {
-  width: 100ch;
+  width: 70vw;
+  margin: 300px;
+}
+.create-post-form {
+  padding: 10px;
+
 }
 
+.post-area {
+  height: 20vh;
+  font-size: 17px;
+  margin: 20px;
+}
 
-.text-input {
-  font-size: 1.5em;
-  padding: 1em;
-  resize: none;
-  width: 50vw;
-  min-height: 200px;
-  margin: 3px;
+.margin {
+  margin: 2px 15px;
+}
+.btn-margin {
+  margin: 15px;
+}
+.create-post-spinner {
+  margin: auto;
+}
+
+.mat-error {
+  margin: 2px 15px;
+  font-size: 15px;
 }

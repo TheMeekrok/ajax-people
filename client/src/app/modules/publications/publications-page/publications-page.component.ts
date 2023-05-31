@@ -66,8 +66,6 @@ export class PublicationsPageComponent implements OnInit  {
     this.postService.getCountPosts(this.selectedChips).subscribe(result => {
       this.postsCount = result.length;
     })
-
-
   }
 
   onCreatePostClick(): void {

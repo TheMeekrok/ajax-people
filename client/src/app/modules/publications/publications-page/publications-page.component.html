@@ -22,6 +22,7 @@
         </mat-chip-listbox>
       </div>
     </mat-drawer>
+
     <div class="example-sidenav-content">
       <button
         mat-raised-button color="primary"
@@ -35,6 +36,8 @@
       >
         Создать пост
       </button>
+      <mat-spinner class="posts-spinner"  *ngIf="loading"></mat-spinner>
+
       <h3 *ngIf="areThereAnyPosts">
         По данному запросу не найдено ни одного поста
       </h3>
@@ -43,7 +46,6 @@
       </app-post>
     </div>
   </mat-drawer-container>
-  <mat-spinner class="spinner"  *ngIf="loading"></mat-spinner>
   <mat-paginator
     [pageSize]="5"
     [pageIndex]="0"

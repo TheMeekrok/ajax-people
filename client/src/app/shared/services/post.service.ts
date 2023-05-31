@@ -7,8 +7,6 @@ import { IInterest } from "../models/Interest";
 import { defaultResponseDelay, defaultRetryRate } from "./servicesConfig";
 import { ErrorMessage } from "./ErrorsEnum";
 import { Tag } from "../models/Tag";
-import { User } from "../models/User";
-import { data } from "autoprefixer";
 
 @Injectable({
   providedIn: 'root'
@@ -42,7 +40,7 @@ export class PostService {
     if (tags && tags.length) {
       parameter = parameter.set('tags', this.tagsToString(tags))
     }
-    return this.http.get<IPost[]>('/api/posts/', {params: parameter})
+    return this.http.get<IPost[]>('/api/posts', {params: parameter})
       .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
   }
 
@@ -61,7 +59,7 @@ export class PostService {
     if (tags.length) {
       parameters = parameters.set('tags', this.tagsToString(tags));
     }
-    return this.http.get<IPost[]>('/api/posts/', {params: parameters})
+    return this.http.get<IPost[]>('/api/posts', {params: parameters})
       .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
   }
 

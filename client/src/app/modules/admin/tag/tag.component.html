@@ -1,0 +1,11 @@
+<mat-card class="tag">
+  <mat-card-header>
+    <mat-card-title>{{tag.title}}</mat-card-title>
+  </mat-card-header>
+  <mat-card-actions  style="margin-left: auto">
+  <button mat-mini-fab
+          color="warn"
+          class="delete-btn"
+          (click)="onDeleteTagClick()">x</button>
+  </mat-card-actions>
+</mat-card>

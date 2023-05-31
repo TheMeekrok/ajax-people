@@ -13,6 +13,7 @@ import { SuccessPostComponent } from "../success-post/success-post.component";
   styleUrls: ['./create-post.component.css']
 })
 export class CreatePostComponent {
+  loading: boolean = true;
   form: FormGroup;
   interests: IInterest[]
   isTagSelected: boolean
@@ -21,7 +22,7 @@ export class CreatePostComponent {
     private postService: PostService,
     public dialogRef: MatDialogRef<CreatePostComponent>,
     @Inject(MAT_DIALOG_DATA) public data: IPost,
-) {
+  ) {
     this.form = new FormGroup({
       text: new FormControl('',[
         Validators.required,
@@ -34,6 +35,7 @@ export class CreatePostComponent {
     this.postService.getTags().subscribe(
       data => {
         this.interests = data
+        this.loading = false;
       }
     )
   }
@@ -74,8 +76,5 @@ export class CreatePostComponent {
       this.dialogRef.close(this.data)
     }
     const dialogRef = this.dialog.open(SuccessPostComponent);
-
-    dialogRef.afterClosed().subscribe(result => {
-    });
   }
 }

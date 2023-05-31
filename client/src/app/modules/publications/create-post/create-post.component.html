@@ -1,26 +1,32 @@
-<form class="form" [formGroup]="form">
-  <mat-card>
+<form [formGroup]="form" class="create-post-form">
+  <mat-card class="margin">
     <mat-card-header>
       <mat-card-title>Написать пост</mat-card-title>
     </mat-card-header>
-    <mat-form-field [style.height.vh]='40' appearance="fill">
+    <mat-form-field class="post-area"  appearance="fill">
       <mat-label>Текст</mat-label>
-      <textarea class="text-input" matInput formControlName="text"></textarea>
+      <textarea
+                matInput
+                cdkTextareaAutosize
+                formControlName="text"></textarea>
       <mat-error>{{ getTextErrorString() }}</mat-error>
-    </mat-form-field>
+    </mat-form-field >
 
-      <h4>Выберите теги</h4>
-        <mat-chip-listbox  multiple="true" formControlName="tags">
+    <mat-spinner class="create-post-spinner" [diameter]="60" *ngIf="loading"></mat-spinner>
+
+    <h4 class="margin">Выберите теги</h4>
+        <mat-chip-listbox class="margin" multiple="true" formControlName="tags">
           <mat-chip-option *ngFor="let i of interests" [value]="i">{{i.title}}</mat-chip-option>
         </mat-chip-listbox>
-      <mat-error *ngIf="isTagSelected">Минимум 1 тег</mat-error>
-  </mat-card>
+      <mat-error  class="mat-error" *ngIf="isTagSelected">Минимум 1 тег</mat-error>
     <div>
       <button
+        class="btn-margin"
         mat-raised-button color="primary"
         (click)="onPostClick()"
       >
-        Post
+        Сохранить
       </button>
     </div>
+  </mat-card>
 </form>
