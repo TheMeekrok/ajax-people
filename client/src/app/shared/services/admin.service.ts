@@ -22,7 +22,6 @@ export class AdminService {
 
   deleteTag(id: number) {
     console.log(id);
-    let parameter = new HttpParams().set('id', id);
     return this.http.delete<string>('api-private/tags/' + id)
       .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
   }

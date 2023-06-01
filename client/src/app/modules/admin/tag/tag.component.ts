@@ -1,8 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Tag } from "../../../shared/models/Tag";
-import { AdminService } from "../../../shared/services/admin.service";
 import { MatDialog } from "@angular/material/dialog";
-import { SuccessCreateTagComponent } from "../success-create-tag/success-create-tag.component";
 import { ConfirmationDeleteTagComponent } from "../confirmation-delete-tag/confirmation-delete-tag.component";
 
 @Component({
@@ -13,14 +11,15 @@ import { ConfirmationDeleteTagComponent } from "../confirmation-delete-tag/confi
 
 export class TagComponent {
   @Input() tag: Tag;
-  constructor(private adminService: AdminService,
-              public dialog: MatDialog) {
-  }
+  @Output() answer = new EventEmitter<boolean>();
+  constructor(public dialog: MatDialog) {}
 
   onDeleteTagClick() {
     const dialogRef = this.dialog.open(ConfirmationDeleteTagComponent, {
       data: {title: this.tag.title}
     });
-    this.adminService.deleteTag(this.tag.id).subscribe();
+    dialogRef.afterClosed().subscribe(result => {
+      this.answer.emit(result.answer);
+    });
   }
 }
