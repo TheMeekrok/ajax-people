@@ -14,6 +14,9 @@ import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { AdminPageComponent } from './admin-page/admin-page.component';
 import { MatTabsModule } from "@angular/material/tabs";
 import { MatIconModule } from "@angular/material/icon";
+import { UnmoderatedPostComponent } from "./unmoderated-post/unmoderated-post.component";
+import { UnmoderatedPostsComponent } from "./unmoderated-posts/unmoderated-posts.component";
+import { PublicationsModule } from "../publications/publications.module";
 
 
 @NgModule({
@@ -22,7 +25,9 @@ import { MatIconModule } from "@angular/material/icon";
     TagComponent,
     SuccessCreateTagComponent,
     ConfirmationDeleteTagComponent,
-    AdminPageComponent
+    AdminPageComponent,
+    UnmoderatedPostsComponent,
+    UnmoderatedPostComponent
   ],
   imports: [
     CommonModule,
@@ -34,7 +39,8 @@ import { MatIconModule } from "@angular/material/icon";
     MatDialogModule,
     MatProgressSpinnerModule,
     MatTabsModule,
-    MatIconModule
+    MatIconModule,
+    PublicationsModule,
   ]
 })
 export class AdminModule { }

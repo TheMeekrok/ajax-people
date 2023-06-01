@@ -71,6 +71,7 @@ export class TagsPageComponent implements OnInit {
     this.adminService.createTag({title: newTag}).subscribe();
     const dialogRef = this.dialog.open(SuccessCreateTagComponent);
     dialogRef.afterClosed().subscribe();
+    this.form.reset();
     this.uploadTags();
   }
 
