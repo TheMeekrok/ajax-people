@@ -90,6 +90,11 @@ export class UserDataService {
       .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
   }
 
+  uploadUserAvatar(avatar: FormData): Observable<Object> {
+    return this.http.post('/api/avatar/upload', avatar)
+      .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
+  }
+
   userStatusFromId(id: number): string { return StatusUser[id]; }
 
   educationLevelFromId(id: number): string { return EducationLevel[id]; }

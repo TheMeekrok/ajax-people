@@ -29,6 +29,7 @@ export class ProfilePageComponent implements OnInit{
   }
 
   user: IUser = {};
+  avatarPath = '../../../../assets/user/default_avatar.svg';
 
   private tryGetCurrentUser() {
     this.loading = true;
@@ -37,9 +38,20 @@ export class ProfilePageComponent implements OnInit{
       next: (response: IUser) => { 
         this.user = response;
         this.initLists();
-        this.loading = false;
+        this.tryGetAvatar();
       },
+      complete: () => this.loading = false,
     });
+  }
+
+  tryGetAvatar() {
+    if (!this.user.id) return;
+
+    this.userDataService.getUserAvatar(this.user.id).subscribe({
+      next: (response: string) => {
+        if (response) this.avatarPath = `data:image/png;base64,${response}`
+      },
+    })
   }
 
   private faculties: IFaculty[] = [];

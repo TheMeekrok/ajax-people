@@ -3,30 +3,6 @@
 <div *ngIf="loading" class="spinner"><mat-spinner></mat-spinner></div>
 
 <div class="form-layout" [style.visibility]="loading ? 'hidden' : 'visible'">
-  <span class="avatar">
-    <img src="../../../../assets/user/default_avatar.svg" alt="" />
-    <span>
-      <form class="form" [formGroup]="form">
-        <mat-form-field>
-          <ngx-mat-file-input
-            placeholder="Прикрепите файл"
-          ></ngx-mat-file-input>
-          <mat-icon matSuffix></mat-icon>
-        </mat-form-field>
-
-        <button
-          type="submit"
-          mat-raised-button
-          color="primary"
-          [disabled]="form.invalid || loading"
-          (click)="onSubmitData()"
-        >
-          Сменить аватар
-        </button>
-      </form>
-    </span>
-  </span>
-
   <div class="form-layout-inner">
     <div class="form-container">
       <form class="form" [formGroup]="form">
@@ -204,10 +180,7 @@
           </mat-error>
         </mat-form-field>
 
-        <p
-          *ngIf="!loading"
-          class="mat-typography text-red-500 text-center text-xs m-0"
-        >
+        <p *ngIf="!loading" class="mat-typography text-red-500 text-center text-xs m-0">
           {{ formErrorMessage }}
         </p>
 
@@ -223,4 +196,15 @@
       </form>
     </div>
   </div>
+
+  <span class="avatar">
+    <img src="{{ avatarPath }}" alt="{{ user.firstName }}"/>
+    <span>
+      <app-upload-file 
+        requiredFileType="image/jpeg, image/png"
+        (onAvatarChanged)="tryGetAvatar()"
+      >
+      </app-upload-file>
+    </span>
+  </span>
 </div>

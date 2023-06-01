@@ -11,23 +11,17 @@
 
 .avatar {
   height: fit-content;
-  width: fit-content;
+  margin-left: 20px;
 }
 
 .avatar img {
   height: 200px;
   width: 200px;
   border-radius: 50%;
-  margin-right: 20px;
-}
-
-.avatar span {
-  max-width: 250px;
 }
 
 .form-layout-inner {
   width: 450px;
-  margin-left: 50px;
 }
 
 .form-layout-inner h2, h3 {
