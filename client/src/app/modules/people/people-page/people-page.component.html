@@ -1,102 +1,129 @@
-<mat-drawer-container 
-  class="min-h-screen" 
-  hasBackdrop="false" 
-  >
-  <mat-drawer 
-    opened 
-    disableClose="true" 
-    mode="push" 
-    class="form-container p-5"
-    >
-      <h2>Поиск людей</h2>
-      <form class="form" [formGroup]="form">
-        <mat-form-field appearance="fill" class="mt-2">
-          <mat-label>Возраст</mat-label>
-          <input matInput type="text" formControlName="age" placeholder="18" />
-          <mat-error *ngIf="age?.invalid && (age?.dirty || age?.touched)">{{ ageErrorMessage }}</mat-error>
-        </mat-form-field>
+<h2>🔍 Поиск людей</h2>
+<mat-drawer-container class="min-h-screen" hasBackdrop="false">
+  <mat-drawer opened disableClose="true" mode="push">
+    <form class="form" [formGroup]="form">
+      <h3>📂 Фильтры</h3>
 
-        <mat-form-field appearance="fill" class="mt-2">
-          <mat-label>Статус</mat-label>
-          <mat-select formControlName="userStatus">
-            <mat-option>Нет</mat-option>
-            <mat-option value=1>Студент</mat-option>
-            <mat-option value=2>Преподаватель</mat-option>
-            <mat-option value=3>Другое</mat-option>
-          </mat-select>
-        </mat-form-field>
+      <mat-form-field appearance="fill" class="mt-2">
+        <mat-label>Возраст</mat-label>
+        <input matInput type="text" formControlName="age" placeholder="18" />
+        <mat-error *ngIf="age?.invalid && (age?.dirty || age?.touched)">{{
+          ageErrorMessage
+        }}</mat-error>
+      </mat-form-field>
 
-        <mat-form-field appearance="fill" class="mt-2">
-          <mat-label>Уровень образования</mat-label>
-          <mat-select formControlName="educationLevel">
-            <mat-option>Нет</mat-option>
-            <mat-option value=1>Бакалавриат</mat-option>
-            <mat-option value=2>Магистратура</mat-option>
-            <mat-option value=3>Специалитет</mat-option>
-            <mat-option value=4>Другое</mat-option>
-          </mat-select>
-        </mat-form-field>
+      <mat-form-field appearance="fill" class="mt-2">
+        <mat-label>Статус</mat-label>
+        <mat-select formControlName="userStatus">
+          <mat-option>Нет</mat-option>
+          <mat-option value="1">Студент</mat-option>
+          <mat-option value="2">Преподаватель</mat-option>
+          <mat-option value="3">Другое</mat-option>
+        </mat-select>
+      </mat-form-field>
 
-        <mat-form-field appearance="fill" class="mt-2">
-          <mat-label>Год поступления</mat-label>
-          <input matInput type="text" formControlName="admissionYear" placeholder="2019" />
-          <mat-error *ngIf="admissionYear?.invalid 
-            && (admissionYear?.dirty || admissionYear?.touched)"
-            >
-            {{ admissionYearErrorMessage }}
-          </mat-error>
-        </mat-form-field>
+      <mat-form-field appearance="fill" class="mt-2">
+        <mat-label>Уровень образования</mat-label>
+        <mat-select formControlName="educationLevel">
+          <mat-option>Нет</mat-option>
+          <mat-option value="1">Бакалавриат</mat-option>
+          <mat-option value="2">Магистратура</mat-option>
+          <mat-option value="3">Специалитет</mat-option>
+          <mat-option value="4">Другое</mat-option>
+        </mat-select>
+      </mat-form-field>
 
-        <mat-form-field appearance="fill" class="mt-2">
-          <mat-label>Школа (институт)</mat-label>
-          <input type="text" matInput formControlName="school" [matAutocomplete]="autoSchools">
-          <mat-autocomplete 
-            #autoSchools="matAutocomplete" 
-            [displayWith]="displayFunctionSchool"
-            >
-            <mat-option *ngFor="let school of filteredSchools | async" [value]="school">
-              {{ school.title }}
-            </mat-option>
-          </mat-autocomplete>
-        </mat-form-field>
-
-        <mat-form-field appearance="fill" class="mt-2">
-          <mat-label>Направление подготовки</mat-label>
-          <input type="text" matInput formControlName="faculty" [matAutocomplete]="autoFaculties">
-          <mat-autocomplete 
-            #autoFaculties="matAutocomplete"
-            [displayWith]="displayFunctionFaculty" 
-          >
-            <mat-option *ngFor="let faculty of filteredFaculties | async" [value]="faculty">
-              {{ faculty.title }}
-            </mat-option>
-          </mat-autocomplete>
-        </mat-form-field>
-
-        <mat-chip-listbox multiple *ngIf="!interestsLoading" formControlName="interestsChips">
-          <mat-chip-option *ngFor="let interest of interests">
-            {{ interest.title }}
-          </mat-chip-option>
-        </mat-chip-listbox>
-
-        <div *ngIf="interestsLoading" class="spinner"><mat-spinner></mat-spinner></div>
-
-        <button 
-          type="submit"
-          class="mt-2"
-          mat-raised-button 
-          color="primary"
-          [disabled]="usersLoading || form.invalid"
-          (click)="onFilterButtonClick()"
+      <mat-form-field appearance="fill" class="mt-2">
+        <mat-label>Год поступления</mat-label>
+        <input
+          matInput
+          type="text"
+          formControlName="admissionYear"
+          placeholder="2019"
+        />
+        <mat-error
+          *ngIf="
+            admissionYear?.invalid &&
+            (admissionYear?.dirty || admissionYear?.touched)
+          "
         >
-        Показать</button>
-      </form>
+          {{ admissionYearErrorMessage }}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="mt-2">
+        <mat-label>Школа (институт)</mat-label>
+        <input
+          type="text"
+          matInput
+          formControlName="school"
+          [matAutocomplete]="autoSchools"
+        />
+        <mat-autocomplete
+          #autoSchools="matAutocomplete"
+          [displayWith]="displayFunctionSchool"
+        >
+          <mat-option
+            *ngFor="let school of filteredSchools | async"
+            [value]="school"
+          >
+            {{ school.title }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="mt-2">
+        <mat-label>Направление подготовки</mat-label>
+        <input
+          type="text"
+          matInput
+          formControlName="faculty"
+          [matAutocomplete]="autoFaculties"
+        />
+        <mat-autocomplete
+          #autoFaculties="matAutocomplete"
+          [displayWith]="displayFunctionFaculty"
+        >
+          <mat-option
+            *ngFor="let faculty of filteredFaculties | async"
+            [value]="faculty"
+          >
+            {{ faculty.title }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+
+      <mat-chip-listbox
+        multiple
+        *ngIf="!interestsLoading"
+        formControlName="interestsChips"
+      >
+        <mat-chip-option *ngFor="let interest of interests">
+          {{ interest.title }}
+        </mat-chip-option>
+      </mat-chip-listbox>
+
+      <div *ngIf="interestsLoading" class="spinner">
+        <mat-spinner></mat-spinner>
+      </div>
+
+      <button
+        type="submit"
+        class="w-5/6 mt-5"
+        mat-raised-button
+        color="primary"
+        [disabled]="usersLoading || form.invalid"
+        (click)="onFilterButtonClick()"
+      >
+        Показать
+      </button>
+    </form>
   </mat-drawer>
-  <div>
+  <div class="content">
     <app-user *ngFor="let user of users" [user]="user"></app-user>
     <div *ngIf="usersLoading" class="spinner"><mat-spinner></mat-spinner></div>
     <div *ngIf="users.length === 0 && !usersLoading" class="text-center">
-      🏄‍♀️ Людей нет, попробуйте изменить фильтры
+      <h3>🏄‍♀️ Людей нет, попробуйте изменить фильтры</h3>
     </div>
   </div>
 </mat-drawer-container>

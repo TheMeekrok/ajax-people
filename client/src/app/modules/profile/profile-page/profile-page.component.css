@@ -1,7 +1,6 @@
 .form-layout {
   margin-top: 20px;
   display: flex;
-  justify-content: center;
 }
 
 .form-layout-inner, .avatar {
@@ -13,8 +12,6 @@
 .avatar {
   height: fit-content;
   width: fit-content;
-  display: flex;
-  flex-direction: row;
 }
 
 .avatar img {
@@ -25,8 +22,6 @@
 }
 
 .avatar span {
-  display: flex;
-  align-items: flex-end;
   max-width: 250px;
 }
 

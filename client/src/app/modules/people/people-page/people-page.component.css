@@ -4,10 +4,17 @@ mat-form-field {
 
 mat-drawer-container mat-drawer {
   box-shadow: none !important;
-  width: 350px;
 }
 
-mat-drawer-container div {
+.form {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  width: 350px;
+  padding: 10px;
+}
+
+.content {
   margin-left: 10px;
   width: 70%;
 }

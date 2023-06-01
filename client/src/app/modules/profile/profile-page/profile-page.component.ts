@@ -30,7 +30,6 @@ export class ProfilePageComponent implements OnInit{
 
   ngOnInit(): void {
     this.initForm();
-    console.log(document.cookie);
   }
 
   private initForm(): void {
