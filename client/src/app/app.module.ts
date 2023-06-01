@@ -17,11 +17,10 @@ import { LoginModule } from './modules/login/login.module';
 import localeRu from "@angular/common/locales/ru";
 import { SuccessPostComponent } from './modules/publications/success-post/success-post.component';
 import { MatButtonModule } from "@angular/material/button";
-import { NotFoundComponent } from './not-found/not-found.component';
+import { NotFoundComponent } from './components/not-found/not-found.component';
 
 
 registerLocaleData(localeRu, 'ru');
-
 
 @NgModule({
   declarations: [
