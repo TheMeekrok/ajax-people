@@ -20,7 +20,7 @@ func (s *UserActionService) CreateUser(user user.User) (int, error) {
 	return s.repo.CreateUser(user)
 }
 
-func (s *UserActionService) GetUserById(id int) (user.User, error) {
+func (s *UserActionService) GetUserById(id int) (user.UserOutput, error) {
 	return s.repo.GetUser(id)
 }
 

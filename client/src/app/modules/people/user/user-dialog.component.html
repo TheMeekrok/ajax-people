@@ -12,8 +12,8 @@
 
   <mat-card-content class="my-2">
     <div *ngIf="data.faculty">📄 {{ data.faculty }}</div>
+    <div *ngIf="data.school">🏫 {{ data.school }}</div>
     <mat-chip-set role="list">
-      <mat-chip role="listitem" *ngIf="data.school">🏫 {{ data.school }}</mat-chip>
       <mat-chip role="listitem" *ngIf="data.user.admissionYear">📅 {{ data.user.admissionYear }}</mat-chip>
       <mat-chip role="listitem" *ngIf="data.educationLevel">💫 {{ data.educationLevel }}</mat-chip>
     </mat-chip-set>

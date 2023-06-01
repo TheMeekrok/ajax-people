@@ -6,6 +6,7 @@ import { IInterest } from 'src/app/shared/models/Interest';
 import { ISchool } from 'src/app/shared/models/School';
 import { IFaculty } from 'src/app/shared/models/Faculty';
 import { Observable, map, merge, startWith, tap } from 'rxjs';
+import { UtilsService } from 'src/app/shared/services/utils.service';
 
 @Component({
   selector: 'app-people-page',
@@ -14,7 +15,10 @@ import { Observable, map, merge, startWith, tap } from 'rxjs';
 })
 export class PeoplePageComponent implements OnInit {
 
-  constructor(private userDataService: UserDataService) {}
+  constructor(
+    private userDataService: UserDataService,
+    private utilsService: UtilsService,
+  ) {}
 
   currentPage: number = 0;
   users: IUser[] = [];
@@ -110,6 +114,8 @@ export class PeoplePageComponent implements OnInit {
   }
 
   onFilterButtonClick(): void {
+    this.utilsService.scrollToTop();
+
     this.users = [];
     this.usersEnd = false;
     this.currentPage = 0;
@@ -134,15 +140,15 @@ export class PeoplePageComponent implements OnInit {
 
     this.usersLoading = true;
 
-    this.userDataService.getUsers(5, page, this.usersFilter).subscribe({
+    this.userDataService.getUsers(10, page, this.usersFilter).subscribe({
       next: (result: IUser[]) => {
-        if (!result || result.length == 0) {
+        if (!(result instanceof Array)) {
           this.usersEnd = true;
           return;
         }
         this.users = this.users.concat(result);
       },
-      error: (error: Error) => console.log(error),
+      error: () => this.usersLoading = false,
       complete: () => this.usersLoading = false,
     });
   }
@@ -151,7 +157,7 @@ export class PeoplePageComponent implements OnInit {
 
   private selectInterests(): string {
     const interestsIds: number[] = [];
-    this.interestsChips?.value.forEach((chip: string) => {
+    this.interestsChips?.value?.forEach((chip: string) => {
       const id = this.interests.find(element => element.title === chip)?.id;
       if (id) interestsIds.push(id);
     });

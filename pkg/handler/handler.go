@@ -40,6 +40,14 @@ func (h *Handler) InitRoutes() *gin.Engine {
 			users.GET("/", h.selectUsers)
 
 			users.GET("/get-id", h.getId)
+
+			rating := users.Group("/rating")
+			{
+				rating.PUT("/:id", h.evaluation)
+
+				rating.GET("/:id", h.getRating)
+			}
+
 		}
 
 		avatars := apiPublic.Group("/avatar")
@@ -81,6 +89,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 
 			tags.GET("/", h.getAllTags)
 		}
+
 	}
 
 	apiPrivate := router.Group("/api-private", h.userIdentifyAdmin)

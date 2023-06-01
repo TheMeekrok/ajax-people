@@ -76,8 +76,6 @@ export class UserDataService {
       params = params.set('interestsIds', usersFilter.interestIds);
     }
 
-    console.log(`/api/users?${params.toString()}`)
-
     return this.http.get<IUser[]>('/api/users', { params })
       .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
   }
@@ -87,25 +85,19 @@ export class UserDataService {
       .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
   }
 
+  getCurrentUser(): Observable<IUser> {
+    return this.http.get<IUser>('/api/users/get-id')
+      .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
+  }
+
+  uploadUserAvatar(avatar: FormData): Observable<Object> {
+    return this.http.post('/api/avatar/upload', avatar)
+      .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
+  }
+
   userStatusFromId(id: number): string { return StatusUser[id]; }
 
   educationLevelFromId(id: number): string { return EducationLevel[id]; }
-
-  getUsersWithParameters(schoolId: number, facultyId: number, course: number) {
-    let parameter = new HttpParams()
-    if (schoolId) {
-      parameter = parameter.set('schoolId', schoolId)
-    }
-    if (facultyId) {
-      parameter = parameter.set('studyProgramId', facultyId)
-    }
-    if (course) {
-      parameter = parameter.set('course', course)
-    }
-    return this.http.get<User[]>('users', {params: parameter}).pipe(
-      retry(2)
-    )
-  }
 
   private _handleError(error: HttpErrorResponse) {
     let errorMessage = '';

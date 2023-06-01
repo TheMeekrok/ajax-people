@@ -1,0 +1,23 @@
+<input
+  type="file"
+  class="file-input"
+  [accept]="requiredFileType"
+  (change)="onFileSelected($event)"
+  #fileUpload
+/>
+
+<div class="file-upload">
+  <button
+    mat-mini-fab
+    color="primary"
+    (click)="fileUpload.click()"
+  >
+    <mat-icon>attach_file</mat-icon>
+  </button>
+
+  <div *ngIf="loading" class="spinner"><mat-spinner></mat-spinner></div>
+
+  <p *ngIf="!loading" class="mat-typography text-red-500 text-center text-xs mt-5">
+    {{ uploadErrorMessage }}
+  </p>
+</div>

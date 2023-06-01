@@ -252,8 +252,8 @@ func (r *PostPostgres) GetAllPosts(filter user.PostFilter, isAdmin bool, idUser 
 }
 
 func (r *PostPostgres) UpdatePost(id int, isModerated bool) error {
-	query := fmt.Sprintf("UPDATE %s SET is_moderated=$1", postsTable)
-	_, err := r.db.Exec(query, isModerated)
+	query := fmt.Sprintf("UPDATE %s SET is_moderated=$1 WHERE id=$2", postsTable)
+	_, err := r.db.Exec(query, isModerated, id)
 	return err
 }
 

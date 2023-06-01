@@ -1,0 +1,220 @@
+<h2>👤 Профиль</h2>
+
+<div *ngIf="loading" class="spinner"><mat-spinner></mat-spinner></div>
+
+<div class="form-layout" [style.visibility]="loading ? 'hidden' : 'visible'">
+  <div class="form-layout-inner">
+    <div class="form-container mt-4">
+      <form class="form" [formGroup]="form">
+        <mat-form-field appearance="fill">
+          <mat-label>Имя</mat-label>
+          <input
+            matInput
+            type="text"
+            formControlName="firstName"
+            placeholder="Иван"
+            [value]="user.firstName"
+          />
+          <mat-error
+            *ngIf="
+              firstName?.invalid && (firstName?.dirty || firstName?.touched)
+            "
+          >
+            {{ firstNameErrorMessage }}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Фамилия</mat-label>
+          <input
+            matInput
+            type="text"
+            formControlName="secondName"
+            placeholder="Иванов"
+            [value]="user.lastName"
+          />
+          <mat-error
+            *ngIf="
+              secondName?.invalid && (secondName?.dirty || secondName?.touched)
+            "
+          >
+            {{ secondNameErrorMessage }}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Возраст</mat-label>
+          <input matInput type="text" formControlName="age" placeholder="18" [value]="user.age"/>
+          <mat-error *ngIf="age?.invalid && (age?.dirty || age?.touched)">{{
+            ageErrorMessage
+          }}</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Статус</mat-label>
+          <mat-select formControlName="userStatus" [(value)]="user.statusUserId">
+            <mat-option [value]=1>Студент</mat-option>
+            <mat-option [value]=2>Преподаватель</mat-option>
+            <mat-option [value]=3>Другое</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Уровень образования</mat-label>
+          <mat-select formControlName="educationLevel" [(value)]="user.educationLevelId">
+            <mat-option>Нет</mat-option>
+            <mat-option [value]=1>Бакалавриат</mat-option>
+            <mat-option [value]=2>Магистратура</mat-option>
+            <mat-option [value]=3>Специалитет</mat-option>
+            <mat-option [value]=4>Другое</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Год поступления</mat-label>
+          <input
+            matInput
+            type="text"
+            formControlName="admissionYear"
+            placeholder="2019"
+            [value]="user.admissionYear"
+          />
+          <mat-error
+            *ngIf="
+              admissionYear?.invalid &&
+              (admissionYear?.dirty || admissionYear?.touched)
+            "
+          >
+            {{ admissionYearErrorMessage }}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Школа (институт)</mat-label>
+          <input
+            type="text"
+            matInput
+            formControlName="school"
+            [matAutocomplete]="autoSchools"
+          />
+          <mat-autocomplete
+            #autoSchools="matAutocomplete"
+            [displayWith]="displayFunctionSchool"
+          >
+            <mat-option
+              *ngFor="let school of filteredSchools | async"
+              [value]="school"
+            >
+              {{ school.title }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Направление подготовки</mat-label>
+          <input
+            type="text"
+            matInput
+            formControlName="faculty"
+            [matAutocomplete]="autoFaculties"
+          />
+          <mat-autocomplete
+            #autoFaculties="matAutocomplete"
+            [displayWith]="displayFunctionFaculty"
+          >
+            <mat-option
+              *ngFor="let faculty of filteredFaculties | async"
+              [value]="faculty"
+            >
+              {{ faculty.title }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Telegram</mat-label>
+          <input
+            matInput
+            type="text"
+            formControlName="telegram"
+            placeholder="@ivanov2030"
+            [value]="user.personalData?.telegram"
+          />
+          <mat-error
+            *ngIf="telegram?.invalid && (telegram?.dirty || telegram?.touched)"
+          >
+            {{ telegramErrorMessage }}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>ВКонтакте</mat-label>
+          <input
+            matInput
+            type="text"
+            formControlName="vk"
+            placeholder="vk.com/ivanov2030"
+            [value]="user.personalData?.vk"
+          />
+          <mat-error *ngIf="vk?.invalid && (vk?.dirty || vk?.touched)">
+            {{ vkErrorMessage }}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Номер телефона</mat-label>
+          <input
+            matInput
+            type="text"
+            formControlName="phoneNumber"
+            placeholder="+7"
+            [value]="user.personalData?.telephone"
+          />
+          <mat-error
+            *ngIf="
+              phoneNumber?.invalid &&
+              (phoneNumber?.dirty || phoneNumber?.touched)
+            "
+          >
+            {{ phoneNumberErrorMessage }}
+          </mat-error>
+        </mat-form-field>
+
+        <p *ngIf="!loading" class="mat-typography text-red-500 text-center text-xs m-0">
+          {{ formErrorMessage }}
+        </p>
+
+        <button
+          type="submit"
+          mat-raised-button
+          color="primary"
+          [disabled]="form.invalid || loading"
+          (click)="onSubmitData()"
+        >
+          Продолжить
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <span class="flex flex-col ml-8">
+    <span class="avatar flex flex-row">
+      <img src="{{ avatarPath }}" alt="{{ user.firstName }}"/>
+      <span>
+        <app-upload-file 
+          requiredFileType="image/jpeg, image/png"
+          (onAvatarChanged)="tryGetAvatar()"
+        >
+        </app-upload-file>
+      </span>
+    </span>
+
+    <app-profile-interests 
+      class="mt-8" 
+      [user]="user"
+      (triggerPageUpdate)="updatePage()"
+    >
+    </app-profile-interests>
+  </span>
+
+</div>

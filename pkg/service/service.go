@@ -13,7 +13,7 @@ type Authorization interface {
 
 type UserAction interface {
 	CreateUser(user user.User) (int, error)
-	GetUserById(id int) (user.User, error)
+	GetUserById(id int) (user.UserOutput, error)
 	DeleteUser(id int) error
 	UpdateUser(id int, user user.UpdateUserInput) error
 	GetAllUsers() ([]user.User, error)
@@ -56,6 +56,11 @@ type Uploader interface {
 	generateFileName() string
 }
 
+type Raiting interface {
+	EvaluationUser(userId, userReactedId, grade int) (bool, error)
+	GetRating(userId, userReactedId int) (int, error)
+}
+
 type Service struct {
 	Authorization
 	UserAction
@@ -63,6 +68,7 @@ type Service struct {
 	RegisterData
 	Post
 	Uploader
+	Raiting
 }
 
 func NewService(repos *repository.Repository) *Service {
@@ -73,5 +79,6 @@ func NewService(repos *repository.Repository) *Service {
 		NewRegisterDataService(repos.RegisterData),
 		NewPostService(repos.Post),
 		NewUploaderService(repos.FileStorageImage),
+		NewRaitingSystem(repos.RaitingSys),
 	}
 }

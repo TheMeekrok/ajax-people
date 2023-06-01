@@ -1,0 +1,7 @@
+button, button::after, button:hover {
+  box-shadow: none;
+}
+
+input {
+  display: none;
+}
