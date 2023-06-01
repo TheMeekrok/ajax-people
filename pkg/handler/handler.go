@@ -81,6 +81,11 @@ func (h *Handler) InitRoutes() *gin.Engine {
 
 			tags.GET("/", h.getAllTags)
 		}
+
+		rating := apiPublic.Group("/rating")
+		{
+			rating.PUT("/:id", h.evaluation)
+		}
 	}
 
 	apiPrivate := router.Group("/api-private", h.userIdentifyAdmin)

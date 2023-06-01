@@ -235,3 +235,31 @@ func (h *Handler) getId(c *gin.Context) {
 
 	c.JSON(http.StatusOK, userList)
 }
+
+type Evalution struct {
+	Grade int `json:"grade" binding:"required"`
+}
+
+func (h *Handler) evaluation(c *gin.Context) {
+	var grade Evalution
+	userReactedId, _, _, _ := getJWT(h, c)
+	userId, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	if err = c.BindJSON(&grade); err != nil {
+		fmt.Printf("Failed to update a user: %s\n", err.Error())
+		c.JSON(http.StatusBadRequest, "Failed to get grade")
+		return
+	}
+
+	status, err := h.services.EvaluationUser(userId, userReactedId, grade.Grade)
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, status)
+}
