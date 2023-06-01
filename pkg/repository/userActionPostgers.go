@@ -35,12 +35,31 @@ func (r *UserActionPostgres) CreateUser(user user.User) (int, error) {
 	return id, nil
 }
 
-func (r *UserActionPostgres) GetUser(id int) (user.User, error) {
-	var user user.User
+func (r *UserActionPostgres) GetUser(id int) (user.UserOutput, error) {
+	var user user.UserOutput
 
-	query := fmt.Sprintf("SELECT id,firstname, lastname,mail,age,status_user, education_level,study_program_id,school_id,avatar_path FROM %s WHERE id=$1", userTable)
+	query := fmt.Sprintf(`SELECT id,firstname, lastname,age,status_user, education_level,
+       								study_program_id,is_admin,school_id, admission_year, graduation_year
+									FROM %s WHERE id=$1`, userTable)
 	err := r.db.Get(&user, query, id)
 
+	for i := 0; i < 1; i++ {
+		query = fmt.Sprintf(`SELECT DISTINCT interest_id FROM %s
+    								JOIN %s ON users.id = users_interests.user_id WHERE user_id = $1;`,
+			userTable, usersInterests)
+		if err := r.db.Select(&user.Interests, query, user.Id); err != nil {
+			return user, err
+		}
+
+		query = fmt.Sprintf(`SELECT DISTINCT telegram, vk, telephone FROM %s
+    								JOIN %s ON users.id = personal_data.user_id WHERE user_id = $1;`,
+			userTable, personalData)
+
+		if err := r.db.Get(&user.PersonalData, query, user.Id); err != nil {
+			return user, err
+		}
+
+	}
 	return user, err
 }
 
@@ -300,18 +319,17 @@ func (r *UserActionPostgres) SelectedDataUser(userSelect user.UpdateUserInput, i
 		setInterestsQuery += ")"
 		setQuery += setInterestsQuery
 	}
-
 	var query string
 	if setQuery == "" {
 		query = fmt.Sprintf(`SELECT id,firstname, lastname,age,status_user, education_level,
        								study_program_id,is_admin,school_id, admission_year, graduation_year
-									FROM %s WHERE is_verificated = true`, userTable)
+									FROM %s WHERE is_verificated = true AND firstname!=''`, userTable)
 	} else {
 		query = fmt.Sprintf(`SELECT DISTINCT users.id, firstname, lastname,age,status_user, 
                 				education_level,study_program_id,school_id,is_admin, admission_year, graduation_year
 								FROM %s JOIN %s ON users.id = users_interests.user_id
     							JOIN %s ON users_interests.interest_id = interest.id 
-                                WHERE is_verificated = true AND %s`, userTable, usersInterests, interestsTable, setQuery)
+                                WHERE is_verificated = true AND firstname!='' AND %s`, userTable, usersInterests, interestsTable, setQuery)
 	}
 
 	if err := r.db.Select(&userList, query, args...); err != nil {
