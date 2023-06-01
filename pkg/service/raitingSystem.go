@@ -13,3 +13,7 @@ func NewRaitingSystem(repo repository.RaitingSys) *RaitingSystem {
 func (s RaitingSystem) EvaluationUser(userId, userReactedId, grade int) (bool, error) {
 	return s.repo.UpRaiting(userId, userReactedId, grade)
 }
+
+func (s RaitingSystem) GetRating(userId, userReactedId int) (int, error) {
+	return s.repo.GetRating(userId, userReactedId)
+}

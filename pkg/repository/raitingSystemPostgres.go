@@ -64,3 +64,15 @@ func (r *RaitingSystemPostgres) UpRaiting(userId, userReactedId, grade int) (boo
 
 	return false, nil
 }
+
+func (r *RaitingSystemPostgres) GetRating(userId, userReacredId int) (int, error) {
+
+	var reaction int
+	query := fmt.Sprintf(`SELECT reaction FROM %s WHERE user_with_reaction_id=$1 AND user_reaction_id=$2 `, evaluteRaiting)
+	err := r.db.Get(&reaction, query, userId, userReacredId)
+	if err != nil {
+		return 0, err
+	}
+
+	return reaction, nil
+}

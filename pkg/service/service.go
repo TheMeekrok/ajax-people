@@ -58,6 +58,7 @@ type Uploader interface {
 
 type Raiting interface {
 	EvaluationUser(userId, userReactedId, grade int) (bool, error)
+	GetRating(userId, userReactedId int) (int, error)
 }
 
 type Service struct {

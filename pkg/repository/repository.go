@@ -54,6 +54,7 @@ type FileStorageImage interface {
 
 type RaitingSys interface {
 	UpRaiting(userId, userReactedId, grade int) (bool, error)
+	GetRating(userId, userReacredId int) (int, error)
 }
 
 type Repository struct {

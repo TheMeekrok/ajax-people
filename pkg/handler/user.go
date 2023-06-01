@@ -237,7 +237,7 @@ func (h *Handler) getId(c *gin.Context) {
 }
 
 type Evalution struct {
-	Grade int `json:"grade" binding:"required"`
+	Grade int `json:"value" binding:"required"`
 }
 
 func (h *Handler) evaluation(c *gin.Context) {
@@ -262,4 +262,17 @@ func (h *Handler) evaluation(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, status)
+}
+
+func (h *Handler) getRating(c *gin.Context) {
+	userReactedId, _, _, _ := getJWT(h, c)
+	userId, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	value, err := h.services.GetRating(userId, userReactedId)
+
+	c.JSON(http.StatusOK, value)
 }
