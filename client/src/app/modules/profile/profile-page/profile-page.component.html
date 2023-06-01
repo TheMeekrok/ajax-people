@@ -2,7 +2,7 @@
 
 <div *ngIf="loading" class="spinner"><mat-spinner></mat-spinner></div>
 
-<div class="form-layout">
+<div class="form-layout" [style.visibility]="loading ? 'hidden' : 'visible'">
   <span class="avatar">
     <img src="../../../../assets/user/default_avatar.svg" alt="" />
     <span>
