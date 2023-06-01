@@ -76,8 +76,6 @@ export class UserDataService {
       params = params.set('interestsIds', usersFilter.interestIds);
     }
 
-    console.log(params.toString());
-
     return this.http.get<IUser[]>('/api/users', { params })
       .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
   }
@@ -87,8 +85,8 @@ export class UserDataService {
       .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
   }
 
-  getUserId(): Observable<number> {
-    return this.http.get<number>('/api/users/get-id')
+  getCurrentUser(): Observable<IUser> {
+    return this.http.get<IUser>('/api/users/get-id')
       .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
   }
 

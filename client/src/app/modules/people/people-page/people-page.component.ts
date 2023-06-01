@@ -142,14 +142,13 @@ export class PeoplePageComponent implements OnInit {
 
     this.userDataService.getUsers(10, page, this.usersFilter).subscribe({
       next: (result: IUser[]) => {
-        console.log(result);
         if (!(result instanceof Array)) {
           this.usersEnd = true;
           return;
         }
         this.users = this.users.concat(result);
       },
-      error: (error: Error) => console.log(error),
+      error: () => this.usersLoading = false,
       complete: () => this.usersLoading = false,
     });
   }

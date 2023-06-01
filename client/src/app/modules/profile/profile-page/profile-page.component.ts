@@ -1,10 +1,12 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {Form, FormControl, FormGroup, Validators} from "@angular/forms";
 import { ISchool } from 'src/app/shared/models/School';
 import { IFaculty } from 'src/app/shared/models/Faculty';
 import { Observable, map, startWith } from 'rxjs';
 import { UserDataService } from 'src/app/shared/services/user-data.service';
 import { RegisterService } from 'src/app/shared/services/register.service';
+import { IUser } from 'src/app/shared/models/IUser';
+import { UtilsService } from 'src/app/shared/services/utils.service';
 
 @Component({
   selector: 'app-profile-page',
@@ -12,15 +14,33 @@ import { RegisterService } from 'src/app/shared/services/register.service';
   styleUrls: ['./profile-page.component.css']
 })
 export class ProfilePageComponent implements OnInit{
-  form: FormGroup;
-  
+
   formErrorMessage = '';
-  isLoading = false;
 
   constructor(
     private userDataService: UserDataService, 
-    private registerService: RegisterService
+    private registerService: RegisterService,
+    private utilsService: UtilsService,
   ) {}
+
+  ngOnInit(): void {
+    this.tryGetCurrentUser();
+    this.initForm();
+  }
+
+  user: IUser = {};
+
+  private tryGetCurrentUser() {
+    this.loading = true;
+
+    this.userDataService.getCurrentUser().subscribe({
+      next: (response: IUser) => { 
+        this.user = response;
+        this.initLists();
+        this.loading = false;
+      },
+    });
+  }
 
   private faculties: IFaculty[] = [];
   filteredFaculties: Observable<IFaculty[]>;
@@ -28,13 +48,28 @@ export class ProfilePageComponent implements OnInit{
   private schools: ISchool[] = [];
   filteredSchools: Observable<ISchool[]>;
 
-  ngOnInit(): void {
-    this.initForm();
+  form: FormGroup;
+
+  private initLists() {
+    if (this.user.schoolId) {
+      this.userDataService.getSchoolById(this.user.schoolId).subscribe({
+        next: (result: ISchool[]) => {
+          this.school?.setValue(result?.[0]);
+        },
+      })
+    }
+
+    if (this.user.studyProgramId) {
+      this.userDataService.getFacultyById(this.user.studyProgramId).subscribe({
+        next: (result: IFaculty[]) => {
+          this.faculty?.setValue(result?.[0]);
+        },
+      })
+    }
   }
 
   private initForm(): void {
     this.form = new FormGroup({
-
       firstName: new FormControl('', [
         Validators.pattern('[а-яёА-яa-zA-z]+-?[а-яёА-яa-zA-z]+'), 
         Validators.maxLength(16)
@@ -98,7 +133,37 @@ export class ProfilePageComponent implements OnInit{
     )
   }
 
-  onSubmitData() {};
+  onSubmitData() {
+    let newUser: IUser = {
+      firstName: String(this.firstName?.value) || this.user.firstName,
+      lastName: String(this.secondName?.value) || this.user.lastName,
+      age: Number(this.age?.value) || this.user.age,
+      statusUserId: Number(this.status?.value),
+      educationLevelId: Number(this.educationLevel?.value), 
+      admissionYear: Number(this.admissionYear?.value) || this.user.admissionYear,
+      schoolId: Number(this.school?.value?.id),
+      studyProgramId: Number(this.faculty?.value?.id),
+      telegram: String(this.telegram?.value) || this.user.personalData?.telegram,
+      vk: String(this.vk?.value) || this.user.personalData?.vk,
+      telephone: String(this.phoneNumber?.value) || this.user.personalData?.telephone,
+    }
+
+    this.tryUpdateUserData(newUser);
+  };
+
+  loading: boolean = false;
+
+  private tryUpdateUserData(user: IUser) {
+    if (!this.user.id) return;
+
+    this.utilsService.scrollToTop();
+    this.loading = true;
+
+    this.registerService.updateUserData(user, this.user.id).subscribe({
+      error: (error: Error) => console.log(error),
+      complete: () => this.loading = false,
+    });
+  }
 
   get firstName() { 
     return this.form.get('firstName'); 
