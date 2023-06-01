@@ -1,57 +1,59 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Посты</title>
-</head>
-  <body>
-  <mat-drawer-container class="big">
-    <mat-drawer fxFlex #drawer mode="side">
-      <div>
-        <h3>Выберите фильтры</h3>
+<h2 class="relative">📑 Публикации
+    <button 
+    mat-raised-button 
+    color="primary" 
+    (click)="onCreatePostClick()"
+    class="relative right-0"
+  >
+    Создать
+  </button>
+</h2>
+<mat-drawer-container class="min-h-screen mt-5" hasBackdrop="false">
+  <mat-drawer opened disableClose="true" mode="push">
+    <div class="filters">
+
+      <div class="flex flex-row ">
         <button
-          mat-raised-button color="primary"
+          mat-raised-button
+          color="primary"
           (click)="onOrderByButtonClick()"
         >
-          {{orderBy ? "Сначала новые" : "Сначала старые"}}
+          {{ orderBy ? "Сначала новые" : "Сначала старые" }}
         </button>
-        <h3>Тэги</h3>
-        <mat-chip-listbox class="tags mat-mdc-chip-set-stacked filter-place" multiple [(ngModel)]="selectedChips" (ngModelChange)="onFilterTagsChange()">
-          <mat-chip-option class="tag" *ngFor="let t of tags" [value]="t">
-            {{ t.title }}
-          </mat-chip-option>
-        </mat-chip-listbox>
       </div>
-    </mat-drawer>
 
-    <div class="example-sidenav-content">
-      <button
-        mat-raised-button color="primary"
-        (click)="onAddFiltersClick()"
-      >
-        {{areFiltersOpen ? "Убрать фильтры" : "Добавить фильтры"}}
-      </button>
-      <button
-        mat-raised-button color="primary"
-        (click)="onCreatePostClick()"
-      >
-        Создать пост
-      </button>
-      <mat-spinner class="posts-spinner"  *ngIf="loading"></mat-spinner>
+      <h3 class="mt-4">📂 Фильтры</h3>
 
-      <h3 *ngIf="areThereAnyPosts">
-        По данному запросу не найдено ни одного поста
-      </h3>
-      <app-post *ngFor="let post of (posts ? posts : [])"
-                [post]="post">
-      </app-post>
+      <div class="spinner" *ngIf="tagsLoading"><mat-spinner></mat-spinner></div>
+      <mat-chip-listbox
+        class="tags"
+        multiple
+        [(ngModel)]="selectedChips"
+        (ngModelChange)="onFilterTagsChange()"
+        *ngIf="!tagsLoading"
+      >
+        <mat-chip-option class="tag" *ngFor="let t of tags" [value]="t" selected>
+          {{ t.title }}
+        </mat-chip-option>
+      </mat-chip-listbox>
     </div>
-  </mat-drawer-container>
-  <mat-paginator
-    [pageSize]="5"
-    [pageIndex]="0"
-    (page)="onPageChange($event)"
-    [length]="postsCount ? postsCount : 0"
-    [pageSizeOptions]="[1, 5, 10, 50]">
-  </mat-paginator>
-  </body>
-</html>
+  </mat-drawer>
+
+  <div class="content">
+    <div *ngIf="loading" class="spinner"><mat-spinner></mat-spinner></div>
+
+    <h3 *ngIf="posts.length === 0 && !loading" class="text-center">🏄‍♀️ Постов нет, попробуйте изменить фильтры</h3>
+    <div *ngIf="!loading">
+      <app-post *ngFor="let post of posts" [post]="post"></app-post>
+    </div>
+  </div>
+</mat-drawer-container>
+
+<mat-paginator
+  [pageSize]="5"
+  [pageIndex]="0"
+  (page)="onPageChange($event)"
+  [length]="postsCount ? postsCount : 0"
+  [pageSizeOptions]="[10, 50]"
+>
+</mat-paginator>

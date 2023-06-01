@@ -7,9 +7,6 @@
         </mat-chip-option>
       </mat-chip-listbox>
 
-      <p *ngIf="!isLoading" class="mat-typography text-red-500 text-center text-xs m-0">
-        {{ formErrorMessage || interestsChipsErrorMessage }}
-      </p>
       <div *ngIf="isLoading" class="spinner"><mat-spinner></mat-spinner></div>
 
       <button 
@@ -20,7 +17,7 @@
         [disabled]="isLoading || form.invalid || interestsChips?.value.length == 0"
         (click)="proceed()"
       >
-        Продолжить</button>
+        Изменить</button>
     </form>
   </div>
 </div>

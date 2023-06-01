@@ -8,6 +8,7 @@ import { Tag } from "../../../shared/models/Tag";
 import { DecimalPipe } from "@angular/common";
 import { MatDrawer } from "@angular/material/sidenav";
 import { PageEvent } from "@angular/material/paginator";
+import { UtilsService } from 'src/app/shared/services/utils.service';
 
 @Component({
   selector: 'app-publications-page',
@@ -22,8 +23,8 @@ export class PublicationsPageComponent implements OnInit  {
 
   decimalPipe = new DecimalPipe(navigator.language);
 
-  posts: IPost[]
-  newPost: IPost
+  posts: IPost[] = [];
+  newPost: IPost;
   postsCount: number;
   pageSize: number;
   pageIndex: number;
@@ -36,7 +37,9 @@ export class PublicationsPageComponent implements OnInit  {
 
 
   constructor(public dialog: MatDialog,
-              private postService: PostService) {}
+              private postService: PostService,
+              private utilsService: UtilsService,
+              ) {}
 
   ngOnInit() {
     this.postsCount = 0;
@@ -54,15 +57,23 @@ export class PublicationsPageComponent implements OnInit  {
       return `${start} - ${end} из ${this.decimalPipe.transform(length)}`;
     };
 
-    this.postService.getPosts(this.orderBy, this.pageIndex + 1, this.pageSize, this.selectedChips).subscribe(data => {
-        this.posts = data;
-        this.postsCount = data.length;
-        this.loading = false;
-      }
-    )
+    this.changePosts();
+    this.initTags();
+    this.initPostsCount();
+  }
+
+  tagsLoading: boolean;
+
+  private initTags(): void {
+    this.tagsLoading = true;
+
     this.postService.getTags().subscribe(result => {
       this.tags = result;
+      this.tagsLoading = false;
     })
+  }
+
+  private initPostsCount(): void {
     this.postService.getCountPosts(this.selectedChips).subscribe(result => {
       this.postsCount = result.length;
     })
@@ -79,58 +90,44 @@ export class PublicationsPageComponent implements OnInit  {
   }
 
   changePosts() {
+    this.loading = true;
+    this.utilsService.scrollToTop();
+
     this.postService.getPosts(this.orderBy, this.pageIndex + 1, this.pageSize, this.selectedChips).subscribe({
-      next: (data) => {
-        this.posts = data;
+      next: (data: IPost[]) => {
+        this.posts = data || [];
         this.areThereAnyPosts = false;
       },
       error: (error: any) => {
         if (error.status == 500) {
           this.posts = [];
           this.areThereAnyPosts = true;
+          this.loading = false;
         }
-        else {
-          console.log(error);
-        }
-      }
+      },
+      complete: () => this.loading = false,
     })
 
     this.postService.getCountPosts(this.selectedChips).subscribe({
-      next: (data) => {
-        this.postsCount = data ? data.length : 0;
-      },
-      error: (error: any) => {
-        console.log(error);
-        if (error.status == 500) {
-        }
-      }
+      next: (data) => this.postsCount = data ? data.length : 0,
     })
   }
 
-  onPageChange(e: PageEvent) {
+  onPageChange(e: PageEvent): void {
     this.pageEvent = e;
     this.pageSize = e.pageSize;
     this.pageIndex = e.pageIndex;
     this.changePosts();
   }
 
-  onOrderByButtonClick() {
+  onOrderByButtonClick(): void {
     this.orderBy = this.orderBy == 1 ? 0 : 1;
     this.pageIndex = 0;
     this.changePosts();
   }
 
-  onFilterTagsChange() {
+  onFilterTagsChange(): void {
     this.pageIndex = 0;
     this.changePosts();
-  }
-
-  onAddFiltersClick() {
-    if (this.areFiltersOpen) {
-      this.selectedChips = [];
-      this.changePosts();
-    }
-    this.areFiltersOpen = !this.areFiltersOpen;
-    this.drawer.toggle();
   }
 }

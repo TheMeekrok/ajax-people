@@ -48,6 +48,11 @@ export class UserDataService {
       .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
   }
 
+  getUserById(id: number): Observable<IUser> {
+    return this.http.get<IUser>(`/api/users/${id}`)
+      .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
+  }
+
   getUsers(items: number, page: number, usersFilter: IUser): Observable<IUser[]> {
     let params = new HttpParams;
 

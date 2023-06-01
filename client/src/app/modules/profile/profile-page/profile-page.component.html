@@ -191,7 +191,7 @@
           [disabled]="form.invalid || loading"
           (click)="onSubmitData()"
         >
-          Продолжить
+          Изменить
         </button>
       </form>
     </div>
@@ -212,6 +212,7 @@
     <app-profile-interests 
       class="mt-8" 
       [user]="user"
+      *ngIf="!loading"
       (triggerPageUpdate)="updatePage()"
     >
     </app-profile-interests>
