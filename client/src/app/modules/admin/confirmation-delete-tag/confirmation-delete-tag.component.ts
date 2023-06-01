@@ -8,9 +8,14 @@ import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 })
 export class ConfirmationDeleteTagComponent {
   constructor(private dialogRef: MatDialogRef<ConfirmationDeleteTagComponent>,
-  @Inject(MAT_DIALOG_DATA) public data: {title: string}) {}
+              @Inject(MAT_DIALOG_DATA) public data: {title: string, answer: boolean}) {}
 
   onOkClick() {
-    this.dialogRef.close();
+    this.data.answer = true;
+    this.dialogRef.close(this.data);
+  }
+  onNoClick() {
+    this.data.answer = false;
+    this.dialogRef.close(this.data);
   }
 }

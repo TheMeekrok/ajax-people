@@ -20,12 +20,15 @@ import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 
 
 @NgModule({
-  declarations: [
-    PostComponent,
-    CreatePostComponent,
-    PublicationsPageComponent,
-    FullPostComponent
-  ],
+    declarations: [
+        PostComponent,
+        CreatePostComponent,
+        PublicationsPageComponent,
+        FullPostComponent
+    ],
+    exports: [
+        PostComponent
+    ],
     imports: [
         CommonModule,
         PublicationsRoutingModule,
