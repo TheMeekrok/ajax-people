@@ -12,7 +12,7 @@ type Authorization interface {
 
 type UserAction interface {
 	CreateUser(user user.User) (int, error)
-	GetUser(id int) (user.User, error)
+	GetUser(id int) (user.UserOutput, error)
 	GetAllUsers() ([]user.User, error)
 	DeleteUser(id int) error
 	UpdateUser(id int, user user.UpdateUserInput) error
@@ -52,6 +52,10 @@ type FileStorageImage interface {
 	GetAvatar(id int) (string, error)
 }
 
+type RaitingSys interface {
+	UpRaiting(id int) error
+}
+
 type Repository struct {
 	Authorization
 	UserAction
@@ -59,6 +63,7 @@ type Repository struct {
 	RegisterData
 	Post
 	FileStorageImage
+	RaitingSys
 }
 
 func NewRepository(db *sqlx.DB) *Repository {
@@ -69,5 +74,6 @@ func NewRepository(db *sqlx.DB) *Repository {
 		RegisterData:     NewRegisterDataPostgres(db),
 		Post:             NewPostPostgres(db),
 		FileStorageImage: NewFileStorage(db),
+		RaitingSys:       NewRaitingSystemPostgres(db),
 	}
 }

@@ -227,7 +227,11 @@ func (h *Handler) changeUserOnAdmin(c *gin.Context) {
 func (h *Handler) getId(c *gin.Context) {
 	userId, _, _, _ := getJWT(h, c)
 
-	c.JSON(http.StatusOK, map[string]interface{}{
-		"id": userId,
-	})
+	userList, err := h.services.GetUserById(userId)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, userList)
 }
