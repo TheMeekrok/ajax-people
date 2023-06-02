@@ -11,16 +11,17 @@ export class UnmoderatedPostsComponent implements OnInit {
 
   constructor(private adminService: AdminService) {
   }
-
   posts: Post[]
+  areExistPosts: boolean
   loading = true;
   ngOnInit(): void {
     this.adminService.getUnmoderatedPosts().subscribe({
       next: (data) => {
         this.posts = data;
-        this.loading = false;
+        this.areExistPosts = this.posts.length != 0;
       },
-      error: (error: Error) => console.log(error)
+      error: (error: Error) => console.log(error),
+      complete: () => this.loading = false
       }
     )
   }

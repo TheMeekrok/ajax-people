@@ -1,1 +1,2 @@
+<h3 *ngIf="!areExistPosts" class="text-center">🏄‍♀️ Новый постов нет</h3>
 <app-unmoderated-post *ngFor="let post of (posts ? posts : [])" [post]="post"></app-unmoderated-post>
