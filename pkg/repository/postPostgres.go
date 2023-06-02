@@ -21,24 +21,27 @@ func NewPostPostgres(db *sqlx.DB) *PostPostgres {
 func (r *PostPostgres) CreatePost(post user.Post, tags []int, isAdmin bool) (int, error) {
 	var postId int
 
+	var postsList []user.Post
+
 	query := fmt.Sprintf(
 		`SELECT DISTINCT po.id, po.publication_time
 					FROM %s po WHERE po.user_id = $1  ORDER BY publication_time DESC;`, postsTable)
-	var postsList []user.Post
 	if err := r.db.Select(&postsList, query, post.UserId); err != nil {
 		return 0, err
 	}
 
-	timePost, _ := time.Parse("2006-01-02T15:04:05Z", postsList[0].PublicationTime)
-	timeNow := time.Now().Format("2006-01-02T15:04:05Z")
-	timeNowParse, _ := time.Parse("2006-01-02T15:04:05Z", timeNow)
-	timePostUnix := timePost.Unix()
-	timeNowParseUnix := timeNowParse.Unix()
-	timeDeltaNowPost := (timeNowParseUnix - timePostUnix) / 3600
+	if len(postsList) > 0 {
+		timePost, _ := time.Parse("2006-01-02T15:04:05Z", postsList[0].PublicationTime)
+		timeNow := time.Now().Format("2006-01-02T15:04:05Z")
+		timeNowParse, _ := time.Parse("2006-01-02T15:04:05Z", timeNow)
+		timePostUnix := timePost.Unix()
+		timeNowParseUnix := timeNowParse.Unix()
+		timeDeltaNowPost := (timeNowParseUnix - timePostUnix) / 3600
 
-	if timeDeltaNowPost < 12 && isAdmin == false {
-		err := errors.New("it hasn't been 12 hours since the last post")
-		return 0, err
+		if timeDeltaNowPost < 12 && isAdmin == false {
+			err := errors.New("it hasn't been 12 hours since the last post")
+			return 0, err
+		}
 	}
 
 	query = fmt.Sprintf("INSERT INTO %s (user_id, text, publication_time) VALUES ($1, $2, $3) RETURNING id", postsTable)
