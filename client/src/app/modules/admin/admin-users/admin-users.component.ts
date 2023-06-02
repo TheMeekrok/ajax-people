@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { MatTableDataSource } from "@angular/material/table";
 import { User } from "../../../shared/models/User";
 import { AdminService } from "../../../shared/services/admin.service";
-import * as buffer from "buffer";
 
 
 @Component({
@@ -19,7 +18,6 @@ export class AdminUsersComponent {
 
   constructor(private adminService: AdminService) {
     this.uploadUsers();
-
   }
 
   uploadUsers() {
@@ -36,12 +34,8 @@ export class AdminUsersComponent {
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
-
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
   }
-  
+
   onAdminClick(checked: boolean, id: number) {
     this.adminService.appointAnAdmin(id).subscribe({
       error: (error: Error) => console.log(error)
