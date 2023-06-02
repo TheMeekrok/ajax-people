@@ -249,6 +249,11 @@ func (h *Handler) evaluation(c *gin.Context) {
 		return
 	}
 
+	if userId == userReactedId {
+		c.JSON(http.StatusOK, false)
+		return
+	}
+
 	if err = c.BindJSON(&grade); err != nil {
 		fmt.Printf("Failed to update a user: %s\n", err.Error())
 		c.JSON(http.StatusBadRequest, "Failed to get grade")
@@ -269,6 +274,11 @@ func (h *Handler) getRating(c *gin.Context) {
 	userId, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	if userId == userReactedId {
+		c.JSON(http.StatusOK, 999)
 		return
 	}
 

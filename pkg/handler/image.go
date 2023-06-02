@@ -48,10 +48,7 @@ func (h *Handler) uploadAvatar(c *gin.Context) {
 func (h *Handler) getAvatar(c *gin.Context) {
 	userId, _ := getUserId(c)
 
-	fileBase64, err := h.services.GetAvatar(userId)
-	if err != nil {
-		return
-	}
+	fileBase64, _ := h.services.GetAvatar(userId)
 
 	if fileBase64 == "no image" {
 		newResponse(c, http.StatusNoContent, fileBase64)
