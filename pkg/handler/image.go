@@ -50,7 +50,6 @@ func (h *Handler) getAvatar(c *gin.Context) {
 
 	fileBase64, err := h.services.GetAvatar(userId)
 	if err != nil {
-		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
 

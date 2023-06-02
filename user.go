@@ -38,6 +38,7 @@ type UserOutput struct {
 	GraduationYear   int          `json:"graduationYear" db:"graduation_year"`
 	IsAdmin          bool         `json:"isAdmin" db:"is_admin"`
 	PersonalData     PersonalData `json:"personalData"`
+	Rating           int          `json:"rating" db:"raiting"`
 }
 
 type PersonalData struct {

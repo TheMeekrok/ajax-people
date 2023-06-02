@@ -23,8 +23,6 @@ func (h *Handler) InitRoutes() *gin.Engine {
 
 	router.POST("/sign-out", h.signOut)
 
-	router.POST("/test", h.test)
-
 	activation := router.Group("/activation")
 	{
 		activation.PUT("/check/:id", h.checkActivationUser)

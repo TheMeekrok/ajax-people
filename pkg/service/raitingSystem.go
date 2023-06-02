@@ -3,15 +3,15 @@ package service
 import "backend_ajax-people/pkg/repository"
 
 type RaitingSystem struct {
-	repo repository.RaitingSys
+	repo repository.RatingSys
 }
 
-func NewRaitingSystem(repo repository.RaitingSys) *RaitingSystem {
+func NewRaitingSystem(repo repository.RatingSys) *RaitingSystem {
 	return &RaitingSystem{repo: repo}
 }
 
 func (s RaitingSystem) EvaluationUser(userId, userReactedId, grade int) (bool, error) {
-	return s.repo.UpRaiting(userId, userReactedId, grade)
+	return s.repo.UpRating(userId, userReactedId, grade)
 }
 
 func (s RaitingSystem) GetRating(userId, userReactedId int) (int, error) {

@@ -13,7 +13,7 @@ func NewRaitingSystemPostgres(db *sqlx.DB) *RaitingSystemPostgres {
 	return &RaitingSystemPostgres{db: db}
 }
 
-func (r *RaitingSystemPostgres) UpRaiting(userId, userReactedId, grade int) (bool, error) {
+func (r *RaitingSystemPostgres) UpRating(userId, userReactedId, grade int) (bool, error) {
 	var plug bool
 
 	query := fmt.Sprintf(`SELECT EXISTS(SELECT * FROM %s WHERE user_with_reaction_id=$1  AND user_reaction_id=$2)`, evaluteRaiting)
