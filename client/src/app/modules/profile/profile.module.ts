@@ -13,12 +13,14 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatIconModule } from '@angular/material/icon';
 import { UploadFileComponent } from './upload-file/upload-file.component';
+import { ProfileInterestsComponent } from './profile-page/profile-interests.component';
 
 
 @NgModule({
   declarations: [
     ProfilePageComponent,
-    UploadFileComponent
+    UploadFileComponent,
+    ProfileInterestsComponent,
   ],
   imports: [
     CommonModule,

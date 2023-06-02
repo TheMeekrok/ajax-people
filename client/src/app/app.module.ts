@@ -19,7 +19,6 @@ import { SuccessPostComponent } from './modules/publications/success-post/succes
 import { MatButtonModule } from "@angular/material/button";
 import { NotFoundComponent } from './components/not-found/not-found.component';
 
-
 registerLocaleData(localeRu, 'ru');
 
 @NgModule({

@@ -8,3 +8,11 @@ export interface IPost {
   tags: IInterest[]
 }
 
+export class Post {
+  id: number;
+  author: any;
+  userId: number
+  text: string
+  publicationTime?: Date
+  tags: IInterest[]
+}

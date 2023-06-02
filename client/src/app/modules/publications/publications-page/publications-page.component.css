@@ -1,17 +1,24 @@
-.posts-spinner {
-  margin: auto;
+mat-drawer-container mat-drawer {
+  box-shadow: none !important;
 }
 
-.tags {
-  max-width: 100px;
+mat-form-field {
+  width: 100%;
 }
 
-mat-drawer {
-  overflow: auto;
-  margin-top: 75px;
-  width: 280px;
+mat-drawer-container mat-drawer {
+  box-shadow: none !important;
 }
 
-.big {
-  height: 1000px;
+.filters {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  width: 350px;
+  padding: 10px;
+}
+
+.content {
+  margin-left: 10px;
+  width: 70%;
 }

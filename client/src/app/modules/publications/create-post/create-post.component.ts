@@ -13,7 +13,7 @@ import { SuccessPostComponent } from "../success-post/success-post.component";
   styleUrls: ['./create-post.component.css']
 })
 export class CreatePostComponent {
-  loading: boolean = true;
+  loading = true;
   form: FormGroup;
   interests: IInterest[]
   isTagSelected: boolean
@@ -26,7 +26,7 @@ export class CreatePostComponent {
     this.form = new FormGroup({
       text: new FormControl('',[
         Validators.required,
-        Validators.pattern(/^[a-zA-Zа-яА-Я0-9\s\.":;,=-]*$/),
+        Validators.pattern(/^[a-zA-Zа-яА-Я0-9\s":;,=-]*$/),
         Validators.minLength(10),
         Validators.maxLength(255)
       ]),

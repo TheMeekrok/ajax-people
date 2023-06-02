@@ -12,8 +12,8 @@
 
   <mat-card-content class="my-2">
     <div *ngIf="data.faculty">📄 {{ data.faculty }}</div>
+    <div *ngIf="data.school">🏫 {{ data.school }}</div>
     <mat-chip-set role="list">
-      <mat-chip role="listitem" *ngIf="data.school">🏫 {{ data.school }}</mat-chip>
       <mat-chip role="listitem" *ngIf="data.user.admissionYear">📅 {{ data.user.admissionYear }}</mat-chip>
       <mat-chip role="listitem" *ngIf="data.educationLevel">💫 {{ data.educationLevel }}</mat-chip>
     </mat-chip-set>
@@ -30,15 +30,27 @@
 
   <mat-card-content class="my-2">
     <mat-chip-set role="list">
-      <mat-chip role="listitem" *ngIf="data.user.personalData?.telegram">
+      <mat-chip 
+        role="listitem" 
+        *ngIf="data.user.personalData?.telegram"
+        (click)="navigateToTelegram()"
+      >
         <img matChipAvatar src="../../../../assets/user/telegram.png"/>
         {{ data.user.personalData?.telegram }}
       </mat-chip>
-      <mat-chip role="listitem" *ngIf="data.user.personalData?.vk">
+      <mat-chip 
+        role="listitem" 
+        *ngIf="data.user.personalData?.vk"
+        (click)="navigateToVk()"
+      >
         <img matChipAvatar src="../../../../assets/user/vk.png"/>
         {{ data.user.personalData?.vk }}
       </mat-chip>
-      <mat-chip role="listitem" *ngIf="data.user.personalData?.telephone">
+      <mat-chip 
+        role="listitem" 
+        *ngIf="data.user.personalData?.telephone"
+        (click)="copyPhoneNumber()"
+      >
         <img matChipAvatar src="../../../../assets/user/phone.png"/>
         {{ data.user.personalData?.telephone }}
       </mat-chip>
