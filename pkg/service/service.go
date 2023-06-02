@@ -56,7 +56,7 @@ type Uploader interface {
 	generateFileName() string
 }
 
-type Raiting interface {
+type Rating interface {
 	EvaluationUser(userId, userReactedId, grade int) (bool, error)
 	GetRating(userId, userReactedId int) (int, error)
 }
@@ -68,7 +68,7 @@ type Service struct {
 	RegisterData
 	Post
 	Uploader
-	Raiting
+	Rating
 }
 
 func NewService(repos *repository.Repository) *Service {
@@ -79,6 +79,6 @@ func NewService(repos *repository.Repository) *Service {
 		NewRegisterDataService(repos.RegisterData),
 		NewPostService(repos.Post),
 		NewUploaderService(repos.FileStorageImage),
-		NewRaitingSystem(repos.RaitingSys),
+		NewRaitingSystem(repos.RatingSys),
 	}
 }

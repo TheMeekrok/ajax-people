@@ -52,8 +52,8 @@ type FileStorageImage interface {
 	GetAvatar(id int) (string, error)
 }
 
-type RaitingSys interface {
-	UpRaiting(userId, userReactedId, grade int) (bool, error)
+type RatingSys interface {
+	UpRating(userId, userReactedId, grade int) (bool, error)
 	GetRating(userId, userReacredId int) (int, error)
 }
 
@@ -64,7 +64,7 @@ type Repository struct {
 	RegisterData
 	Post
 	FileStorageImage
-	RaitingSys
+	RatingSys
 }
 
 func NewRepository(db *sqlx.DB) *Repository {
@@ -75,6 +75,6 @@ func NewRepository(db *sqlx.DB) *Repository {
 		RegisterData:     NewRegisterDataPostgres(db),
 		Post:             NewPostPostgres(db),
 		FileStorageImage: NewFileStorage(db),
-		RaitingSys:       NewRaitingSystemPostgres(db),
+		RatingSys:        NewRaitingSystemPostgres(db),
 	}
 }
