@@ -12,6 +12,8 @@ import { ISchool } from "src/app/shared/models/School";
 import { UserDataService } from "src/app/shared/services/user-data.service";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { Observable, forkJoin } from "rxjs";
+import { Clipboard } from '@angular/cdk/clipboard';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 export interface IDialogData {
   user: IUser,
@@ -35,12 +37,15 @@ export interface IDialogData {
     MatButtonModule, 
     MatChipsModule,
     MatProgressSpinnerModule,
+    MatSnackBarModule,
   ],
 })
 export class UserDialog implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<UserDialog>,
     private userDataService: UserDataService,
+    private clipboard: Clipboard,
+    private snackBar: MatSnackBar,
     @Inject(MAT_DIALOG_DATA) public data: IDialogData,
   ) {}
 
@@ -82,4 +87,26 @@ export class UserDialog implements OnInit {
   }
 
   onCloseClick(): void { this.dialogRef.close(); }
+
+  navigateToTelegram(): void {
+    let telegramLink = String(this.data.user.personalData?.telegram);
+    telegramLink = telegramLink.replace('@', '');
+    window.open(`https://t.me/${telegramLink}`, '_blank');
+  }
+
+  navigateToVk(): void {
+    let vkLink = String(this.data.user.personalData?.vk);
+    window.open(`https://${vkLink}`, '_blank');
+  }
+
+  copyPhoneNumber(): void {
+    const phoneNumber = this.data.user.personalData?.telephone;
+
+    if (!phoneNumber) {
+      return;
+    }
+
+    this.snackBar.open('Скопировано в буфер обмена', '🤓')
+    this.clipboard.copy(phoneNumber);
+  }
 }

@@ -33,7 +33,6 @@ export class ProfilePageComponent implements OnInit{
 
   private tryGetCurrentUser() {
     this.loading = true;
-
     this.userDataService.getCurrentUser().subscribe({
       next: (response: IUser) => { 
         this.user = response;
@@ -52,6 +51,11 @@ export class ProfilePageComponent implements OnInit{
         if (response) this.avatarPath = `data:image/png;base64,${response}`
       },
     })
+  }
+
+  updatePage(): void {
+    this.tryGetCurrentUser();
+    this.utilsService.scrollToTop();
   }
 
   private faculties: IFaculty[] = [];

@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { TagsPageComponent } from "./tags-page/tags-page.component";
+import { AdminPageComponent } from "./admin-page/admin-page.component";
 
-const routes: Routes = [{ path: 'tags', component: TagsPageComponent }];
+const routes: Routes = [{ path: '', component: AdminPageComponent }];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

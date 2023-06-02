@@ -4,7 +4,7 @@
 
 <div class="form-layout" [style.visibility]="loading ? 'hidden' : 'visible'">
   <div class="form-layout-inner">
-    <div class="form-container">
+    <div class="form-container mt-4">
       <form class="form" [formGroup]="form">
         <mat-form-field appearance="fill">
           <mat-label>Имя</mat-label>
@@ -191,20 +191,31 @@
           [disabled]="form.invalid || loading"
           (click)="onSubmitData()"
         >
-          Продолжить
+          Изменить
         </button>
       </form>
     </div>
   </div>
 
-  <span class="avatar">
-    <img src="{{ avatarPath }}" alt="{{ user.firstName }}"/>
-    <span>
-      <app-upload-file 
-        requiredFileType="image/jpeg, image/png"
-        (onAvatarChanged)="tryGetAvatar()"
-      >
-      </app-upload-file>
+  <span class="flex flex-col ml-8">
+    <span class="avatar flex flex-row">
+      <img src="{{ avatarPath }}" alt="{{ user.firstName }}"/>
+      <span>
+        <app-upload-file 
+          requiredFileType="image/jpeg, image/png"
+          (onAvatarChanged)="tryGetAvatar()"
+        >
+        </app-upload-file>
+      </span>
     </span>
+
+    <app-profile-interests 
+      class="mt-8" 
+      [user]="user"
+      *ngIf="!loading"
+      (triggerPageUpdate)="updatePage()"
+    >
+    </app-profile-interests>
   </span>
+
 </div>

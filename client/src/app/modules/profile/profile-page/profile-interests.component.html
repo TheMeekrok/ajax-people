@@ -1,0 +1,23 @@
+<div class="form-layout-inner">
+  <div class="form-container">
+    <form class="form" [formGroup]="form">
+      <mat-chip-listbox multiple *ngIf="!isLoading" formControlName="interestsChips">
+        <mat-chip-option *ngFor="let interest of interests">
+          {{ interest.title }}{{ (interest.selected) ? '✅' : '' }}
+        </mat-chip-option>
+      </mat-chip-listbox>
+
+      <div *ngIf="isLoading" class="spinner"><mat-spinner></mat-spinner></div>
+
+      <button 
+        type="submit" 
+        mat-raised-button
+        class="mt-2"
+        color="primary" 
+        [disabled]="isLoading || form.invalid || interestsChips?.value.length == 0"
+        (click)="proceed()"
+      >
+        Изменить</button>
+    </form>
+  </div>
+</div>

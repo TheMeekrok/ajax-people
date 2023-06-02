@@ -33,6 +33,8 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		//users := apiPublic.Group("/users", h.userIdentifyById)
 		users := apiPublic.Group("/users")
 		{
+			users.GET("/:id", h.getUserById)
+
 			users.PUT("/:id", h.updateUser)
 
 			users.GET("/", h.selectUsers)
