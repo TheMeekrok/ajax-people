@@ -34,7 +34,7 @@ func (r FileStorage) Upload(id int, input UploadInput) (string, error) {
 	pathDir := "assets/avatars"
 	buf := new(bytes.Buffer)
 	image, _, _ := image.Decode(bytes.NewReader(input.File))
-	newImage := resize.Resize(160, 0, image, resize.Lanczos3)
+	newImage := resize.Resize(480, 0, image, resize.Lanczos3)
 
 	switch input.ContentType {
 	case "image/jpeg":
