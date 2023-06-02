@@ -38,7 +38,7 @@ func (r *RegisterDataPostgres) GetAllInterests(id int) ([]user.Interest, error) 
 
 	var query string
 	if id == 0 {
-		query = fmt.Sprintf("SELECT * FROM %s", interestsTable)
+		query = fmt.Sprintf("SELECT * FROM %s ORDER BY title ASC", interestsTable)
 		if err := r.db.Select(&interests, query); err != nil {
 			return nil, err
 		}

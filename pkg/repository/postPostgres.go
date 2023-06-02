@@ -301,7 +301,7 @@ func (r *PostPostgres) GetTagById(id int) (user.Tag, error) {
 func (r *PostPostgres) GetAllTags() ([]user.Tag, error) {
 	var tagsList []user.Tag
 
-	query := fmt.Sprintf("SELECT id, title FROM %s", tagsTable)
+	query := fmt.Sprintf("SELECT id, title FROM %s ORDER BY title ASC", tagsTable)
 	if err := r.db.Select(&tagsList, query); err != nil {
 		return nil, err
 	}
