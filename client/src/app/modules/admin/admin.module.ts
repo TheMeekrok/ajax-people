@@ -16,6 +16,10 @@ import { MatIconModule } from "@angular/material/icon";
 import { UnmoderatedPostComponent } from "./unmoderated-post/unmoderated-post.component";
 import { UnmoderatedPostsComponent } from "./unmoderated-posts/unmoderated-posts.component";
 import { PublicationsModule } from "../publications/publications.module";
+import { AdminUsersComponent } from './admin-users/admin-users.component';
+import { MatTableModule } from "@angular/material/table";
+import { MatSortModule } from "@angular/material/sort";
+import { MatPaginatorModule } from "@angular/material/paginator";
 
 
 @NgModule({
@@ -25,7 +29,8 @@ import { PublicationsModule } from "../publications/publications.module";
     SuccessCreateTagComponent,
     ConfirmationDeleteTagComponent,
     UnmoderatedPostsComponent,
-    UnmoderatedPostComponent
+    UnmoderatedPostComponent,
+    AdminUsersComponent
   ],
   imports: [
     CommonModule,
@@ -39,6 +44,9 @@ import { PublicationsModule } from "../publications/publications.module";
     MatIconModule,
     MatButtonModule,
     MatInputModule,
+    MatTableModule,
+    MatSortModule,
+    MatPaginatorModule,
   ]
 })
 export class AdminModule { }
