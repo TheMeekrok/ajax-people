@@ -14,6 +14,8 @@ import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { Observable, forkJoin } from "rxjs";
 import { Clipboard } from '@angular/cdk/clipboard';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatButtonToggleModule } from "@angular/material/button-toggle";
+import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 export interface IDialogData {
   user: IUser,
@@ -38,6 +40,9 @@ export interface IDialogData {
     MatChipsModule,
     MatProgressSpinnerModule,
     MatSnackBarModule,
+    MatButtonToggleModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
 })
 export class UserDialog implements OnInit {
@@ -51,9 +56,14 @@ export class UserDialog implements OnInit {
 
   loading = false;
 
-  ngOnInit(): void { this._initUserData(); }
+  rateUserControl = new FormControl('');
 
-  private _initUserData() {
+  ngOnInit(): void { 
+    this.initUserData();
+    this.initRateUser();
+  }
+
+  private initUserData() {
     this.data.educationLevel = '';
     this.data.faculty = '';
     this.data.school = '';
@@ -86,7 +96,19 @@ export class UserDialog implements OnInit {
     });
   }
 
-  onCloseClick(): void { this.dialogRef.close(); }
+  private initRateUser(): void {
+    if (!this.data.user.id) {
+      return;
+    }
+
+    this.userDataService.getRateForUser(this.data.user.id).subscribe(value => {
+      this.rateUserControl.setValue(String(value));
+    });
+  }
+
+  onCloseClick(): void { 
+    this.dialogRef.close(); 
+  }
 
   navigateToTelegram(): void {
     let telegramLink = String(this.data.user.personalData?.telegram);
@@ -108,5 +130,14 @@ export class UserDialog implements OnInit {
 
     this.snackBar.open('Скопировано в буфер обмена', '🤓')
     this.clipboard.copy(phoneNumber);
+  }
+
+  setRateForUser(event: any): void {
+    if (!event || !event.value || !this.data.user.id) {
+      return;
+    }
+
+    this.userDataService.setRateForUser(this.data.user.id, Number(event.value))
+      .subscribe();
   }
 }

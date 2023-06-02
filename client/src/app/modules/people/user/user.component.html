@@ -1,13 +1,24 @@
 <mat-card>
-  <mat-card-header>
-    <img src="{{ avatarPath }}" alt="{{ user.firstName }}" mat-card-avatar>
-    <mat-card-title class="user-name">
-      <span *ngIf="user.isAdmin">⭐️ </span>
-      <span>{{ user.firstName }}</span>
-      <span *ngIf="user.lastName"> {{ user.lastName }}</span> 
-      <span>, {{ user.age }}</span>
-    </mat-card-title>
-    <mat-card-subtitle *ngIf="userStatus">🎓 {{ userStatus }}</mat-card-subtitle>
+  <mat-card-header class="flex flex-row justify-start">
+      <img src="{{ avatarPath }}" alt="{{ user.firstName }}" mat-card-avatar>
+
+      <mat-card-title class="user-name w-fit">
+        <span *ngIf="user.isAdmin">⭐️ </span>
+        <span>{{ user.firstName }}</span>
+        <span *ngIf="user.lastName"> {{ user.lastName }}</span> 
+        <span>, {{ user.age }}</span>
+      </mat-card-title>
+      
+      <mat-card-subtitle *ngIf="userStatus">🎓 {{ userStatus }}</mat-card-subtitle>
+      <mat-card-subtitle 
+        *ngIf="user.rating" 
+        [ngClass]="{
+          'text-red-500': user.rating < 0,
+          'text-green-500': user.rating > 0,
+        }"
+      >
+      👑 {{ user.rating }}
+      </mat-card-subtitle>
   </mat-card-header>
 
   <mat-divider></mat-divider>

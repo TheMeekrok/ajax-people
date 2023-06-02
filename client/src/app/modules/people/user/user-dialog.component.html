@@ -1,57 +1,67 @@
 <mat-card>
   <mat-card-header>
-    <img src="{{ data.avatarPath }}" mat-card-avatar>
+    <img src="{{ data.avatarPath }}" mat-card-avatar />
     <mat-card-title>
       <span *ngIf="data.user.isAdmin">⭐️ </span>
       <span>{{ data.user.firstName }}</span>
-      <span *ngIf="data.user.lastName"> {{ data.user.lastName }}</span> 
+      <span *ngIf="data.user.lastName"> {{ data.user.lastName }}</span>
       <span>, {{ data.user.age }}</span>
     </mat-card-title>
-    <mat-card-subtitle *ngIf="data.userStatus">🎓 {{ data.userStatus }}</mat-card-subtitle>
+    <mat-card-subtitle *ngIf="data.userStatus"
+      >🎓 {{ data.userStatus }}</mat-card-subtitle
+    >
   </mat-card-header>
 
   <mat-card-content class="my-2">
     <div *ngIf="data.faculty">📄 {{ data.faculty }}</div>
     <div *ngIf="data.school">🏫 {{ data.school }}</div>
     <mat-chip-set role="list">
-      <mat-chip role="listitem" *ngIf="data.user.admissionYear">📅 {{ data.user.admissionYear }}</mat-chip>
-      <mat-chip role="listitem" *ngIf="data.educationLevel">💫 {{ data.educationLevel }}</mat-chip>
+      <mat-chip role="listitem" *ngIf="data.user.admissionYear"
+        >📅 {{ data.user.admissionYear }}</mat-chip
+      >
+      <mat-chip role="listitem" *ngIf="data.educationLevel"
+        >💫 {{ data.educationLevel }}</mat-chip
+      >
     </mat-chip-set>
   </mat-card-content>
 
   <mat-card-content class="my-2">
     <div>Интересы</div>
     <mat-chip-set role="list">
-      <mat-chip role="listitem" *ngFor="let interest of data.interests">{{ interest }}</mat-chip>
+      <mat-chip role="listitem" *ngFor="let interest of data.interests">{{
+        interest
+      }}</mat-chip>
     </mat-chip-set>
   </mat-card-content>
+
+  <mat-card-content> </mat-card-content>
 
   <mat-divider></mat-divider>
 
   <mat-card-content class="my-2">
     <mat-chip-set role="list">
-      <mat-chip 
-        role="listitem" 
+      <mat-chip
+        role="listitem"
         *ngIf="data.user.personalData?.telegram"
         (click)="navigateToTelegram()"
       >
-        <img matChipAvatar src="../../../../assets/user/telegram.png"/>
+        <img matChipAvatar src="../../../../assets/user/telegram.png" />
         {{ data.user.personalData?.telegram }}
       </mat-chip>
-      <mat-chip 
-        role="listitem" 
+      <mat-chip
+        role="listitem"
         *ngIf="data.user.personalData?.vk"
         (click)="navigateToVk()"
       >
-        <img matChipAvatar src="../../../../assets/user/vk.png"/>
+        <img matChipAvatar src="../../../../assets/user/vk.png" />
         {{ data.user.personalData?.vk }}
       </mat-chip>
-      <mat-chip 
-        role="listitem" 
+      <mat-chip
+        role="listitem"
         *ngIf="data.user.personalData?.telephone"
         (click)="copyPhoneNumber()"
       >
-        <img matChipAvatar src="../../../../assets/user/phone.png"/>
+        <img matChipAvatar src="../../../../assets/user/phone.png" />
         {{ data.user.personalData?.telephone }}
       </mat-chip>
     </mat-chip-set>
@@ -60,7 +70,27 @@
   <div *ngIf="loading" class="spinner"><mat-spinner></mat-spinner></div>
 
   <mat-card-actions class="flex justify-center">
-    <button mat-button (click)="onCloseClick()">Закрыть</button>
+    <mat-button-toggle-group
+      [formControl]="rateUserControl"
+      name="rateUser"
+      aria-label="Rate User"
+      (change)="setRateForUser($event)"
+    >
+      <mat-button-toggle [disabled]="loading" aria-label="Rate Up" value="1">👍</mat-button-toggle>
+      <mat-button-toggle [disabled]="loading" aria-label="Rate Down" value="-1">👎</mat-button-toggle>
+    </mat-button-toggle-group>
+
+    <span
+      *ngIf="data.user.rating"
+      class="ml-2 flex items-center"
+      [ngClass]="{
+        'text-red-500': data.user.rating < 0,
+        'text-green-500': data.user.rating > 0,
+      }"
+    >{{ data.user.rating }}</span>
   </mat-card-actions>
 
+  <mat-card-actions class="flex justify-center">
+    <button mat-button (click)="onCloseClick()">Закрыть</button>
+  </mat-card-actions>
 </mat-card>

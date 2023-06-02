@@ -18,7 +18,7 @@ import { MatListModule } from "@angular/material/list";
 import { FullPostComponent } from "./full-post/full-post.component";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { PeopleModule } from '../people/people.module';
-
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
     declarations: [
@@ -46,6 +46,7 @@ import { PeopleModule } from '../people/people.module';
         MatSidenavModule,
         MatListModule,
         MatProgressSpinnerModule,
+        MatSnackBarModule,
     ]
 })
 export class PublicationsModule { }

@@ -100,9 +100,23 @@ export class UserDataService {
       .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
   }
 
-  userStatusFromId(id: number): string { return StatusUser[id]; }
+  getRateForUser(userId: number): Observable<Number> {
+    return this.http.get<Number>(`/api/users/rating/${userId}`)
+      .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
+  }
 
-  educationLevelFromId(id: number): string { return EducationLevel[id]; }
+  setRateForUser(userId: number, value: number) {
+    return this.http.put(`/api/users/rating/${userId}`, { value: value })
+      .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
+  }
+
+  userStatusFromId(id: number): string { 
+    return StatusUser[id]; 
+  }
+
+  educationLevelFromId(id: number): string { 
+    return EducationLevel[id]; 
+  }
 
   private _handleError(error: HttpErrorResponse) {
     let errorMessage = '';

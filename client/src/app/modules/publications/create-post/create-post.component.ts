@@ -1,10 +1,10 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { IPost } from "../../../shared/models/Post";
-import { IInterest } from "../../../shared/models/Interest";
 import { PostService } from "../../../shared/services/post.service";
-import { SuccessPostComponent } from "../success-post/success-post.component";
+import { Tag } from 'src/app/shared/models/Tag';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -12,17 +12,22 @@ import { SuccessPostComponent } from "../success-post/success-post.component";
   templateUrl: './create-post.component.html',
   styleUrls: ['./create-post.component.css']
 })
-export class CreatePostComponent {
+export class CreatePostComponent implements OnInit {
+
   loading = true;
   form: FormGroup;
-  interests: IInterest[]
-  isTagSelected: boolean
+  tags: Tag[];
+  isTagSelected: boolean;
+
   constructor(
     public dialog: MatDialog,
     private postService: PostService,
     public dialogRef: MatDialogRef<CreatePostComponent>,
+    private snackBar: MatSnackBar,
     @Inject(MAT_DIALOG_DATA) public data: IPost,
-  ) {
+  ) {}
+
+  ngOnInit(): void {
     this.form = new FormGroup({
       text: new FormControl('',[
         Validators.required,
@@ -30,11 +35,15 @@ export class CreatePostComponent {
         Validators.minLength(10),
         Validators.maxLength(255)
       ]),
-      tags: new FormControl([], [Validators.minLength(1)])
+      tags: new FormControl([], [
+        Validators.minLength(1),
+        Validators.required,
+        Validators.maxLength(10),
+      ])
     });
     this.postService.getTags().subscribe(
-      data => {
-        this.interests = data
+      (data: Tag[]) => {
+        this.tags = data
         this.loading = false;
       }
     )
@@ -42,9 +51,7 @@ export class CreatePostComponent {
 
   getTextErrorString() {
     const error = this.form.controls['text'].errors;
-    if (error?.['required']) {
-      return 'Обязательное поле'
-    }
+    
     if (error?.['pattern']) {
       return 'Текст содержит недопустимые символы'
     }
@@ -57,24 +64,41 @@ export class CreatePostComponent {
     return ''
   }
 
+  get tagsError(): string {
+    const error = this.form.get('tags')?.errors;
 
-  onPostClick() {
-    if (this.form.controls['tags'].value.length < 1) {
-      this.isTagSelected = true
-      return
+    if (error?.['minlength']) {
+      return 'Выберите хотя бы один тег';
     }
-    else {
-      this.isTagSelected = false
+    if (error?.['maxlength']) {
+      return 'Не более 10';
     }
-    if (this.form.valid) {
-      this.data = {
-        text: this.form.controls['text']?.value,
-        tags: this.form.controls['tags']?.value,
-        author: '',
-        userId: 1,
+
+    return ''
+  }
+
+  savePostError = '';
+
+  onPostClick(): void {
+    this.data = {
+      text: this.form.controls['text']?.value,
+      tags: this.form.controls['tags']?.value,
+      author: '',
+      userId: 1,
+    }
+
+    this.loading = true;
+
+    this.postService.savePost(this.data).subscribe({
+      error: (error: Error) => {
+        this.loading = false;
+        this.savePostError = error.message;
+      },
+      complete: () => {
+        this.loading = false;
+        this.snackBar.open('Публикация отправлена на проверку', 'ОК');
+        this.dialogRef.close();
       }
-      this.dialogRef.close(this.data)
-    }
-    const dialogRef = this.dialog.open(SuccessPostComponent);
+    })
   }
 }

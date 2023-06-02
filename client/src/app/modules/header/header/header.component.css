@@ -1,6 +1,6 @@
 header {
   background-color: var(--main-color-accent);
-  height: 70px;
+  height: var(--header-height);
 }
 
 .header-wrapper {

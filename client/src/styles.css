@@ -12,6 +12,7 @@
   --form-background: #FFFFFF;
   --text-main-color: #FFFFFF;
 
+  --header-height: 100px;
   --footer-height: 100px;
 }
 
@@ -72,15 +73,16 @@ li {
 .spinner {
   display: flex;
   justify-content: center;
+  margin: 4px 10px;
 }
 
 .spinner mat-spinner {
-  max-width: 50px;
-  height: auto;
+  max-width: 32px;
+  max-height: 32px;
 }
 
 .wrapper-v {
-  min-height: calc(100vh - 70px - var(--footer-height));
+  min-height: calc(100vh - var(--header-height) - var(--footer-height));
 }
 
 .wrapper-h {

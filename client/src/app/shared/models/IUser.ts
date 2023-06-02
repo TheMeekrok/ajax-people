@@ -28,4 +28,5 @@ export interface IUser {
   telegram?: string,
   vk?: string,
   telephone?: string,
+  rating?: number,
 }
