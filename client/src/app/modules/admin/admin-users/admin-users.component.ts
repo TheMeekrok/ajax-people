@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { MatTableDataSource } from "@angular/material/table";
 import { User } from "../../../shared/models/User";
 import { AdminService } from "../../../shared/services/admin.service";
+import * as buffer from "buffer";
 
 
 @Component({
@@ -11,18 +12,17 @@ import { AdminService } from "../../../shared/services/admin.service";
 })
 export class AdminUsersComponent {
 
-  isLoading: boolean;
   users: User[];
-  displayedColumns: string[] = ["name", "surname", "mail", "rating", "actions"];
+  displayedColumns: string[] = ["name", "surname", "mail", "rating", "admin", "ban"];
   dataSource: MatTableDataSource<User>;
 
 
   constructor(private adminService: AdminService) {
     this.uploadUsers();
+
   }
 
   uploadUsers() {
-    this.isLoading  = true;
     this.adminService.getAllUsers().subscribe({
       next: (result) => {
         this.users = result;
@@ -31,7 +31,6 @@ export class AdminUsersComponent {
 
       },
       error: (error: Error) => console.log(error),
-      complete: () => this.isLoading = false
     })
   }
   applyFilter(event: Event) {
@@ -42,15 +41,15 @@ export class AdminUsersComponent {
       this.dataSource.paginator.firstPage();
     }
   }
-
-  onAdminClick(id: number) {
+  
+  onAdminClick(checked: boolean, id: number) {
     this.adminService.appointAnAdmin(id).subscribe({
       error: (error: Error) => console.log(error)
     })
-   this.uploadUsers();
+    this.uploadUsers();
   }
 
-  onBanClick(id: number) {
+  onBunClick(checked: boolean, id: number) {
     console.log("user: " + id + " was banned");
   }
 }
