@@ -80,13 +80,7 @@ export class PublicationsPageComponent implements OnInit  {
   }
 
   onCreatePostClick(): void {
-    const dialogRef = this.dialog.open(CreatePostComponent, {
-      data: this.newPost
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      this.postService.savePost(result).subscribe()
-    });
+    this.dialog.open(CreatePostComponent, { data: this.newPost });
   }
 
   changePosts() {

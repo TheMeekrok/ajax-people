@@ -5,6 +5,7 @@ export interface IPost {
   userId: number
   text: string
   publicationTime?: Date
+  isModerated?: boolean
   tags: IInterest[]
 }
 

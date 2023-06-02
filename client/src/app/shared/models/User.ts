@@ -2,7 +2,9 @@ import { IInterest } from './Interest';
 
 export class User {
   id: number
-  email: string
+  mail: string
+  isAdmin: number;
+  rating: number
   password: string
   firstName: string
   lastName: string

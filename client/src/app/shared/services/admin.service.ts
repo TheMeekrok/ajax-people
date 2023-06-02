@@ -6,6 +6,7 @@ import { defaultResponseDelay, defaultRetryRate } from "./servicesConfig";
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { ErrorMessage } from "./ErrorsEnum";
 import { Post } from "../models/Post";
+import { User } from "../models/User";
 
 @Injectable({
   providedIn: 'root'
@@ -50,6 +51,18 @@ export class AdminService {
 
   getUnmoderatedPosts(): Observable<Post[]> {
     return this.http.get<Post[]>(`api-private/posts`)
+      .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
+  }
+
+
+  getAllUsers(): Observable<User[]> {
+    return this.http.get<User[]>('api/users')
+      .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
+  }
+
+
+  appointAnAdmin(id: number) {
+    return this.http.put('api-private/users/' + id, null)
       .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
   }
 

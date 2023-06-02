@@ -14,6 +14,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatSelectModule } from '@angular/material/select';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 @NgModule({
   declarations: [PeoplePageComponent, UserComponent],
@@ -33,6 +34,7 @@ import { MatSelectModule } from '@angular/material/select';
     MatDividerModule,
     MatAutocompleteModule,
     MatSelectModule,
+    MatButtonToggleModule,
   ],
 })
 export class PeopleModule {}

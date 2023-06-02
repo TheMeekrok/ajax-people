@@ -76,7 +76,7 @@ export class PostService {
    * Метод для получения всех тэгов
    */
   getTags(): Observable<Tag[]> {
-    return this.http.get<IInterest[]>('/api/tags/')
+    return this.http.get<Tag[]>('/api/tags/')
       .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
   }
 
