@@ -15,16 +15,17 @@ export class AdminService {
 
   constructor(private http: HttpClient) { }
 
-  /**
-   * Метод для получения всех тэгов
-   */
+
+  // getAuthorizedUser() {
+  //   return this.http.get<User>('api/users/get-id')
+  //     .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
+  // }
   getTags(): Observable<Tag[]> {
-    return this.http.get<IInterest[]>('/api/tags')
+    return this.http.get<IInterest[]>('api/tags')
       .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
   }
 
   deleteTag(id: number) {
-    console.log(id);
     return this.http.delete<string>('api-private/tags/' + id)
       .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
   }
