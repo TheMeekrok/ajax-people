@@ -209,15 +209,47 @@ func (h *Handler) coincidenceAccept(c *gin.Context) {
 	c.JSON(http.StatusOK, "Accept")
 }
 
+type Admin struct {
+	IsAdmin bool `json:"isAdmin"`
+	IsBan   bool `json:"isBan"`
+}
+
 func (h *Handler) changeUserOnAdmin(c *gin.Context) {
 	var id int
+	var isAdmin Admin
 
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 	}
 
-	err = h.services.ChangeUserOnAdmin(id)
+	if err = c.BindJSON(&isAdmin); err != nil {
+		c.JSON(http.StatusBadRequest, "Failed to state Admin")
+		return
+	}
+
+	err = h.services.ChangeUserOnAdmin(id, isAdmin.IsAdmin)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+	}
+	c.JSON(http.StatusOK, "Ok")
+}
+
+func (h *Handler) banUser(c *gin.Context) {
+	var id int
+	var isBan Admin
+
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+	}
+
+	if err = c.BindJSON(&isBan); err != nil {
+		c.JSON(http.StatusBadRequest, "Failed to state Ban")
+		return
+	}
+
+	err = h.services.BanUser(id, isBan.IsBan)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 	}

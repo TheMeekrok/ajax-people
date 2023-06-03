@@ -49,6 +49,10 @@ func (s *UserActionService) AcceptMessageRequest(idRequest int) error {
 	return s.repo.AcceptMessageRequest(idRequest)
 }
 
-func (s *UserActionService) ChangeUserOnAdmin(id int) error {
-	return s.repo.ChangeUserOnAdmin(id)
+func (s *UserActionService) ChangeUserOnAdmin(id int, isAdmin bool) error {
+	return s.repo.ChangeUserOnAdmin(id, isAdmin)
+}
+
+func (s *UserActionService) BanUser(id int, isBan bool) error {
+	return s.repo.BanUser(id, isBan)
 }

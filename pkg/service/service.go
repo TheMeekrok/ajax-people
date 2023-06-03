@@ -20,7 +20,8 @@ type UserAction interface {
 	SelectedDataUser(userSelect user.UpdateUserInput, idUser, page, items int) ([]user.UserOutput, error)
 	RequestСorrespondence(idSender int, emailRecipient string) (int, error)
 	AcceptMessageRequest(idRequest int) error
-	ChangeUserOnAdmin(id int) error
+	ChangeUserOnAdmin(id int, isAdmin bool) error
+	BanUser(id int, isBan bool) error
 }
 
 type RegisterData interface {

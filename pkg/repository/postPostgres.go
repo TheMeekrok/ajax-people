@@ -310,7 +310,18 @@ func (r *PostPostgres) GetAllTags() ([]user.Tag, error) {
 }
 
 func (r *PostPostgres) DeleteTag(id int) error {
+
 	query := fmt.Sprintf("DELETE FROM %s WHERE id=$1", tagsTable)
 	_, err := r.db.Exec(query, id)
-	return err
+	if err != nil {
+		return err
+	}
+
+	query = fmt.Sprintf("DELETE FROM %s WHERE tag_id=$1", postsTagsTable)
+	_, err = r.db.Exec(query, id)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

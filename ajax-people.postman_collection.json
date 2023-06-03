@@ -13,6 +13,45 @@
 					"name": "users",
 					"item": [
 						{
+							"name": "rating",
+							"item": [
+								{
+									"name": "Изменение рейтинга",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"value\":1\n}"
+										},
+										"url": {
+											"raw": "http://localhost:8080/api/users/rating/3",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"api",
+												"users",
+												"rating",
+												"3"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Получение прошлой реакции юзера",
+									"request": {
+										"method": "GET",
+										"header": []
+									},
+									"response": []
+								}
+							]
+						},
+						{
 							"name": "Выборка пользователей по параметрам",
 							"request": {
 								"method": "GET",
@@ -68,7 +107,26 @@
 							"name": "Получение id пользователя под акком",
 							"request": {
 								"method": "GET",
-								"header": []
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/users/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": null
+										}
+									]
+								}
 							},
 							"response": []
 						}
@@ -620,8 +678,12 @@
 							"request": {
 								"method": "PUT",
 								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"isAdmin\": true\n}"
+								},
 								"url": {
-									"raw": "http://localhost:8080/api-private/users/:id",
+									"raw": "http://localhost:8080/api-private/users/admin/:id",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -630,6 +692,39 @@
 									"path": [
 										"api-private",
 										"users",
+										"admin",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": null
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Банит юзера",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"isBan\": false\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8080/api-private/users/ban/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api-private",
+										"users",
+										"ban",
 										":id"
 									],
 									"variable": [
