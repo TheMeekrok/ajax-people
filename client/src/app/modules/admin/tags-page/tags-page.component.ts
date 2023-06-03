@@ -4,6 +4,14 @@ import { AdminService } from "../../../shared/services/admin.service";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { MatDialog } from "@angular/material/dialog";
 import { SuccessCreateTagComponent } from "../success-create-tag/success-create-tag.component";
+import { MatTableDataSource } from "@angular/material/table";
+import { ConfirmationDeleteTagComponent } from "../confirmation-delete-tag/confirmation-delete-tag.component";
+
+
+interface Data {
+  tag: Tag;
+  isDeleted: boolean
+}
 
 @Component({
   selector: 'app-tags-page',
@@ -15,12 +23,29 @@ export class TagsPageComponent implements OnInit {
 
   tags: Tag[];
   form: FormGroup;
-  loading = false;
 
+  displayedColumns: string[] = ["id", "title", "delete"];
+  dataSource: MatTableDataSource<Data>;
+
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
+
+    this.dataSource.filterPredicate = (data: Data, filter: string) => {
+      const { tag, isDeleted } = data;
+      const matchesTitle = tag.id.toString().toLowerCase().includes(filter);
+      const matchesUserId = tag.title.toString().includes(filter);
+      return matchesTitle  || matchesUserId;
+    };
+    this.dataSource.filter = filterValue;
+    console.log(this.dataSource.filteredData);
+  }
 
   constructor(private adminService: AdminService,
               public dialog: MatDialog,
-  ) {}
+  ) {
+    this.uploadTags();
+  }
   ngOnInit() {
     this.form = new FormGroup({
       newTag: new FormControl('', [
@@ -29,7 +54,6 @@ export class TagsPageComponent implements OnInit {
         Validators.pattern(/^[a-zA-Zа-яА-Я0-9\s":;,=-]*$/),
       ])
     });
-    this.uploadTags();
   }
 
 /**
@@ -37,15 +61,21 @@ export class TagsPageComponent implements OnInit {
 */
   uploadTags() {
     this.tags = [];
-    this.loading = true;
     this.adminService.getTags().subscribe( {
         next: (data) => {
           this.tags = data;
-          this.loading = false;
+          const dataSource: Data[] = [];
+          for (const t of this.tags) {
+            dataSource.push({
+              tag: t,
+              isDeleted: false,
+            })
+          }
+          this.dataSource  = new MatTableDataSource(dataSource)
         },
         error: (error: Error) => {
           console.log(error);
-        }
+        },
       }
     )
   }
@@ -75,20 +105,28 @@ export class TagsPageComponent implements OnInit {
     this.uploadTags();
   }
 
-/**
- * Метод, получающий ответ от компонента tag
- * @param answer - подтверждено ли удаление
- * @param id - id тэга
-*/
-  onGetAnswerToDeletion(answer: boolean, id: number) {
-    if (!answer) {
+
+  onDeleteClick($event: Event, data: Data) {
+    if (data.isDeleted) {
       return;
     }
-    this.adminService.deleteTag(id).subscribe( {
-        next: () => console.log("success"),
-        error: (error: Error) => console.log(error),
+    let answer: boolean;
+    const dialogRef = this.dialog.open(ConfirmationDeleteTagComponent, {
+      data: {title: data.tag.title}
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      answer = result.answer;
+      if (!answer) {
+        return;
       }
-    ).unsubscribe();
-  this.uploadTags();
+      this.adminService.deleteTag(data.tag.id).subscribe( {
+          next: () => console.log("success"),
+          error: (error: Error) => console.log(error),
+          // complete: () => this.uploadTags()
+        }
+      )
+      data.isDeleted = true;
+    });
   }
+
 }

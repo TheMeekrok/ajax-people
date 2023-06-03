@@ -22,29 +22,32 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 registerLocaleData(localeRu, 'ru');
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    HomePageLayoutComponent,
-    MainLayoutComponent,
-    SuccessPostComponent,
-    NotFoundComponent,
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    FormsModule,
-    ReactiveFormsModule,
-    BrowserAnimationsModule,
-    HttpClientModule,
-    HeaderModule,
-    FooterModule,
-    MatDialogModule,
-    MatSidenavModule,
-    MatPaginatorModule,
-    LoginModule,
-    MatButtonModule,
-  ],
-  providers: [],
-  bootstrap: [AppComponent],
+    declarations: [
+        AppComponent,
+        HomePageLayoutComponent,
+        MainLayoutComponent,
+        SuccessPostComponent,
+        NotFoundComponent,
+    ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        FormsModule,
+        ReactiveFormsModule,
+        BrowserAnimationsModule,
+        HttpClientModule,
+        HeaderModule,
+        FooterModule,
+        MatDialogModule,
+        MatSidenavModule,
+        MatPaginatorModule,
+        LoginModule,
+        MatButtonModule,
+    ],
+    providers: [],
+    bootstrap: [AppComponent],
+    exports: [
+        NotFoundComponent
+    ]
 })
 export class AppModule {}
