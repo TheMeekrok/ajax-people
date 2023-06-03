@@ -321,17 +321,17 @@ func (r *UserActionPostgres) SelectedDataUser(userSelect user.UpdateUserInput, i
 	}
 	var query string
 	if setQuery == "" {
-		query = fmt.Sprintf(`SELECT users.id ,firstname, lastname,age,status_user, education_level,
+		query = fmt.Sprintf(`SELECT users.id ,firstname, mail, lastname,age,status_user, education_level,
 								study_program_id,is_admin,school_id, admission_year, graduation_year, raiting 
 								FROM %s JOIN %s r on users.id = r.user_id
-								WHERE is_verificated = true AND firstname!='' ORDER BY raiting DESC`, userTable, raitingUser)
+								WHERE is_verificated=true AND is_moderated=false AND firstname!='' ORDER BY raiting DESC`, userTable, raitingUser)
 	} else {
-		query = fmt.Sprintf(`SELECT DISTINCT users.id, firstname, lastname,age,status_user, 
+		query = fmt.Sprintf(`SELECT DISTINCT users.id, firstname, mail, lastname,age,status_user, 
                 				education_level,study_program_id,school_id,is_admin, admission_year, graduation_year, raiting
 								FROM %s JOIN %s ON users.id = users_interests.user_id
     							JOIN %s ON users_interests.interest_id = interest.id 
 								JOIN %s r on users.id = r.user_id
-                                WHERE is_verificated = true AND firstname!='' AND %s ORDER BY raiting DESC`, userTable, usersInterests, interestsTable, raitingUser, setQuery)
+                                WHERE is_verificated = true AND is_moderated=false AND firstname!='' AND %s ORDER BY raiting DESC`, userTable, usersInterests, interestsTable, raitingUser, setQuery)
 	}
 
 	if err := r.db.Select(&userList, query, args...); err != nil {
@@ -413,10 +413,22 @@ func (r *UserActionPostgres) AcceptMessageRequest(idRequest int) error {
 	return nil
 }
 
-func (r *UserActionPostgres) ChangeUserOnAdmin(id int) error {
+func (r *UserActionPostgres) ChangeUserOnAdmin(id int, isAdmin bool) error {
 
-	query := fmt.Sprintf("UPDATE %s SET is_admin=true WHERE id=$1;", userTable)
-	_, err := r.db.Exec(query, id)
+	query := fmt.Sprintf("UPDATE %s SET is_admin=$1 WHERE id=$2;", userTable)
+	_, err := r.db.Exec(query, isAdmin, id)
+	if err != nil {
+		return err
+	}
+
+	return nil
+
+}
+
+func (r *UserActionPostgres) BanUser(id int, isBan bool) error {
+
+	query := fmt.Sprintf("UPDATE %s SET is_moderated=$1 WHERE id=$2;", userTable)
+	_, err := r.db.Exec(query, isBan, id)
 	if err != nil {
 		return err
 	}

@@ -68,7 +68,7 @@ func (h *Handler) signIn(c *gin.Context) {
 
 	//if err != nil {
 	//	cookie = "NotSet"
-	c.SetCookie("jwtToken", token, 2592000, "/", "172.20.10.2", false, true)
+	c.SetCookie("jwtToken", token, 2592000, "/", "localhost", false, true)
 	//}
 
 	//fmt.Printf("Cookie value: %s \n", cookie)

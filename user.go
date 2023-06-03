@@ -20,7 +20,7 @@ type User struct {
 	IsVerificated    bool         `json:"isVerificated" db:"is_verificated"`
 	IsVisible        bool         `json:"isVisible"`
 	AvatarPath       string       `json:"avatarPath" db:"avatar_path"`
-	IsModerated      bool         `json:"isModerated"`
+	IsModerated      bool         `json:"isModerated" db:"is_moderated"`
 	PersonalData     PersonalData `json:"personalData"`
 }
 
@@ -30,6 +30,7 @@ type UserOutput struct {
 	Interests        []int        `json:"interests"`
 	LastName         string       `json:"lastName"`
 	Age              int          `json:"age"`
+	Mail             string       `json:"mail" db:"mail"`
 	StatusUserId     int          `json:"statusUserId" db:"status_user"`
 	EducationLevelId int          `json:"educationLevelId" db:"education_level"`
 	StudyProgramId   int          `json:"studyProgramId" db:"study_program_id"`

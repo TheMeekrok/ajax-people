@@ -96,7 +96,9 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	{
 		users := apiPrivate.Group("/users")
 		{
-			users.PUT("/:id", h.changeUserOnAdmin)
+			users.PUT("/admin/:id", h.changeUserOnAdmin)
+
+			users.PUT("/ban/:id", h.banUser)
 
 			users.DELETE("/:id", h.deleteUser)
 		}
