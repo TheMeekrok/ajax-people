@@ -122,7 +122,6 @@ export class TagsPageComponent implements OnInit {
       this.adminService.deleteTag(data.tag.id).subscribe( {
           next: () => console.log("success"),
           error: (error: Error) => console.log(error),
-          // complete: () => this.uploadTags()
         }
       )
       data.isDeleted = true;
