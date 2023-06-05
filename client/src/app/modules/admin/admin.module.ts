@@ -20,6 +20,7 @@ import { MatPaginatorModule } from "@angular/material/paginator";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { AdminPageComponent } from './admin-page/admin-page.component';
 import { AppModule } from "../../app.module";
+import { AdminMesageModalComponent } from './admin-mesage-modal/admin-mesage-modal.component';
 
 
 @NgModule({
@@ -30,7 +31,8 @@ import { AppModule } from "../../app.module";
     ConfirmationDeleteTagComponent,
     UnmoderatedPostsComponent,
     AdminUsersComponent,
-    AdminPageComponent
+    AdminPageComponent,
+    AdminMesageModalComponent
   ],
   imports: [
     CommonModule,

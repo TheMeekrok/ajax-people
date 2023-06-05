@@ -63,10 +63,30 @@ export class AdminService {
 
 
   appointAnAdmin(id: number) {
-    return this.http.put('api-private/users/' + id, null)
+    const body = {
+      isAdmin: true
+    }
+    return this.http.put('api-private/users/admin/' + id, body)
       .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
   }
 
+
+  deleteFromAdmin(id: number) {
+    const body = {
+      isAdmin: false
+    }
+    return this.http.put('api-private/users/admin/' + id, body)
+      .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
+  }
+
+
+  bunUser(id: number) {
+    const body = {
+      isBan: true
+    }
+    return this.http.put('api-private/users/ban/' + id, body)
+      .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
+  }
   private _handleError(error: HttpErrorResponse) {
     let errorMessage = '';
     switch (error.status) {

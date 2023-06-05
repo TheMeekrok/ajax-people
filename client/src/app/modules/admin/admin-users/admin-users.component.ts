@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { MatTableDataSource } from "@angular/material/table";
 import { User } from "../../../shared/models/User";
 import { AdminService } from "../../../shared/services/admin.service";
+import { MatDialog } from "@angular/material/dialog";
+import { AdminMesageModalComponent } from "../admin-mesage-modal/admin-mesage-modal.component";
 
 
 @Component({
@@ -16,7 +18,8 @@ export class AdminUsersComponent {
   dataSource: MatTableDataSource<User>;
 
 
-  constructor(private adminService: AdminService) {
+  constructor(private adminService: AdminService,
+              public dialog: MatDialog) {
     this.uploadUsers();
   }
 
@@ -37,15 +40,37 @@ export class AdminUsersComponent {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
+
+
+  showMessage(title: string) {
+    this.dialog.open(AdminMesageModalComponent, {
+      data: {title: title}
+    });
+  }
+
   onAdminClick(checked: boolean, id: number) {
-    this.adminService.appointAnAdmin(id).subscribe({
-      error: (error: Error) => console.log(error)
-    })
-    this.uploadUsers();
+    if (checked) {
+      this.adminService.appointAnAdmin(id).subscribe({
+        error: (error: Error) => console.log(error),
+        complete: () => this.showMessage("Пользователь успешно назначен администратором!")
+      })
+    }
+    else {
+      this.adminService.deleteFromAdmin(id).subscribe({
+        error: (error: Error) => console.log(error),
+        complete: () => this.showMessage("Пользователь успешно удалён из администраторов!")
+
+      })
+    }
   }
 
   onBunClick(checked: boolean, id: number) {
-    console.log("user: " + id + " was banned");
+    if (checked) {
+      this.adminService.bunUser(id).subscribe({
+        error: (error: Error) => console.log(error),
+        complete: () => this.showMessage("Пользователь успешно заблокирован!")
+      })
+    }
   }
 }
 
