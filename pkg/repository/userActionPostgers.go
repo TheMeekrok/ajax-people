@@ -63,10 +63,15 @@ func (r *UserActionPostgres) GetUser(id int) (user.UserOutput, error) {
 	return user, err
 }
 
-func (r *UserActionPostgres) GetAllUsers() ([]user.User, error) {
-	var userList []user.User
+func (r *UserActionPostgres) GetAllUsers(page, items int) ([]user.UserOutput, error) {
+	var userListPage []user.UserOutput
+	var userList []user.UserOutput
 
-	query := fmt.Sprintf("SELECT id,firstname, lastname,mail,age,status_user, education_level,study_program_id,school_id,avatar_path FROM %s", userTable)
+	var query string
+	query = fmt.Sprintf(`SELECT users.id ,firstname, mail, lastname ,is_admin,is_moderated, raiting 
+								FROM %s JOIN %s r on users.id = r.user_id
+								ORDER BY raiting DESC`, userTable, raitingUser)
+
 	if err := r.db.Select(&userList, query); err != nil {
 		return nil, err
 	}
@@ -78,9 +83,35 @@ func (r *UserActionPostgres) GetAllUsers() ([]user.User, error) {
 		if err := r.db.Select(&userList[i].Interests, query, userList[i].Id); err != nil {
 			return nil, err
 		}
+
+		query = fmt.Sprintf(`SELECT DISTINCT telegram, vk, telephone FROM %s
+    								JOIN %s ON users.id = personal_data.user_id WHERE user_id = $1;`,
+			userTable, personalData)
+
+		if err := r.db.Get(&userList[i].PersonalData, query, userList[i].Id); err != nil {
+			return nil, err
+		}
+
 	}
 
-	return userList, nil
+	if page == -1 || items == 0 {
+		return userList, nil
+	}
+
+	var lastItems int
+	if page*items+items-len(userList) > 0 && items-((page*items)+items-len(userList)) <= 0 {
+		return userListPage, nil
+	} else if page*items+items > len(userList) {
+		lastItems = items - ((page * items) + items - len(userList))
+	} else {
+		lastItems = items
+	}
+
+	for i := page * items; i < page*items+lastItems; i++ {
+		userListPage = append(userListPage, userList[i])
+	}
+
+	return userListPage, nil
 }
 
 func (r *UserActionPostgres) DeleteUser(id int) error {

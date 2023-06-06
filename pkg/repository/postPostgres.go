@@ -143,7 +143,7 @@ func (r *PostPostgres) GetPostByPage(filter user.PostFilter, page int, items int
 	isModer := ""
 
 	if !isAdmin {
-		isModer += "WHERE po.is_moderated=true"
+		isModer += " po.is_moderated=true AND "
 	}
 
 	if len(filter.TagsList) > 0 {
@@ -153,8 +153,10 @@ func (r *PostPostgres) GetPostByPage(filter user.PostFilter, page int, items int
 
 	query := fmt.Sprintf(
 		`SELECT DISTINCT po.id, po.user_id, po.text, po.is_moderated, po.publication_time FROM %s po
-    					JOIN %s pt ON po.id = pt.post_id %s %s ORDER BY publication_time %s ;`,
-		postsTable, postsTagsTable, addQuery, isModer, orderType)
+    					JOIN %s pt ON po.id = pt.post_id
+    					    JOIN %s u on u.id = po.user_id
+    					    %s WHERE %s lastname!='' AND is_verificated=true ORDER BY publication_time %s;`,
+		postsTable, postsTagsTable, userTable, addQuery, isModer, orderType)
 
 	var postsList []user.Post
 	if err := r.db.Select(&postsList, query); err != nil {

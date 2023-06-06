@@ -32,8 +32,8 @@ func (s *UserActionService) UpdateUser(id int, user user.UpdateUserInput) error 
 	return s.repo.UpdateUser(id, user)
 }
 
-func (s *UserActionService) GetAllUsers() ([]user.User, error) {
-	return s.repo.GetAllUsers()
+func (s *UserActionService) GetAllUsers(page, items int) ([]user.UserOutput, error) {
+	return s.repo.GetAllUsers(page, items)
 }
 
 func (s *UserActionService) SelectedDataUser(userSelect user.UpdateUserInput, idUser, page, items int) ([]user.UserOutput, error) {
