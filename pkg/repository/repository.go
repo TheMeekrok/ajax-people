@@ -13,7 +13,7 @@ type Authorization interface {
 type UserAction interface {
 	CreateUser(user user.User) (int, error)
 	GetUser(id int) (user.UserOutput, error)
-	GetAllUsers() ([]user.User, error)
+	GetAllUsers(page, items int) ([]user.UserOutput, error)
 	DeleteUser(id int) error
 	UpdateUser(id int, user user.UpdateUserInput) error
 	SelectedDataUser(userSelect user.UpdateUserInput, idUser, page, items int) ([]user.UserOutput, error)

@@ -37,6 +37,7 @@ type UserOutput struct {
 	SchoolId         int          `json:"schoolId" db:"school_id"`
 	AdmissionYear    int          `json:"admissionYear" db:"admission_year"`
 	GraduationYear   int          `json:"graduationYear" db:"graduation_year"`
+	IsModerated      bool         `json:"isModerated" db:"is_moderated"`
 	IsAdmin          bool         `json:"isAdmin" db:"is_admin"`
 	PersonalData     PersonalData `json:"personalData"`
 	Rating           int          `json:"rating" db:"raiting"`

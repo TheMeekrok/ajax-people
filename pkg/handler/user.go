@@ -30,7 +30,9 @@ func (h *Handler) createUser(c *gin.Context) {
 }
 
 func (h *Handler) getAllUsers(c *gin.Context) {
-	userList, err := h.services.GetAllUsers()
+	items, _ := strconv.Atoi(c.Query("items"))
+	page, _ := strconv.Atoi(c.Query("page"))
+	userList, err := h.services.GetAllUsers(page, items)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
@@ -97,24 +99,24 @@ type Message struct {
 }
 
 func (h *Handler) checkActivationUser(c *gin.Context) {
-	//userId, _ := getUserId(c)
-	//
-	//var code Message
-	//
-	//if err := c.BindJSON(&code); err != nil {
-	//	c.JSON(http.StatusBadRequest, "Wrong content")
-	//	return
-	//}
-	//
-	//verified, err := h.services.CheckCodeActivation(userId, code.Code)
-	//if err != nil {
-	//	newErrorResponse(c, http.StatusInternalServerError, err.Error())
-	//	return
-	//}
-	//if !verified {
-	//	c.JSON(http.StatusBadRequest, "Code is not correct")
-	//	return
-	//}
+	userId, _ := getUserId(c)
+
+	var code Message
+
+	if err := c.BindJSON(&code); err != nil {
+		c.JSON(http.StatusBadRequest, "Wrong content")
+		return
+	}
+
+	verified, err := h.services.CheckCodeActivation(userId, code.Code)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+	if !verified {
+		c.JSON(http.StatusBadRequest, "Code is not correct")
+		return
+	}
 
 	c.JSON(http.StatusOK, "Successfully")
 }
