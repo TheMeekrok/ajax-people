@@ -201,7 +201,7 @@
     <span class="avatar flex flex-row">
       <img src="{{ avatarPath }}" alt="{{ user.firstName }}"/>
       <span>
-        <app-upload-file 
+        <app-upload-file
           requiredFileType="image/jpeg, image/png"
           (onAvatarChanged)="tryGetAvatar()"
         >
@@ -209,13 +209,23 @@
       </span>
     </span>
 
-    <app-profile-interests 
-      class="mt-8" 
+    <app-profile-interests
+      class="mt-8"
       [user]="user"
       *ngIf="!loading"
       (triggerPageUpdate)="updatePage()"
     >
     </app-profile-interests>
+     <button
+       type="submit"
+       class="mt-5"
+       mat-raised-button
+       color="primary"
+       (click)="onExitClick()"
+     >
+    Выйти
+  </button>
+
   </span>
 
 </div>

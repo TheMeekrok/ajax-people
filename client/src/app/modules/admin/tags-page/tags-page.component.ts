@@ -4,8 +4,8 @@ import { AdminService } from "../../../shared/services/admin.service";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { MatDialog } from "@angular/material/dialog";
 import { SuccessCreateTagComponent } from "../success-create-tag/success-create-tag.component";
-import { MatTableDataSource } from "@angular/material/table";
 import { ConfirmationDeleteTagComponent } from "../confirmation-delete-tag/confirmation-delete-tag.component";
+import { MatTableDataSource } from "@angular/material/table";
 
 
 interface Data {
@@ -16,13 +16,14 @@ interface Data {
 @Component({
   selector: 'app-tags-page',
   templateUrl: './tags-page.component.html',
-  styleUrls: ['./tags-page.component.css']
+  styleUrls: ['./tags-page.component.css'],
 })
 export class TagsPageComponent implements OnInit {
   @ViewChild('childContainer', { read: ViewContainerRef }) childContainer: ViewContainerRef;
 
   tags: Tag[];
   form: FormGroup;
+
 
   displayedColumns: string[] = ["id", "title", "delete"];
   dataSource: MatTableDataSource<Data>;
@@ -38,6 +39,8 @@ export class TagsPageComponent implements OnInit {
       return matchesTitle  || matchesUserId;
     };
     this.dataSource.filter = filterValue;
+    this.dataSource._updateChangeSubscription(); // Обновление подписки на изменения данных
+
     console.log(this.dataSource.filteredData);
   }
 
