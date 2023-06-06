@@ -3,7 +3,7 @@ import { IInterest } from './Interest';
 export class User {
   id: number
   mail: string
-  isAdmin: number;
+  isAdmin: boolean;
   rating: number
   password: string
   firstName: string

@@ -13,14 +13,13 @@ import { ConfirmationDeleteTagComponent } from './confirmation-delete-tag/confir
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatTabsModule } from "@angular/material/tabs";
 import { MatIconModule } from "@angular/material/icon";
-import { UnmoderatedPostComponent } from "./unmoderated-post/unmoderated-post.component";
 import { UnmoderatedPostsComponent } from "./unmoderated-posts/unmoderated-posts.component";
-import { PublicationsModule } from "../publications/publications.module";
 import { AdminUsersComponent } from './admin-users/admin-users.component';
 import { MatTableModule } from "@angular/material/table";
-import { MatSortModule } from "@angular/material/sort";
 import { MatPaginatorModule } from "@angular/material/paginator";
 import { MatCheckboxModule } from "@angular/material/checkbox";
+import { AdminPageComponent } from './admin-page/admin-page.component';
+import { AppModule } from "../../app.module";
 
 
 @NgModule({
@@ -30,8 +29,8 @@ import { MatCheckboxModule } from "@angular/material/checkbox";
     SuccessCreateTagComponent,
     ConfirmationDeleteTagComponent,
     UnmoderatedPostsComponent,
-    UnmoderatedPostComponent,
-    AdminUsersComponent
+    AdminUsersComponent,
+    AdminPageComponent
   ],
   imports: [
     CommonModule,
@@ -40,16 +39,15 @@ import { MatCheckboxModule } from "@angular/material/checkbox";
     MatDialogModule,
     MatProgressSpinnerModule,
     MatTabsModule,
-    PublicationsModule,
-    MatCardModule,
-    MatIconModule,
-    MatButtonModule,
-    MatInputModule,
-    MatTableModule,
-    MatSortModule,
     MatPaginatorModule,
     MatCheckboxModule,
     FormsModule,
+    MatInputModule,
+    MatButtonModule,
+    MatTableModule,
+    MatCardModule,
+    MatIconModule,
+    AppModule
   ]
 })
 export class AdminModule { }
