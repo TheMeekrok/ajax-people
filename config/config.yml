@@ -1,4 +1,6 @@
 port: "8080"
+domain: "localhost"
+ageToken: 2592000
 
 db:
   username: "postgres"
