@@ -7,6 +7,7 @@ import { UserDataService } from 'src/app/shared/services/user-data.service';
 import { RegisterService } from 'src/app/shared/services/register.service';
 import { IUser } from 'src/app/shared/models/IUser';
 import { UtilsService } from 'src/app/shared/services/utils.service';
+import { AuthService } from "../../../shared/services/auth.service";
 
 @Component({
   selector: 'app-profile-page',
@@ -18,9 +19,10 @@ export class ProfilePageComponent implements OnInit{
   formErrorMessage = '';
 
   constructor(
-    private userDataService: UserDataService, 
+    private userDataService: UserDataService,
     private registerService: RegisterService,
     private utilsService: UtilsService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -34,7 +36,7 @@ export class ProfilePageComponent implements OnInit{
   private tryGetCurrentUser() {
     this.loading = true;
     this.userDataService.getCurrentUser().subscribe({
-      next: (response: IUser) => { 
+      next: (response: IUser) => {
         this.user = response;
         this.initLists();
         this.tryGetAvatar();
@@ -87,15 +89,15 @@ export class ProfilePageComponent implements OnInit{
   private initForm(): void {
     this.form = new FormGroup({
       firstName: new FormControl('', [
-        Validators.pattern('[а-яёА-яa-zA-z]+-?[а-яёА-яa-zA-z]+'), 
+        Validators.pattern('[а-яёА-яa-zA-z]+-?[а-яёА-яa-zA-z]+'),
         Validators.maxLength(16)
       ]),
 
       secondName: new FormControl('', [
-        Validators.pattern('[а-яёА-яa-zA-z]+-?[а-яёА-яa-zA-z]+'), 
+        Validators.pattern('[а-яёА-яa-zA-z]+-?[а-яёА-яa-zA-z]+'),
         Validators.maxLength(16)
       ]),
-      
+
       age: new FormControl('', [
         Validators.pattern('[0-9]*'),
         Validators.max(100),
@@ -155,7 +157,7 @@ export class ProfilePageComponent implements OnInit{
       lastName: String(this.secondName?.value) || this.user.lastName,
       age: Number(this.age?.value) || this.user.age,
       statusUserId: Number(this.status?.value),
-      educationLevelId: Number(this.educationLevel?.value), 
+      educationLevelId: Number(this.educationLevel?.value),
       admissionYear: Number(this.admissionYear?.value) || this.user.admissionYear,
       schoolId: Number(this.school?.value?.id),
       studyProgramId: Number(this.faculty?.value?.id),
@@ -181,8 +183,8 @@ export class ProfilePageComponent implements OnInit{
     });
   }
 
-  get firstName() { 
-    return this.form.get('firstName'); 
+  get firstName() {
+    return this.form.get('firstName');
   }
   get firstNameErrorMessage(): string {
     const errors = this.firstName?.errors;
@@ -194,8 +196,8 @@ export class ProfilePageComponent implements OnInit{
     return errorMessage;
   }
 
-  get secondName() { 
-    return this.form.get('secondName'); 
+  get secondName() {
+    return this.form.get('secondName');
   }
   get secondNameErrorMessage(): string {
     const errors = this.secondName?.errors;
@@ -207,8 +209,8 @@ export class ProfilePageComponent implements OnInit{
     return errorMessage;
   }
 
-  get age() { 
-    return this.form.get('age'); 
+  get age() {
+    return this.form.get('age');
   }
   get ageErrorMessage(): string {
     const errors = this.age?.errors;
@@ -220,8 +222,8 @@ export class ProfilePageComponent implements OnInit{
     return errorMessage;
   }
 
-  get admissionYear() { 
-    return this.form.get('admissionYear'); 
+  get admissionYear() {
+    return this.form.get('admissionYear');
   }
   get admissionYearErrorMessage(): string {
     const errors = this.admissionYear?.errors;
@@ -232,24 +234,24 @@ export class ProfilePageComponent implements OnInit{
     return errorMessage;
   }
 
-  get status() { 
-    return this.form.get('userStatus'); 
+  get status() {
+    return this.form.get('userStatus');
   }
 
-  get educationLevel() { 
-    return this.form.get('educationLevel'); 
+  get educationLevel() {
+    return this.form.get('educationLevel');
   }
 
-  get school() { 
-    return this.form.get('school'); 
+  get school() {
+    return this.form.get('school');
   }
-  
-  get faculty() { 
-    return this.form.get('faculty'); 
+
+  get faculty() {
+    return this.form.get('faculty');
   }
-  
-  get telegram() { 
-    return this.form.get('telegram'); 
+
+  get telegram() {
+    return this.form.get('telegram');
   }
   get telegramErrorMessage(): string {
     const errors = this.telegram?.errors;
@@ -261,8 +263,8 @@ export class ProfilePageComponent implements OnInit{
     return errorMessage;
   }
 
-  get vk() { 
-    return this.form.get('vk'); 
+  get vk() {
+    return this.form.get('vk');
   }
   get vkErrorMessage(): string {
     const errors = this.vk?.errors;
@@ -274,8 +276,8 @@ export class ProfilePageComponent implements OnInit{
     return errorMessage;
   }
 
-  get phoneNumber() { 
-    return this.form.get('phoneNumber'); 
+  get phoneNumber() {
+    return this.form.get('phoneNumber');
   }
   get phoneNumberErrorMessage(): string {
     const errors = this.phoneNumber?.errors;
@@ -297,5 +299,12 @@ export class ProfilePageComponent implements OnInit{
   private _filterSchools(value: string): ISchool[] {
     const filterValue = value.toLowerCase();
     return this.schools.filter(school => school.title.toLowerCase().includes(filterValue));
+  }
+
+  onExitClick() {
+    this.authService.exitUser().subscribe({
+      error: (error: Error) => console.log(error),
+      complete: () => window.location.href = 'home'
+    })
   }
 }

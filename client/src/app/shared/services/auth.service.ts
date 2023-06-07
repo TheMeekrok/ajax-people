@@ -18,6 +18,11 @@ export class AuthService {
       .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
   }
 
+  exitUser() {
+    return this.http.post('/sign-out', null)
+      .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
+  }
+
   private _handleError(error: HttpErrorResponse) {
     let errorMessage = '';
     switch (error.status) {

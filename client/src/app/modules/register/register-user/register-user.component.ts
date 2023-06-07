@@ -25,7 +25,7 @@ export class RegisterUserComponent implements OnInit {
   @Output() userIdEventEmitter = new EventEmitter<number>();
 
   constructor(
-    private rs: RegisterService, 
+    private rs: RegisterService,
     private as: AuthService,
     public dialog: MatDialog,
   ) {}
@@ -39,13 +39,13 @@ export class RegisterUserComponent implements OnInit {
           Validators.required,
           // Validators.pattern('^[a-zA-Z]+[.][a-zA-Z]+@[a-zA-z]*[.]*dvfu.ru$'),
         ]),
-        password: new FormControl('12345678', [
+        password: new FormControl('', [
           Validators.required,
           Validators.minLength(8),
           Validators.maxLength(32),
           Validators.pattern('[a-zA-Z1-9()*_-]*'),
         ]),
-        passwordRepeat: new FormControl('12345678', [Validators.required]),
+        passwordRepeat: new FormControl('', [Validators.required]),
       },
       this._passwordValidation()
     );
@@ -139,7 +139,7 @@ export class RegisterUserComponent implements OnInit {
     this.isLoading = true;
 
     return this.rs.registerUser(this.user).subscribe({
-      next: (response: IResponseId) => { 
+      next: (response: IResponseId) => {
         this.userId = response.id;
         this._openDialog();
       },
