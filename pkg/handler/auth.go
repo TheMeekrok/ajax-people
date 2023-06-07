@@ -4,6 +4,7 @@ import (
 	user "backend_ajax-people"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/spf13/viper"
 	"net/http"
 )
 
@@ -67,14 +68,10 @@ func (h *Handler) signIn(c *gin.Context) {
 		return
 	}
 
-	//cookie, err := c.Cookie("jwtToken")
+	domain := viper.GetString("domain")
+	ageToken := viper.GetInt("ageToken")
 
-	//if err != nil {
-	//	cookie = "NotSet"
-	c.SetCookie("jwtToken", token, 2592000, "/", "localhost", false, true)
-	//}
-
-	//fmt.Printf("Cookie value: %s \n", cookie)
+	c.SetCookie("jwtToken", token, ageToken, "/", domain, false, true)
 
 	c.JSON(http.StatusOK, map[string]interface{}{
 		"token": token,
@@ -82,7 +79,9 @@ func (h *Handler) signIn(c *gin.Context) {
 }
 
 func (h *Handler) signOut(c *gin.Context) {
-	c.SetCookie("jwtToken", "", -1, "/", "localhost", false, true)
+	domain := viper.GetString("domain")
+
+	c.SetCookie("jwtToken", "", -1, "/", domain, false, true)
 
 	c.JSON(http.StatusOK, "ok")
 }
