@@ -20,10 +20,6 @@ header {
   width: fit-content;
 }
 
-.logo:hover {
-  cursor: pointer;
-}
-
 .logo img {
   width: 45px;
   height: 45px;

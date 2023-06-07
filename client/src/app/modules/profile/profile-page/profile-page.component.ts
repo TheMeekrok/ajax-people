@@ -8,6 +8,7 @@ import { RegisterService } from 'src/app/shared/services/register.service';
 import { IUser } from 'src/app/shared/models/IUser';
 import { UtilsService } from 'src/app/shared/services/utils.service';
 import { AuthService } from "../../../shared/services/auth.service";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile-page',
@@ -16,14 +17,15 @@ import { AuthService } from "../../../shared/services/auth.service";
 })
 export class ProfilePageComponent implements OnInit{
 
-  formErrorMessage = '';
-
   constructor(
     private userDataService: UserDataService,
     private registerService: RegisterService,
     private utilsService: UtilsService,
-    private authService: AuthService
-  ) {}
+    private authService: AuthService,
+    private router: Router,
+  ) { }
+
+  formErrorMessage = '';
 
   ngOnInit(): void {
     this.tryGetCurrentUser();
@@ -58,6 +60,14 @@ export class ProfilePageComponent implements OnInit{
   updatePage(): void {
     this.tryGetCurrentUser();
     this.utilsService.scrollToTop();
+  }
+
+  onAdminClick(): void {
+    this.router.navigate(['/admin']);
+  }
+
+  onExitClick(): void {
+    this.authService.exitUser().subscribe(() => this.router.navigate(['/']));
   }
 
   private faculties: IFaculty[] = [];
@@ -299,12 +309,5 @@ export class ProfilePageComponent implements OnInit{
   private _filterSchools(value: string): ISchool[] {
     const filterValue = value.toLowerCase();
     return this.schools.filter(school => school.title.toLowerCase().includes(filterValue));
-  }
-
-  onExitClick() {
-    this.authService.exitUser().subscribe({
-      error: (error: Error) => console.log(error),
-      complete: () => window.location.href = 'home'
-    })
   }
 }
