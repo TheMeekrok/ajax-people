@@ -55,13 +55,6 @@ export class AdminService {
       .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
   }
 
-
-  getAllUsers(): Observable<User[]> {
-    return this.http.get<User[]>('api/users')
-      .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
-  }
-
-
   appointAnAdmin(id: number) {
     const body = {
       isAdmin: true
@@ -80,11 +73,24 @@ export class AdminService {
   }
 
 
-  bunUser(id: number) {
+  banUser(id: number) {
     const body = {
       isBan: true
     }
     return this.http.put('api-private/users/ban/' + id, body)
+      .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
+  }
+
+
+  unBanUser(id: number) {
+    const body = {
+      isBan: false
+    }
+    return this.http.put('api-private/users/ban/' + id, body)
+      .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
+  }
+  getAllUsers(): Observable<User[]> {
+    return this.http.get<User[]>('api-private/users/')
       .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
   }
   private _handleError(error: HttpErrorResponse) {

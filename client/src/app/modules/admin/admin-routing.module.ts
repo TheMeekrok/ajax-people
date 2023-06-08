@@ -3,8 +3,13 @@ import { RouterModule, Routes } from '@angular/router';
 import { UnmoderatedPostsComponent } from "./unmoderated-posts/unmoderated-posts.component";
 import { TagsPageComponent } from "./tags-page/tags-page.component";
 import { AdminUsersComponent } from "./admin-users/admin-users.component";
+import { AdminPageComponent } from "./admin-page/admin-page.component";
 
 const routes: Routes = [
+  {
+    path: '',
+    component: AdminPageComponent
+  },
   {
     path: 'tags',
     component: TagsPageComponent
@@ -17,7 +22,6 @@ const routes: Routes = [
     path: 'users',
     component: AdminUsersComponent
   }
-
 ];
 
 @NgModule({

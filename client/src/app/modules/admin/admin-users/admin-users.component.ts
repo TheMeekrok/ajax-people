@@ -64,11 +64,17 @@ export class AdminUsersComponent {
     }
   }
 
-  onBunClick(checked: boolean, id: number) {
+  onBanClick(checked: boolean, id: number) {
     if (checked) {
-      this.adminService.bunUser(id).subscribe({
+      this.adminService.banUser(id).subscribe({
         error: (error: Error) => console.log(error),
         complete: () => this.showMessage("Пользователь успешно заблокирован!")
+      })
+    }
+    else {
+      this.adminService.unBanUser(id).subscribe({
+        error: (error: Error) => console.log(error),
+        complete: () => this.showMessage("Пользователь успешно разблокирован!")
       })
     }
   }

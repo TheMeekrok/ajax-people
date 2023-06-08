@@ -31,7 +31,7 @@ export class CreatePostComponent implements OnInit {
     this.form = new FormGroup({
       text: new FormControl('',[
         Validators.required,
-        Validators.pattern(/^[a-zA-Zа-яА-Я0-9\s":;,=.!?#@%*/()-]*$/),
+        Validators.pattern(/^[a-zA-Zа-яА-Я0-9\s":;,=.!?#@%*/()-ёЁ]*$/),
         Validators.minLength(10),
         Validators.maxLength(255)
       ]),
