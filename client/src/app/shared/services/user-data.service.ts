@@ -3,12 +3,11 @@ import { Injectable } from '@angular/core';
 import { Observable, catchError, delay, dematerialize, materialize, retry, throwError } from 'rxjs';
 import { IFaculty } from '../models/Faculty';
 import { ISchool } from '../models/School';
-import { User } from "../models/User";
 import { defaultResponseDelay, defaultRetryRate } from './servicesConfig';
 import { ErrorMessage } from './ErrorsEnum';
 import { IInterest } from '../models/Interest';
-import { EducationLevel } from '../Enums/EducationLevel';
-import { StatusUser } from '../Enums/StatusUser';
+import { EducationLevel } from '../enums/EducationLevel';
+import { StatusUser } from '../enums/StatusUser';
 import { IUser } from '../models/IUser';
 
 @Injectable({

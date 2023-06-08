@@ -18,6 +18,7 @@ import localeRu from "@angular/common/locales/ru";
 import { SuccessPostComponent } from './modules/publications/success-post/success-post.component';
 import { MatButtonModule } from "@angular/material/button";
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { httpInterceptorProviders } from './shared/http-interceptors';
 
 registerLocaleData(localeRu, 'ru');
 
@@ -44,7 +45,7 @@ registerLocaleData(localeRu, 'ru');
         LoginModule,
         MatButtonModule,
     ],
-    providers: [],
+    providers: [httpInterceptorProviders],
     bootstrap: [AppComponent],
     exports: [
         NotFoundComponent
