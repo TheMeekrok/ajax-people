@@ -9,6 +9,7 @@ export class User {
   firstName: string
   lastName: string
   age: number
+  isModerated: number
   course: number
   statusUser: string
   educationLevel: string
