@@ -28,9 +28,6 @@ export class AdminUsersComponent {
       next: (result) => {
         this.users = result;
         this.dataSource  = new MatTableDataSource(this.users)
-        console.log("!!!!");
-        console.log(this.users);
-
       },
       error: (error: Error) => console.log(error),
     })

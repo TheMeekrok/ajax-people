@@ -11,7 +11,6 @@ import { SuccessCreateTagComponent } from './success-create-tag/success-create-t
 import { MatDialogModule } from "@angular/material/dialog";
 import { ConfirmationDeleteTagComponent } from './confirmation-delete-tag/confirmation-delete-tag.component';
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
-import { MatTabsModule } from "@angular/material/tabs";
 import { MatIconModule } from "@angular/material/icon";
 import { UnmoderatedPostsComponent } from "./unmoderated-posts/unmoderated-posts.component";
 import { AdminUsersComponent } from './admin-users/admin-users.component';
@@ -21,6 +20,8 @@ import { MatCheckboxModule } from "@angular/material/checkbox";
 import { AdminPageComponent } from './admin-page/admin-page.component';
 import { AppModule } from "../../app.module";
 import { AdminMesageModalComponent } from './admin-mesage-modal/admin-mesage-modal.component';
+import { MatTabsModule } from "@angular/material/tabs";
+import { MatSidenavModule } from "@angular/material/sidenav";
 
 
 @NgModule({
@@ -40,7 +41,6 @@ import { AdminMesageModalComponent } from './admin-mesage-modal/admin-mesage-mod
     ReactiveFormsModule,
     MatDialogModule,
     MatProgressSpinnerModule,
-    MatTabsModule,
     MatPaginatorModule,
     MatCheckboxModule,
     FormsModule,
@@ -49,7 +49,9 @@ import { AdminMesageModalComponent } from './admin-mesage-modal/admin-mesage-mod
     MatTableModule,
     MatCardModule,
     MatIconModule,
-    AppModule
+    AppModule,
+    MatTabsModule,
+    MatSidenavModule,
   ]
 })
 export class AdminModule { }
