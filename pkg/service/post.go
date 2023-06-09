@@ -65,3 +65,11 @@ func (s *PostService) GetAllTags() ([]user.Tag, error) {
 func (s *PostService) DeleteTag(id int) error {
 	return s.repo.DeleteTag(id)
 }
+
+func (s *PostService) CreateInterest(title string) (int, error) {
+	return s.repo.CreateInterest(title)
+}
+
+func (s *PostService) DeleteInterest(id int) error {
+	return s.repo.DeleteInterest(id)
+}
