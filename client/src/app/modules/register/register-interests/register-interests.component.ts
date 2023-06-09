@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { IUser } from 'src/app/shared/models/IUser';
 import { IInterest } from 'src/app/shared/models/Interest';
@@ -13,6 +13,7 @@ import { UserDataService } from 'src/app/shared/services/user-data.service';
 export class RegisterInterestsComponent implements OnInit {
 
   @Input() userId = 0;
+  @Output() onInterestsComplete = new EventEmitter();
 
   isLoading = false;
   formErrorMessage = '';
@@ -26,21 +27,24 @@ export class RegisterInterestsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this._initForm();
-    this._initInterests();
+    this.initForm();
+    this.initInterests();
   }
 
   proceed() {
-    this._updateData();
+    this.updateData();
   }
 
-  private _initForm() {
+  private initForm() {
     this.form = new FormGroup({
-      interestsChips: new FormControl([], [Validators.required]),
+      interestsChips: new FormControl([], [
+        Validators.required,
+        Validators.maxLength(10),
+      ]),
     })
   }
 
-  private _initInterests() {
+  private initInterests() {
     this.isLoading = true;
 
     this.userDataService.getInterests().subscribe({
@@ -59,11 +63,18 @@ export class RegisterInterestsComponent implements OnInit {
   get interestsChips() { return this.form.get('interestsChips') }
   get interestsChipsErrorMessage(): string {
     const errors = this.interestsChips?.errors;
-    if (errors?.['required']) { return 'Выберите хотя бы один Интерес'; }
+
+    if (errors?.['required']) { 
+      return 'Выберите хотя бы один Интерес'; 
+    }
+    if (errors?.['maxlength']) { 
+      return 'Не более 10'; 
+    }
+
     return '';
   }
 
-  private _selectInterests() {
+  private selectInterests() {
     const interestsIds: number[] = [];
 
     this.interestsChips?.value.forEach((chip: string) => {
@@ -74,8 +85,10 @@ export class RegisterInterestsComponent implements OnInit {
     return interestsIds;
   }
 
-  private _updateData() {
-    const userData: IUser = { interests: this._selectInterests() }
+  private updateData() {
+    const userData: IUser = { 
+      interests: this.selectInterests() 
+    };
 
     this.isLoading = true;
 
@@ -84,6 +97,7 @@ export class RegisterInterestsComponent implements OnInit {
       complete: () => { 
         this.formErrorMessage = ''; 
         this.isLoading = false;
+        this.onInterestsComplete.emit();
       },
     });
   }

@@ -18,6 +18,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RegisterInterestsComponent } from './register-interests/register-interests.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDividerModule } from '@angular/material/divider';
+import { HeaderComponent } from '../header/header/header.component';
+import { FooterModule } from '../footer/footer.module';
+import { HeaderModule } from '../header/header.module';
 
 @NgModule({
   declarations: [
@@ -43,6 +46,8 @@ import { MatDividerModule } from '@angular/material/divider';
     MatProgressSpinnerModule,
     MatCheckboxModule,
     MatDividerModule,
+    FooterModule,
+    HeaderModule,
   ],
   providers: [
     MatDialog,

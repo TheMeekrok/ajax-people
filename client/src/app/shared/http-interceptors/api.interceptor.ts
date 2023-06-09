@@ -8,7 +8,7 @@ import {
   HttpErrorResponse
 } from '@angular/common/http';
 import { Observable, catchError, delay, dematerialize, materialize, retry, throwError } from 'rxjs';
-import { ErrorMessage } from '../services/ErrorsEnum';
+import { ErrorMessage } from '../enums/Errors';
 
 export const defaultResponseDelay = 100;
 export const defaultRetryRate = 1;
@@ -28,6 +28,10 @@ export class ApiInterceptor implements HttpInterceptor {
     switch (error.status) {
       case 0:
         errorMessage = ErrorMessage.NETWORK_ERROR;
+        break;
+
+      case 204:
+        errorMessage = ErrorMessage.NO_CONTENT;
         break;
 
       case 400:

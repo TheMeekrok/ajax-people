@@ -162,7 +162,7 @@ export class ProfilePageComponent implements OnInit{
   }
 
   onSubmitData() {
-    let newUser: IUser = {
+    const newUser: IUser = {
       firstName: String(this.firstName?.value) || this.user.firstName,
       lastName: String(this.secondName?.value) || this.user.lastName,
       age: Number(this.age?.value) || this.user.age,
@@ -177,9 +177,9 @@ export class ProfilePageComponent implements OnInit{
     }
 
     this.tryUpdateUserData(newUser);
-  };
+  }
 
-  loading: boolean = false;
+  loading = false;
 
   private tryUpdateUserData(user: IUser) {
     if (!this.user.id) return;

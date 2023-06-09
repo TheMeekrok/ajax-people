@@ -1,10 +1,8 @@
-import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, catchError, delay, dematerialize, materialize, retry, throwError } from 'rxjs';
+import { Observable } from 'rxjs';
 import { IFaculty } from '../models/Faculty';
 import { ISchool } from '../models/School';
-import { defaultResponseDelay, defaultRetryRate } from './servicesConfig';
-import { ErrorMessage } from './ErrorsEnum';
 import { IInterest } from '../models/Interest';
 import { EducationLevel } from '../enums/EducationLevel';
 import { StatusUser } from '../enums/StatusUser';
@@ -18,38 +16,31 @@ export class UserDataService {
   constructor(private http: HttpClient) {}
 
   getFaculties(): Observable<IFaculty[]> {
-    return this.http.get<IFaculty[]>('/api/register-data/faculties')
-      .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
+    return this.http.get<IFaculty[]>('/api/register-data/faculties');
   }
 
   getFacultyById(id: number): Observable<IFaculty[]> {
-    return this.http.get<IFaculty[]>(`/api/register-data/faculties?id=${id}`)
-      .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
+    return this.http.get<IFaculty[]>(`/api/register-data/faculties?id=${id}`);
   }
 
   getSchools(): Observable<ISchool[]> {
-    return this.http.get<ISchool[]>('/api/register-data/schools')
-      .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
+    return this.http.get<ISchool[]>('/api/register-data/schools');
   }
 
   getSchoolById(id: number): Observable<ISchool[]> {
-    return this.http.get<ISchool[]>(`/api/register-data/schools?id=${id}`)
-      .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
+    return this.http.get<ISchool[]>(`/api/register-data/schools?id=${id}`);
   }
 
   getInterests(): Observable<IInterest[]> {
-    return this.http.get<IInterest[]>('/api/register-data/interests')
-      .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
+    return this.http.get<IInterest[]>('/api/register-data/interests');
   }
 
   getInterestById(id: number): Observable<IInterest[]> {
-    return this.http.get<IInterest[]>(`/api/register-data/interests?id=${id}`)
-      .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
+    return this.http.get<IInterest[]>(`/api/register-data/interests?id=${id}`);
   }
 
   getUserById(id: number): Observable<IUser> {
-    return this.http.get<IUser>(`/api/users/${id}`)
-      .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
+    return this.http.get<IUser>(`/api/users/${id}`);
   }
 
   getUsers(items: number, page: number, usersFilter: IUser): Observable<IUser[]> {
@@ -80,33 +71,27 @@ export class UserDataService {
       params = params.set('interestsIds', usersFilter.interestIds);
     }
 
-    return this.http.get<IUser[]>('/api/users', { params })
-      .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
+    return this.http.get<IUser[]>('/api/users', { params });
   }
 
   getUserAvatar(id: number): Observable<string> {
-    return this.http.get<string>(`/api/avatar/${id}`)
-      .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
+    return this.http.get<string>(`/api/avatar/${id}`);
   }
 
   getCurrentUser(): Observable<IUser> {
-    return this.http.get<IUser>('/api/users/get-id')
-      .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
+    return this.http.get<IUser>('/api/users/get-id');
   }
 
-  uploadUserAvatar(avatar: FormData): Observable<Object> {
-    return this.http.post('/api/avatar/upload', avatar)
-      .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
+  uploadUserAvatar(avatar: FormData) {
+    return this.http.post('/api/avatar/upload', avatar);
   }
 
-  getRateForUser(userId: number): Observable<Number> {
-    return this.http.get<Number>(`/api/users/rating/${userId}`)
-      .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
+  getRateForUser(userId: number): Observable<number> {
+    return this.http.get<number>(`/api/users/rating/${userId}`);
   }
 
   setRateForUser(userId: number, value: number) {
-    return this.http.put(`/api/users/rating/${userId}`, { value: value })
-      .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
+    return this.http.put(`/api/users/rating/${userId}`, { value });
   }
 
   userStatusFromId(id: number): string { 
@@ -115,36 +100,5 @@ export class UserDataService {
 
   educationLevelFromId(id: number): string { 
     return EducationLevel[id]; 
-  }
-
-  private _handleError(error: HttpErrorResponse) {
-    let errorMessage = '';
-    switch (error.status) {
-      case 0:
-        errorMessage = ErrorMessage.NETWORK_ERROR;
-        break;
-
-      case 204:
-        errorMessage = ErrorMessage.NO_CONTENT;
-        break;
-
-      case 401:
-        errorMessage = ErrorMessage.UNAUTHORIZED;
-        break;
-
-      case 500:
-        errorMessage = ErrorMessage.INTERNAL_SERVER_ERROR;
-        break;
-
-      default:
-        errorMessage = error.message;
-        break;
-    }
-
-    return throwError(() => new Error(errorMessage)).pipe(
-      materialize(),
-      delay(2000),
-      dematerialize()
-    );
   }
 }
