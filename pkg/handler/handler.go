@@ -110,6 +110,14 @@ func (h *Handler) InitRoutes() *gin.Engine {
 
 			tags.DELETE("/:id", h.deleteTag)
 		}
+
+		interests := apiPrivate.Group("interests")
+		{
+			interests.POST("/", h.createInterest)
+
+			interests.DELETE("/:id", h.deleteInterest)
+		}
+
 		posts := apiPrivate.Group("/posts")
 		{
 			posts.GET("/", h.getPostsNoModer)

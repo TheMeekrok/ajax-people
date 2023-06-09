@@ -46,6 +46,8 @@ type Post interface {
 	GetTagById(id int) (user.Tag, error)
 	GetAllTags() ([]user.Tag, error)
 	DeleteTag(id int) error
+	CreateInterest(title string) (int, error)
+	DeleteInterest(id int) error
 }
 
 type FileStorageImage interface {

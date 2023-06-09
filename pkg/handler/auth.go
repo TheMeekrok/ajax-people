@@ -20,7 +20,7 @@ func (h *Handler) signUp(c *gin.Context) {
 	id, err := h.services.Authorization.CreateUser(input)
 	if err != nil {
 		if err.Error() == "already exists" {
-			newErrorResponse(c, http.StatusInternalServerError, err.Error())
+			newErrorResponse(c, http.StatusBadRequest, err.Error())
 			return
 		}
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
