@@ -15,13 +15,9 @@ import { MatIconModule } from "@angular/material/icon";
 import { UnmoderatedPostsComponent } from "./unmoderated-posts/unmoderated-posts.component";
 import { AdminUsersComponent } from './admin-users/admin-users.component';
 import { MatTableModule } from "@angular/material/table";
-import { MatPaginatorModule } from "@angular/material/paginator";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { AdminPageComponent } from './admin-page/admin-page.component';
-import { AppModule } from "../../app.module";
 import { AdminMesageModalComponent } from './admin-mesage-modal/admin-mesage-modal.component';
-import { MatTabsModule } from "@angular/material/tabs";
-import { MatSidenavModule } from "@angular/material/sidenav";
 
 
 @NgModule({
@@ -33,7 +29,7 @@ import { MatSidenavModule } from "@angular/material/sidenav";
     UnmoderatedPostsComponent,
     AdminUsersComponent,
     AdminPageComponent,
-    AdminMesageModalComponent
+    AdminMesageModalComponent,
   ],
   imports: [
     CommonModule,
@@ -41,17 +37,13 @@ import { MatSidenavModule } from "@angular/material/sidenav";
     ReactiveFormsModule,
     MatDialogModule,
     MatProgressSpinnerModule,
-    MatPaginatorModule,
     MatCheckboxModule,
     FormsModule,
     MatInputModule,
     MatButtonModule,
-    MatTableModule,
     MatCardModule,
     MatIconModule,
-    AppModule,
-    MatTabsModule,
-    MatSidenavModule,
+    MatTableModule,
   ]
 })
 export class AdminModule { }

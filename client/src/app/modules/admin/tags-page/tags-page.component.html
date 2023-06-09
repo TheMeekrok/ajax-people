@@ -16,8 +16,6 @@
     </button>
   </div>
 </form>
-
-
 <mat-form-field class="m-3">
   <mat-label>Поиск</mat-label>
   <input matInput  (keyup)="applyFilter($event)"  #input>
@@ -27,12 +25,12 @@
   <table  mat-table [dataSource]="dataSource">
     <ng-container matColumnDef="id">
       <th mat-header-cell *matHeaderCellDef >id</th>
-      <td  mat-cell *matCellDef="let data">{{ data.tag.id }}</td>
+      <td  mat-cell *matCellDef="let data">{{ data.id }}</td>
     </ng-container>
 
     <ng-container matColumnDef="title">
       <th mat-header-cell *matHeaderCellDef>Заголовок</th>
-      <td mat-cell *matCellDef="let data">{{ data.tag.title }}</td>
+      <td mat-cell *matCellDef="let data">{{ data.title }}</td>
     </ng-container>
 
 
@@ -40,7 +38,7 @@
       <th mat-header-cell *matHeaderCellDef>Админ</th>
       <td mat-cell *matCellDef="let data">
         <button
-        *ngIf="!data.idDeleted"
+          *ngIf="!data.idDeleted"
           (click)="onDeleteClick($event, data)"
           mat-stroked-button
           color="warn"

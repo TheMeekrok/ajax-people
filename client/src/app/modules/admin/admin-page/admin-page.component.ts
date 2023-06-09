@@ -15,15 +15,13 @@ export class AdminPageComponent implements OnInit {
   user = new User
   constructor(private adminService: AdminService) {
     this.arePostsOpen = false;
-    this.areUsersOpen = true;
-    this.areTagsOpen = false;
+    this.areUsersOpen = false;
+    this.areTagsOpen = true;
     this.adminService.getAuthorizedUser().subscribe({
       next: (user: User) => this.user = user,
       error: (error: Error) => console.log(error)
     })
-
   }
-
 
   ngOnInit() {
     this.adminService.getAuthorizedUser().subscribe({

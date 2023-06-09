@@ -1,5 +1,3 @@
-<app-not-found *ngIf="user && !user?.isAdmin"></app-not-found>
-
 <div *ngIf="user?.isAdmin">
   <button mat-raised-button color="primary" (click)="onPostsClick()" [disabled]="arePostsOpen" class="mr-2">
     Посты
