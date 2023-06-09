@@ -1,9 +1,48 @@
-<h2>👤 Профиль</h2>
+<h2>👤 Профиль<span *ngIf="user.isAdmin">⭐️</span></h2>
 
 <div *ngIf="loading" class="spinner"><mat-spinner></mat-spinner></div>
 
 <div class="form-layout" [style.visibility]="loading ? 'hidden' : 'visible'">
-  <div class="form-layout-inner">
+  <span class="flex flex-col">
+    <span class="avatar flex flex-col">
+      <img src="{{ avatarPath }}" alt="{{ user.firstName }}"/>
+      <span>
+        <app-upload-file
+          requiredFileType="image/jpeg, image/png"
+          (onAvatarChanged)="tryGetAvatar()"
+        >
+        </app-upload-file>
+      </span>
+
+      <button
+        *ngIf="user.isAdmin"
+        class="mt-5"
+        mat-raised-button
+        (click)="onAdminClick()"
+      >
+        Администрирование
+      </button>
+
+      <button
+        class="mt-5"
+        mat-raised-button
+        color="warn"
+        (click)="onExitClick()"
+      >
+        Выйти
+      </button>
+    </span>
+
+    <app-profile-interests
+      class="mt-8"
+      [user]="user"
+      *ngIf="!loading"
+      (triggerPageUpdate)="updatePage()"
+    >
+    </app-profile-interests>
+  </span>
+
+  <div class="form-layout-inner ml-8">
     <div class="form-container mt-4">
       <form class="form" [formGroup]="form">
         <mat-form-field appearance="fill">
@@ -188,7 +227,7 @@
           type="submit"
           mat-raised-button
           color="primary"
-          [disabled]="form.invalid || loading"
+          [disabled]="form.invalid || loading || !form.touched"
           (click)="onSubmitData()"
         >
           Изменить
@@ -196,36 +235,4 @@
       </form>
     </div>
   </div>
-
-  <span class="flex flex-col ml-8">
-    <span class="avatar flex flex-row">
-      <img src="{{ avatarPath }}" alt="{{ user.firstName }}"/>
-      <span>
-        <app-upload-file
-          requiredFileType="image/jpeg, image/png"
-          (onAvatarChanged)="tryGetAvatar()"
-        >
-        </app-upload-file>
-      </span>
-    </span>
-
-    <app-profile-interests
-      class="mt-8"
-      [user]="user"
-      *ngIf="!loading"
-      (triggerPageUpdate)="updatePage()"
-    >
-    </app-profile-interests>
-     <button
-       type="submit"
-       class="mt-5"
-       mat-raised-button
-       color="primary"
-       (click)="onExitClick()"
-     >
-    Выйти
-  </button>
-
-  </span>
-
 </div>

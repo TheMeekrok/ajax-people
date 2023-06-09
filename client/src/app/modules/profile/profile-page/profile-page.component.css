@@ -1,17 +1,19 @@
 .form-layout {
-  margin-top: 20px;
   display: flex;
   flex-direction: row;
+  margin-top: 20px;
 }
 
 .form-layout-inner, .avatar {
   border-radius: 5px;
   border: 2px solid var(--main-color-accent);
   padding: 50px 30px 50px 30px;
+  max-height: 600px;
 }
 
 .avatar {
   height: fit-content;
+  width: 450px;
 }
 
 .avatar img {
@@ -21,7 +23,8 @@
 }
 
 .form-layout-inner {
-  width: 450px;
+  max-width: 450px;
+  overflow-y: scroll;
 }
 
 .form-layout-inner h2, h3 {

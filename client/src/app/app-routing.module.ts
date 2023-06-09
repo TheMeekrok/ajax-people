@@ -3,15 +3,11 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomePageLayoutComponent } from "./shared/layouts/home-page-layout/home-page-layout.component";
 import { MainLayoutComponent } from "./shared/layouts/main-layout/main-layout.component";
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { AuthGuard } from './shared/guards/auth.guard';
 
 const routes: Routes = [
   {
-    path: '',
-    redirectTo: '/home',
-    pathMatch: 'full',
-  },
-  {
-    path: 'home', component: HomePageLayoutComponent,
+    path: '', pathMatch: 'full', component: HomePageLayoutComponent,
   },
   {
     path: '', component: MainLayoutComponent, children: [
@@ -23,23 +19,27 @@ const routes: Routes = [
       },
       {
         path: 'people',
+        canActivate: [AuthGuard],
         pathMatch: 'full',
         loadChildren: () => import('./modules/people/people.module')
           .then(m => m.PeopleModule)
       },
       {
         path: 'profile',
+        canActivate: [AuthGuard],
         pathMatch: 'full',
         loadChildren: () => import('./modules/profile/profile.module')
           .then(m => m.ProfileModule)
       },
       {
         path: 'posts',
+        canActivate: [AuthGuard],
         loadChildren: () => import('./modules/publications/publications.module')
           .then(m => m.PublicationsModule)
       },
       {
         path: 'admin',
+        canActivate: [AuthGuard],
         loadChildren: () => import('./modules/admin/admin.module')
           .then(m => m.AdminModule)
       },

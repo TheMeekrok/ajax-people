@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ILoginUser } from "../../../shared/models/IUser";
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { Router } from '@angular/router';
+import { StorageService } from 'src/app/shared/services/storage.service';
 
 @Component({
   selector: 'app-login-page',
@@ -11,13 +12,29 @@ import { Router } from '@angular/router';
 })
 export class LoginPageComponent implements OnInit {
 
-  form: FormGroup;
-  isLoading = false;
-  formErrorMessage = '';
+  constructor(
+    private authService: AuthService, 
+    private router: Router,
+    private storageService: StorageService,
+  ) {}
 
-  constructor(private authService: AuthService, private router: Router) {}
+  form: FormGroup;
+  isLoading: boolean;
+  formErrorMessage: string;
 
   ngOnInit(): void {
+    if (this.storageService.getUserToken()) {
+      this.router.navigate(['/people']);
+    }
+
+    this.initForm();
+  }
+
+  onSubmit() { 
+    this.tryLogin(); 
+  }
+
+  private initForm(): void {
     this.form = new FormGroup({
       email: new FormControl('', [
         // Validators.pattern('^[a-zA-Z]+[.][a-zA-Z]+@[a-zA-z]*[.]*dvfu.ru$'),
@@ -31,8 +48,6 @@ export class LoginPageComponent implements OnInit {
       ]),
     });
   }
-
-  onSubmit() { this._tryLogin(); }
 
   get email() {
     return this.form.controls['email'];
@@ -65,7 +80,7 @@ export class LoginPageComponent implements OnInit {
     return errorMessage;
   }
 
-  private _tryLogin() {
+  private tryLogin() {
     const user: ILoginUser = {
       mail: String(this.email.value),
       password: String(this.password.value),
@@ -79,6 +94,7 @@ export class LoginPageComponent implements OnInit {
         this.formErrorMessage = error.message;
       },
       complete: () => { 
+        this.formErrorMessage = '';
         this.isLoading = false;
         this.router.navigate(['/people']);
       }
