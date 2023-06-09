@@ -46,7 +46,7 @@ export class ProfileInterestsComponent implements OnInit {
 
     this.userDataService.getInterests().subscribe({
       next: (interests) => this.interests = interests,
-      error: (error) => { 
+      error: (error) => {
         this.formErrorMessage = error.message;
         this.isLoading = false;
       },
@@ -69,27 +69,19 @@ export class ProfileInterestsComponent implements OnInit {
   }
 
   get interestsChips() { return this.form.get('interestsChips') }
-  get interestsChipsErrorMessage(): string {
-    const errors = this.interestsChips?.errors;
-    if (errors?.['required']) { return 'Выберите хотя бы один Интерес'; }
-    return '';
-  }
 
   proceed() {
-    if (!this.user.id) { 
-      return; 
+    if (!this.user.id) {
+      return;
     }
-
     const userData: IUser = { interests: this.selectInterests() }
-
-    console.log(userData);
 
     this.isLoading = true;
 
     this.registerService.updateUserData(userData, this.user.id).subscribe({
       error: (error: Error) => this.formErrorMessage = error.message,
-      complete: () => { 
-        this.formErrorMessage = ''; 
+      complete: () => {
+        this.formErrorMessage = '';
         this.isLoading = false;
         this.triggerPageUpdate.emit();
       },
@@ -99,11 +91,9 @@ export class ProfileInterestsComponent implements OnInit {
   private selectInterests(): number[] {
     const interestsIds: number[] = [];
 
-    this.interestsChips?.value.forEach((chip: string) => {
-      const id = this.interests.find(element => element.title === chip)?.id;
-      if (id) interestsIds.push(id);
+    this.interestsChips?.value.forEach((chip: IInterestWithSelect) => {
+      interestsIds.push(chip.id);
     });
-
     return interestsIds;
   }
 }

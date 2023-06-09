@@ -21,8 +21,6 @@ export class FullPostComponent implements OnInit{
 
   ngOnInit(): void {
     this.dataService.getUserById(this.post.userId).subscribe(result => {
-      console.log("2222");
-      console.log(result);
       this.author = result.firstName + " " + result.lastName;
       this.post.author = result.firstName + " " + result.lastName;
     });
@@ -30,6 +28,4 @@ export class FullPostComponent implements OnInit{
   onCloseClick() {
     this.dialog.close()
   }
-
-
 }
