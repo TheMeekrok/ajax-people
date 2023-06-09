@@ -1,7 +1,17 @@
-<app-not-found *ngIf="!isAdmin && isAdmin !== undefined"></app-not-found>
-<mat-tab-group >
-  <mat-tab label="Тэги"><app-tags-page></app-tags-page></mat-tab>
-  <mat-tab label="Посты"><app-unmoderated-posts></app-unmoderated-posts> </mat-tab>
-  <mat-tab label="Пользователи"><app-admin-users></app-admin-users></mat-tab>
-</mat-tab-group>
+<div *ngIf="user?.isAdmin">
+  <button mat-raised-button color="primary" (click)="onPostsClick()" [disabled]="arePostsOpen" class="mr-2">
+    Посты
+  </button>
+  <button mat-raised-button color="primary" (click)="onUsersClick()" [disabled]="areUsersOpen" class="m-2">
+    Пользователи
+  </button>
+  <button mat-raised-button color="primary" (click)="onTagsClick()" [disabled]="areTagsOpen" class="m-2">
+    Тэги
+  </button>
+
+  <app-admin-users *ngIf="areUsersOpen"></app-admin-users>
+  <app-tags-page *ngIf="areTagsOpen"></app-tags-page>
+  <app-unmoderated-posts *ngIf="arePostsOpen"></app-unmoderated-posts>
+</div>
+
 

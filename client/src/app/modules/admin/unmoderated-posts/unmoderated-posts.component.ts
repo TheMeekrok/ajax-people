@@ -26,16 +26,16 @@ export class UnmoderatedPostsComponent implements OnInit {
         next: (data) => {
           this.posts = data;
           this.areExistPosts = this.posts.length != 0;
-          const datas: Data[] = [];
+          const dataSource: Data[] = [];
           for (const t of this.posts) {
-            datas.push({
+            dataSource.push({
               post: t,
               deleteBoxStatus: false,
               moderateBoxStatus: false,
               isShow: true
             })
           }
-          this.dataSource  = new MatTableDataSource(datas)
+          this.dataSource  = new MatTableDataSource(dataSource)
           console.log(this.dataSource);
         },
         error: (error: Error) => console.log(error),

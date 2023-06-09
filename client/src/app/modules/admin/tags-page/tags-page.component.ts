@@ -9,7 +9,8 @@ import { MatTableDataSource } from "@angular/material/table";
 
 
 interface Data {
-  tag: Tag;
+  id: number
+  title: string
   isDeleted: boolean
 }
 
@@ -30,17 +31,8 @@ export class TagsPageComponent implements OnInit {
 
 
   applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
-
-    this.dataSource.filterPredicate = (data: Data, filter: string) => {
-      const { tag, isDeleted } = data;
-      const matchesTitle = tag.id.toString().toLowerCase().includes(filter);
-      const matchesUserId = tag.title.toString().includes(filter);
-      return matchesTitle  || matchesUserId;
-    };
-    this.dataSource.filter = filterValue;
-    this.dataSource._updateChangeSubscription(); // Обновление подписки на изменения данных
-
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
     console.log(this.dataSource.filteredData);
   }
 
@@ -59,9 +51,9 @@ export class TagsPageComponent implements OnInit {
     });
   }
 
-/**
- * ОБновляет тэги при удалении / добавлении
-*/
+  /**
+   * ОБновляет тэги при удалении / добавлении
+   */
   uploadTags() {
     this.tags = [];
     this.adminService.getTags().subscribe( {
@@ -70,7 +62,8 @@ export class TagsPageComponent implements OnInit {
           const dataSource: Data[] = [];
           for (const t of this.tags) {
             dataSource.push({
-              tag: t,
+              id: t.id,
+              title: t.title,
               isDeleted: false,
             })
           }
@@ -115,14 +108,14 @@ export class TagsPageComponent implements OnInit {
     }
     let answer: boolean;
     const dialogRef = this.dialog.open(ConfirmationDeleteTagComponent, {
-      data: {title: data.tag.title}
+      data: {title: data.title}
     });
     dialogRef.afterClosed().subscribe(result => {
       answer = result.answer;
       if (!answer) {
         return;
       }
-      this.adminService.deleteTag(data.tag.id).subscribe( {
+      this.adminService.deleteTag(data.id).subscribe( {
           next: () => console.log("success"),
           error: (error: Error) => console.log(error),
         }

@@ -31,11 +31,11 @@ registerLocaleData(localeRu, 'ru');
         NotFoundComponent,
     ],
     imports: [
+        BrowserAnimationsModule,
         BrowserModule,
         AppRoutingModule,
         FormsModule,
         ReactiveFormsModule,
-        BrowserAnimationsModule,
         HttpClientModule,
         HeaderModule,
         FooterModule,
