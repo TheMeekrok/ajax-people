@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { User } from "../../../shared/models/User";
 import { AdminService } from "../../../shared/services/admin.service";
-import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from "@angular/material/table";
 
 
