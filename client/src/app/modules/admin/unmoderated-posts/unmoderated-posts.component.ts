@@ -5,7 +5,6 @@ import { User } from "../../../shared/models/User";
 import { MatTableDataSource } from "@angular/material/table";
 import { MatCheckboxChange } from "@angular/material/checkbox";
 
-
 interface Data {
   post: Post;
   deleteBoxStatus: boolean;
@@ -21,7 +20,19 @@ interface Data {
 
 export class UnmoderatedPostsComponent implements OnInit {
 
+  isLoading: boolean;
   constructor(private adminService: AdminService) {
+
+  }
+  posts: Post[]
+  users: User[];
+  displayedColumns: string[] = ["text", "userId", "tags", "actions"];
+  dataSource: MatTableDataSource<Data>;
+
+  areExistPosts: boolean
+
+  ngOnInit(): void {
+    this.isLoading = true;
     this.adminService.getUnmoderatedPosts().subscribe({
         next: (data) => {
           this.posts = data;
@@ -36,29 +47,9 @@ export class UnmoderatedPostsComponent implements OnInit {
             })
           }
           this.dataSource  = new MatTableDataSource(dataSource)
-          console.log(this.dataSource);
         },
         error: (error: Error) => console.log(error),
-        complete: () => this.loading = false
-      }
-    )
-  }
-  posts: Post[]
-  users: User[];
-  displayedColumns: string[] = ["text", "userId", "tags", "actions"];
-  dataSource: MatTableDataSource<Data>;
-
-  areExistPosts: boolean
-  loading = true;
-
-  ngOnInit(): void {
-    this.adminService.getUnmoderatedPosts().subscribe({
-      next: (data) => {
-        this.posts = data;
-        this.areExistPosts = this.posts.length != 0;
-      },
-      error: (error: Error) => console.log(error),
-      complete: () => this.loading = false
+        complete: () => this.isLoading = false
       }
     )
   }
@@ -82,13 +73,6 @@ export class UnmoderatedPostsComponent implements OnInit {
 
     this.dataSource.filter = filterValue;
   }
-
-
-  // applyFilter(event: Event) {
-  //   const filterValue = (event.target as HTMLInputElement).value;
-  //   console.log(event);
-  //   this.dataSource.filter = filterValue.trim().toLowerCase();
-  // }
 
 
   onDeleteClick($event: MatCheckboxChange, data: Data) {
