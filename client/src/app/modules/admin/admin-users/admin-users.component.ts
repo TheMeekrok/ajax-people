@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { User } from "../../../shared/models/User";
 import { AdminService } from "../../../shared/services/admin.service";
-import { MatDialog } from "@angular/material/dialog";
-import { AdminMesageModalComponent } from "../admin-mesage-modal/admin-mesage-modal.component";
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from "@angular/material/table";
 
 
@@ -12,6 +11,7 @@ import { MatTableDataSource } from "@angular/material/table";
   styleUrls: ['./admin-users.component.css']
 })
 export class AdminUsersComponent {
+  isLoading: boolean;
 
   users: User[];
   displayedColumns: string[] = ["name", "surname", "mail", "rating", "admin", "ban"];
@@ -19,17 +19,19 @@ export class AdminUsersComponent {
 
 
   constructor(private adminService: AdminService,
-              public dialog: MatDialog) {
+              private snackBar: MatSnackBar) {
     this.uploadUsers();
   }
 
   uploadUsers() {
+    this.isLoading = true;
     this.adminService.getAllUsers().subscribe({
       next: (result) => {
         this.users = result;
         this.dataSource  = new MatTableDataSource(this.users)
       },
       error: (error: Error) => console.log(error),
+      complete: () => this.isLoading = false
     })
   }
   applyFilter(event: Event) {
@@ -39,10 +41,8 @@ export class AdminUsersComponent {
 
 
 
-  showMessage(title: string) {
-    this.dialog.open(AdminMesageModalComponent, {
-      data: {title: title}
-    });
+  showMessage(message: string) {
+    this.snackBar.open(message, "Ок");
   }
 
   onAdminClick(checked: boolean, id: number) {
