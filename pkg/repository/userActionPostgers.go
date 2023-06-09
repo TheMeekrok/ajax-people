@@ -69,7 +69,7 @@ func (r *UserActionPostgres) GetAllUsers(page, items int) ([]user.UserOutput, er
 
 	var query string
 	query = fmt.Sprintf(`SELECT users.id ,firstname, mail, lastname ,is_admin,is_moderated, raiting 
-								FROM %s JOIN %s r on users.id = r.user_id
+								FROM %s JOIN %s r on users.id = r.user_id WHERE firstname!=''
 								ORDER BY raiting DESC`, userTable, raitingUser)
 
 	if err := r.db.Select(&userList, query); err != nil {

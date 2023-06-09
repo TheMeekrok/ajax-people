@@ -25,8 +25,9 @@ type UserAction interface {
 }
 
 type RegisterData interface {
-	GetAllFaculties(id int) ([]user.Faculty, error)
 	GetAllInterests(id int) ([]user.Interest, error)
+
+	GetAllFaculties(id int) ([]user.Faculty, error)
 	GetAllStatuses(id int) []user.StatusUser
 	GetAllEdLevels(id int) []user.EducationLevel
 	GetAllSchools(id int) ([]user.School, error)
@@ -49,6 +50,8 @@ type Post interface {
 	GetAllTags() ([]user.Tag, error)
 	DeleteTag(id int) error
 	GetPostByPageNoModer(page int, items int) ([]user.Post, error)
+	DeleteInterest(id int) error
+	CreateInterest(title string) (int, error)
 }
 
 type Uploader interface {
