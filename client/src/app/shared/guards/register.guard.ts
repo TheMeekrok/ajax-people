@@ -1,22 +1,24 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, CanDeactivate, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { ActivatedRouteSnapshot, CanDeactivate, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
+import { RegisterComponent } from 'src/app/modules/register/register/register.component';
 
 @Injectable({
   providedIn: 'root'
 })
-export class RegisterGuard implements CanActivate, CanDeactivate<unknown> {
-  canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    return true;
-  }
+export class RegisterGuard implements CanDeactivate<unknown> {
   canDeactivate(
-    component: unknown,
+    component: RegisterComponent,
     currentRoute: ActivatedRouteSnapshot,
     currentState: RouterStateSnapshot,
     nextState?: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    return true;
+
+      console.log(component.canDeactivate, component.registerState);
+
+      if (component.canDeactivate) {
+        return window.confirm('Вы действительно хотите прервать регистрацию?');
+      }
+
+      return true;
   }
-  
 }

@@ -4,6 +4,9 @@ import { HomePageLayoutComponent } from "./shared/layouts/home-page-layout/home-
 import { MainLayoutComponent } from "./shared/layouts/main-layout/main-layout.component";
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { AuthGuard } from './shared/guards/auth.guard';
+import { RegisterGuard } from './shared/guards/register.guard';
+import { InfoComponent } from './components/info/info.component';
+import { AuthorsComponent } from './components/authors/authors.component';
 
 const routes: Routes = [
   {
@@ -45,8 +48,15 @@ const routes: Routes = [
           .then(m => m.AdminModule)
       },
       {
+        path: 'info',
+        component: InfoComponent,
+      },
+      {
+        path: 'authors',
+        component: AuthorsComponent,
+      },
+      {
         path: '**',
-        canActivate: [AuthGuard],
         component: NotFoundComponent,
       },
     ],

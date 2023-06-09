@@ -1,10 +1,18 @@
 <footer>
   <div class="wrapper-h">
     <ul>
-      <li class="image-holder"><a href="https://www.dvfu.ru"><img src="https://www.dvfu.ru/html/svg/logos/logo_base_ru.svg" alt="ДВФУ"></a></li>
-      <li><a class="text-white link pb-1" href="">✍️ Авторы</a></li>
-      <li><a class="text-white link pb-1" href="">❓Информация</a></li>
-      <li class="right"><p class="text-white font-bold">аякс.люди {{ currentYear }}</p></li>
+      <li class="image-holder">
+        <a href="https://www.dvfu.ru">
+          <img
+            src="https://www.dvfu.ru/html/svg/logos/logo_base_ru.svg"
+            alt="ДВФУ"/>
+        </a>
+      </li>
+      <li><a routerLink="/authors" class="text-white link pb-1" href="">👷 Авторы</a></li>
+      <!-- <li><a routerLink="/info" class="text-white link pb-1" href="">❓Информация</a></li> -->
+      <li class="right">
+        <p class="text-white font-bold">аякс.люди {{ currentYear }}</p>
+      </li>
     </ul>
   </div>
 </footer>

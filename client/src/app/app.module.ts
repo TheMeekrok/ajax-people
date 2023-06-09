@@ -19,6 +19,8 @@ import { SuccessPostComponent } from './modules/publications/success-post/succes
 import { MatButtonModule } from "@angular/material/button";
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { httpInterceptorProviders } from './shared/http-interceptors';
+import { AuthorsComponent } from './components/authors/authors.component';
+import { InfoComponent } from './components/info/info.component';
 
 registerLocaleData(localeRu, 'ru');
 
@@ -29,6 +31,8 @@ registerLocaleData(localeRu, 'ru');
         MainLayoutComponent,
         SuccessPostComponent,
         NotFoundComponent,
+        AuthorsComponent,
+        InfoComponent,
     ],
     imports: [
         BrowserAnimationsModule,

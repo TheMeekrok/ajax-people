@@ -62,10 +62,6 @@ export class ProfilePageComponent implements OnInit{
     this.utilsService.scrollToTop();
   }
 
-  onAdminClick(): void {
-    this.router.navigate(['/admin']);
-  }
-
   onExitClick(): void {
     this.authService.exitUser().subscribe(() => this.router.navigate(['/']));
   }

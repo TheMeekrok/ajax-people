@@ -20,6 +20,7 @@ export class RegisterComponent implements OnInit {
 
   userId: number;
   registerState: RegisterState;
+  canDeactivate = true;
 
   ngOnInit(): void {
       this.registerState = RegisterState.REGISTER_USER;
@@ -27,6 +28,7 @@ export class RegisterComponent implements OnInit {
 
   onRegisterSuccess(userId: number): void {
     this.userId = userId;
+    this.canDeactivate = false;
     this.registerState = RegisterState.REGISTER_PROFILE_INFO;
   }
 
@@ -35,6 +37,7 @@ export class RegisterComponent implements OnInit {
   }
 
   onInterestsComplete(): void {
+    this.canDeactivate = true;
     this.router.navigate(['/people']);
   }
 }

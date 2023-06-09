@@ -37,7 +37,7 @@ export class LoginPageComponent implements OnInit {
   private initForm(): void {
     this.form = new FormGroup({
       email: new FormControl('', [
-        // Validators.pattern('^[a-zA-Z]+[.][a-zA-Z]+@[a-zA-z]*[.]*dvfu.ru$'),
+        Validators.pattern('^[a-zA-Z]+[.][a-zA-Z]+@[a-zA-z]*[.]*dvfu.ru$'),
         Validators.required,
       ]),
       password: new FormControl('', [
