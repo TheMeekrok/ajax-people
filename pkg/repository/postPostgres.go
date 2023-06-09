@@ -327,3 +327,33 @@ func (r *PostPostgres) DeleteTag(id int) error {
 
 	return nil
 }
+
+func (r *PostPostgres) DeleteInterest(id int) error {
+
+	query := fmt.Sprintf("DELETE FROM %s WHERE id=$1", interestsTable)
+	_, err := r.db.Exec(query, id)
+	if err != nil {
+		return err
+	}
+
+	query = fmt.Sprintf("DELETE FROM %s WHERE interest_id=$1", usersInterests)
+	_, err = r.db.Exec(query, id)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (r *PostPostgres) CreateInterest(title string) (int, error) {
+	var interestId int
+
+	query := fmt.Sprintf("INSERT INTO %s (title) VALUES ($1) RETURNING id", interestsTable)
+
+	row := r.db.QueryRow(query, title)
+	if err := row.Scan(&interestId); err != nil {
+		return 0, err
+	}
+
+	return interestId, nil
+}

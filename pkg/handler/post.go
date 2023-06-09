@@ -240,3 +240,39 @@ func (h *Handler) getPostsNoModer(c *gin.Context) {
 
 	c.JSON(http.StatusOK, postsList)
 }
+
+func (h *Handler) createInterest(c *gin.Context) {
+	var input TagInput
+
+	if err := c.BindJSON(&input); err != nil {
+		newErrorResponse(c, http.StatusBadRequest, "Failed to create a interest")
+		return
+	}
+
+	id, err := h.services.CreateInterest(input.Title)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, map[string]interface{}{
+		"id": id,
+	})
+}
+
+// Удалить тэг
+func (h *Handler) deleteInterest(c *gin.Context) {
+	interestId, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	err = h.services.DeleteInterest(interestId)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, "OK")
+}
