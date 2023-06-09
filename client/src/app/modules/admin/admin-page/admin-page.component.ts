@@ -13,11 +13,10 @@ export class AdminPageComponent implements OnInit {
 
   areUsersOpen: boolean;
   areTagsOpen: boolean;
+  areInterestsOpen: boolean;
   user = new User
   constructor(private adminService: AdminService) {
-    this.arePostsOpen = false;
-    this.areUsersOpen = true;
-    this.areTagsOpen = false;
+    this.onPostsClick();
     this.adminService.getAuthorizedUser().subscribe({
       next: (user: User) => this.user = user,
       error: (error: Error) => console.log(error)
@@ -37,17 +36,27 @@ export class AdminPageComponent implements OnInit {
     this.arePostsOpen = true;
     this.areUsersOpen = false;
     this.areTagsOpen = false;
+    this.areInterestsOpen = false;
   }
 
   onUsersClick() {
     this.arePostsOpen = false;
     this.areUsersOpen = true;
     this.areTagsOpen = false;
+    this.areInterestsOpen = false;
   }
 
   onTagsClick() {
     this.arePostsOpen = false;
     this.areUsersOpen = false;
     this.areTagsOpen = true;
+    this.areInterestsOpen = false;
+  }
+
+  onInterestsClick() {
+    this.arePostsOpen = false;
+    this.areUsersOpen = false;
+    this.areTagsOpen = false;
+    this.areInterestsOpen = true;
   }
 }
