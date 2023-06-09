@@ -4,7 +4,7 @@ import { IUser } from '../models/IUser';
 import { defaultResponseDelay, defaultRetryRate } from './servicesConfig';
 import { IResponseToken } from '../models/Response';
 import { delay, dematerialize, materialize, throwError, Observable, catchError, retry, tap } from 'rxjs';
-import { ErrorMessage } from './ErrorsEnum';
+import { ErrorMessage } from '../enums/Errors';
 import { StorageService } from './storage.service';
 
 @Injectable({

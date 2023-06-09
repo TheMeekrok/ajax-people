@@ -17,7 +17,7 @@ import { UtilsService } from 'src/app/shared/services/utils.service';
 })
 
 export class PublicationsPageComponent implements OnInit  {
-  loading: boolean = true;
+  loading = true;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild('drawer', { static: true }) public drawer: MatDrawer;
 

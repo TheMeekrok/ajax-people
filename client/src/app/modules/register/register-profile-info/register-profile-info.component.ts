@@ -16,7 +16,7 @@ import { UserDataService } from 'src/app/shared/services/user-data.service';
 export class RegisterProfileInfoComponent implements OnInit {
 
   @Input() userId = 0;
-  @Output() continueRegister = new EventEmitter<any>();
+  @Output() onUserDataComplete = new EventEmitter<number>();
 
   constructor(private uds: UserDataService, private rs: RegisterService) {}
 
@@ -231,7 +231,7 @@ export class RegisterProfileInfoComponent implements OnInit {
       error: (error: Error) => this.formErrorMessage = error.message,
       complete: () => { 
         this.isLoading = false;
-        this.continueRegister.emit();
+        this.onUserDataComplete.emit();
       },
     });
   }

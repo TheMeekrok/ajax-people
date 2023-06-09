@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 enum RegisterState {
   REGISTER_USER,
@@ -13,6 +14,8 @@ enum RegisterState {
 })
 export class RegisterComponent implements OnInit {
 
+  constructor(private router: Router) {}
+
   RegisterState = RegisterState;
 
   userId: number;
@@ -22,9 +25,16 @@ export class RegisterComponent implements OnInit {
       this.registerState = RegisterState.REGISTER_USER;
   }
 
-  onRegisterSuccess(userId: number) {
+  onRegisterSuccess(userId: number): void {
     this.userId = userId;
     this.registerState = RegisterState.REGISTER_PROFILE_INFO;
   }
 
+  onUserDataComplete(): void {
+    this.registerState = RegisterState.REGISTER_INTERESTS;
+  }
+
+  onInterestsComplete(): void {
+    this.router.navigate(['/people']);
+  }
 }

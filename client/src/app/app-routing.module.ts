@@ -7,16 +7,17 @@ import { AuthGuard } from './shared/guards/auth.guard';
 
 const routes: Routes = [
   {
-    path: '', pathMatch: 'full', component: HomePageLayoutComponent,
+    path: '',
+    pathMatch: 'full',
+    component: HomePageLayoutComponent,
+  },
+  {
+    path: 'sign-up', 
+    pathMatch: 'full', 
+    loadChildren: () => import('./modules/register/register.module').then(m => m.RegisterModule),
   },
   {
     path: '', component: MainLayoutComponent, children: [
-      {
-        path: 'sign-up',
-        pathMatch: 'full',
-        loadChildren: () => import('./modules/register/register.module')
-          .then(m => m.RegisterModule)
-      },
       {
         path: 'people',
         canActivate: [AuthGuard],
@@ -45,6 +46,7 @@ const routes: Routes = [
       },
       {
         path: '**',
+        canActivate: [AuthGuard],
         component: NotFoundComponent,
       },
     ],

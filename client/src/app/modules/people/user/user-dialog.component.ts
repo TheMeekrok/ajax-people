@@ -117,7 +117,7 @@ export class UserDialog implements OnInit {
   }
 
   navigateToVk(): void {
-    let vkLink = String(this.data.user.personalData?.vk);
+    const vkLink = String(this.data.user.personalData?.vk);
     window.open(`https://${vkLink}`, '_blank');
   }
 

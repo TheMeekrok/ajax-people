@@ -20,16 +20,16 @@ export class PeoplePageComponent implements OnInit {
     private utilsService: UtilsService,
   ) {}
 
-  currentPage: number = 0;
+  currentPage = 0;
   users: IUser[] = [];
   usersFilter: IUser = {};
-  usersEnd: boolean = false;
+  usersEnd = false;
 
   interests: IInterest[] = [];
   form: FormGroup;
 
-  interestsLoading: boolean = false;
-  usersLoading: boolean = false;
+  interestsLoading = false;
+  usersLoading = false;
 
   private faculties: IFaculty[] = [];
   filteredFaculties: Observable<IFaculty[]>;
@@ -153,7 +153,7 @@ export class PeoplePageComponent implements OnInit {
     });
   }
 
-  get interestsChips() { return this.form.get('interestsChips') };
+  get interestsChips() { return this.form.get('interestsChips') }
 
   private selectInterests(): string {
     const interestsIds: number[] = [];

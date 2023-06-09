@@ -19,5 +19,7 @@ export class RegisterUserModal {
     @Inject(MAT_DIALOG_DATA) public data: IDialogData,
   ) {}
 
-  codeToUpperCase() { this.data.code = this.data.code.toUpperCase(); }
+  codeToUpperCase() { 
+    this.data.code = this.data.code.toUpperCase(); 
+  }
 }

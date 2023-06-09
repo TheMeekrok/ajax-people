@@ -5,7 +5,7 @@ import { IPost } from "../models/Post";
 import { IUser } from "../models/IUser";
 import { IInterest } from "../models/Interest";
 import { defaultResponseDelay, defaultRetryRate } from "./servicesConfig";
-import { ErrorMessage } from "./ErrorsEnum";
+import { ErrorMessage } from "../enums/Errors";
 import { Tag } from "../models/Tag";
 
 @Injectable({
@@ -15,10 +15,6 @@ export class PostService {
 
   constructor(private http: HttpClient) { }
 
-  /**
-   * Метод, переводящий массив тэгов к строке типа '1,2,3'
-   * @param array - массив тэгов
-   */
   tagsToString(array: Tag[]): string {
     let s  = "";
     if (array && !array.length) {
@@ -31,10 +27,6 @@ export class PostService {
     return s;
   }
 
-  /**
-   * Метод для получения количеста постов
-   * @param tags - массив тэгов-фильтров
-   */
   getCountPosts(tags: Tag[]) {
     let parameter = new HttpParams();
     if (tags && tags.length) {
@@ -44,13 +36,6 @@ export class PostService {
       .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
   }
 
-  /**
-   * Метод для получения постов с заданными фильтрами
-   * @param orderBy - статус кнопки сначала новые / старые
-   * @param page - интекс страница
-   * @param items - количество элементов на стрнице
-   * @param tags - массив тэгов-фильтров
-   */
   getPosts(orderBy: number, page: number, items: number, tags: Tag[]) {
     let parameters = new HttpParams()
     parameters = parameters.set('orderBy', orderBy);
@@ -63,26 +48,16 @@ export class PostService {
       .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
   }
 
-  /**
-   * Метод для получения пользователя по его id
-   * @param id - id пользователя
-   */
   getUserById(id: number): Observable<IUser> {
     return this.http.get<IUser>('/api/users', {params: new HttpParams().set('id', id)})
       .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
   }
 
-  /**
-   * Метод для получения всех тэгов
-   */
   getTags(): Observable<Tag[]> {
     return this.http.get<Tag[]>('/api/tags/')
       .pipe(delay(defaultResponseDelay), catchError(this._handleError), retry(defaultRetryRate));
   }
 
-  /**
-   * Обработчик ошибок
-   */
   private _handleError(error: HttpErrorResponse) {
     let errorMessage = '';
     switch (error.status) {
