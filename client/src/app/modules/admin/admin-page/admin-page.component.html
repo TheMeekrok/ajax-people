@@ -8,10 +8,14 @@
   <button mat-raised-button color="primary" (click)="onTagsClick()" [disabled]="areTagsOpen" class="m-2">
     Тэги
   </button>
+  <button mat-raised-button color="primary" (click)="onInterestsClick()" [disabled]="areInterestsOpen" class="m-2">
+    Интересы
+  </button>
 
   <app-admin-users *ngIf="areUsersOpen"></app-admin-users>
   <app-tags-page *ngIf="areTagsOpen"></app-tags-page>
   <app-unmoderated-posts *ngIf="arePostsOpen"></app-unmoderated-posts>
+  <app-interests *ngIf="areInterestsOpen"></app-interests>
 </div>
 
 

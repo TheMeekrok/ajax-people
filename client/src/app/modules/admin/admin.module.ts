@@ -15,6 +15,7 @@ import { MatTableModule } from "@angular/material/table";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { AdminPageComponent } from './admin-page/admin-page.component';
 import { MatSnackBarModule } from "@angular/material/snack-bar";
+import { InterestsComponent } from './interests/interests.component';
 
 
 @NgModule({
@@ -23,6 +24,7 @@ import { MatSnackBarModule } from "@angular/material/snack-bar";
     UnmoderatedPostsComponent,
     AdminUsersComponent,
     AdminPageComponent,
+    InterestsComponent,
   ],
   imports: [
     CommonModule,

@@ -1,17 +1,17 @@
 <h3 class="m-4">Тэги</h3>
 <form class="create-tag-form" [formGroup]="form">
   <mat-form-field class="full-width" >
-    <mat-label>Новый тэг</mat-label>
+    <mat-label>Новый интерес</mat-label>
     <input formControlName="newTag" matInput placeholder="Программирование на GoLang">
     <mat-error>
-      {{ getTagErrorMessage }}
+      {{ getInterestErrorMessage }}
     </mat-error>
   </mat-form-field>
   <div>
     <button
       mat-raised-button color="primary"
       class="create-tag-btn"
-      (click)="onCreateTagClick()">
+      (click)="onCreateInterestClick()">
       Сохранить
     </button>
   </div>
@@ -40,12 +40,12 @@
       <td mat-cell *matCellDef="let data">
         <button
           *ngIf="!data.idDeleted"
-          (click)="onDeleteClick($event, data)"
+          (click)="onDeleteInterestClick($event, data)"
           mat-stroked-button
           color="warn"
           class="relative right-0"
         >
-          {{data.isDeleted ? "Тэг удалён" : "Удалить  "}}
+          {{data.isDeleted ? "Интерес удалён" : "Удалить  "}}
         </button>
       </td>
     </ng-container>

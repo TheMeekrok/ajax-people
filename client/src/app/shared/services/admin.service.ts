@@ -34,6 +34,15 @@ export class AdminService {
       .pipe(delay(defaultResponseDelay), retry(defaultRetryRate));
   }
 
+  createInterest(interest: {title: string}) {
+    return this.http.post<string>(`api-private/interests/`, interest)
+      .pipe(delay(defaultResponseDelay), retry(defaultRetryRate));
+  }
+
+  deleteInterest(id: number) {
+    return this.http.delete<string>('api-private/interests/' + id)
+      .pipe(delay(defaultResponseDelay), retry(defaultRetryRate));
+  }
   moderatePost(id: number) {
     const body = {
       isModerated: true

@@ -1,0 +1,29 @@
+mat-card {
+  margin: 30px;
+  padding: 3px;
+  max-width: 40rem;
+}
+
+mat-form-field {
+  width: 60%;
+}
+
+.create-tag-form {
+  display: flex;
+  flex-direction: column;
+  margin: 8px;
+}
+
+.create-tag-btn {
+  max-width: 50%;
+}
+
+.tags-spinner {
+  margin: auto;
+}
+
+.spinner {
+  display: flex;
+  justify-content: center;
+  margin: 4px 10px;
+}
