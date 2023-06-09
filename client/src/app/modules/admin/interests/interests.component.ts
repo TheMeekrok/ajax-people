@@ -76,7 +76,7 @@ export class InterestsComponent implements OnInit {
   get getInterestErrorMessage(): string {
     const errors = this.form.controls['newTag']?.errors;
     if (errors?.['required']) {
-      return "Введите новый тэг";
+      return "Введите новый интерес";
     }
     if (errors?.['minlength']) {
       return "Минимум 3 символа";

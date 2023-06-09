@@ -28,7 +28,6 @@ export class PostComponent implements OnInit {
 
   ngOnInit(): void {
     this.tryGetUser(this.post.userId);
-    console.log(this.post);
   }
 
   private tryGetUser(userId: number) {
@@ -50,7 +49,7 @@ export class PostComponent implements OnInit {
       },
     });
   }
-  
+
   onShowAuthor(): void {
     this.dialog.open(UserDialog, {
       data: { user: this.user, avatarPath: this.avatarPath },
