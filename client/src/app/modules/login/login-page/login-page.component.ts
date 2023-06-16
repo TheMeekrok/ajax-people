@@ -13,7 +13,7 @@ import { StorageService } from 'src/app/shared/services/storage.service';
 export class LoginPageComponent implements OnInit {
 
   constructor(
-    private authService: AuthService, 
+    private authService: AuthService,
     private router: Router,
     private storageService: StorageService,
   ) {}
@@ -30,8 +30,8 @@ export class LoginPageComponent implements OnInit {
     this.initForm();
   }
 
-  onSubmit() { 
-    this.tryLogin(); 
+  onSubmit() {
+    this.tryLogin();
   }
 
   private initForm(): void {
@@ -43,7 +43,6 @@ export class LoginPageComponent implements OnInit {
       password: new FormControl('', [
         Validators.maxLength(32),
         Validators.minLength(8),
-        Validators.pattern('[a-zA-Z1-9()_-]*'),
         Validators.required,
       ]),
     });
@@ -70,8 +69,6 @@ export class LoginPageComponent implements OnInit {
     let errorMessage = '';
 
     if (errors?.['required']) errorMessage = 'Обязательное поле';
-    else if (errors?.['pattern'])
-      errorMessage = 'Использованы недопустимые символы';
     else if (errors?.['minlength'])
       errorMessage = 'Минимальное количество символов - 8';
     else if (errors?.['maxlength'])
@@ -89,11 +86,11 @@ export class LoginPageComponent implements OnInit {
     this.isLoading = true;
 
     this.authService.authUser(user).subscribe({
-      error: (error: Error) => { 
+      error: (error: Error) => {
         this.isLoading = false;
         this.formErrorMessage = error.message;
       },
-      complete: () => { 
+      complete: () => {
         this.formErrorMessage = '';
         this.isLoading = false;
         this.router.navigate(['/people']);
