@@ -43,7 +43,6 @@ export class InterestsComponent implements OnInit {
         Validators.required,
         Validators.minLength(3),
         Validators.maxLength(20),
-        Validators.pattern(/^[a-zA-Zа-яА-Я0-9\s":;,=-]*$/),
       ])
     });
   }
@@ -83,9 +82,6 @@ export class InterestsComponent implements OnInit {
     }
     if (errors?.['maxlength']) {
       return "Максимум 20 символов";
-    }
-    if (errors?.['pattern']) {
-      return "Недопустимые символы";
     }
     return "";
   }

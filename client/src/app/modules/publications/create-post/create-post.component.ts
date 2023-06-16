@@ -31,7 +31,6 @@ export class CreatePostComponent implements OnInit {
     this.form = new FormGroup({
       text: new FormControl('',[
         Validators.required,
-        Validators.pattern(/^[a-zA-Zа-яА-Я0-9\s":;,=.!?#@%*/()-ёЁ]*$/),
         Validators.minLength(10),
         Validators.maxLength(255)
       ]),
@@ -51,10 +50,6 @@ export class CreatePostComponent implements OnInit {
 
   getTextErrorString() {
     const error = this.form.controls['text'].errors;
-
-    if (error?.['pattern']) {
-      return 'Текст содержит недопустимые символы'
-    }
     if (error?.['minlength']) {
       return 'Минимум 10 символов'
     }

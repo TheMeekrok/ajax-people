@@ -96,18 +96,18 @@ export class ProfilePageComponent implements OnInit{
     this.form = new FormGroup({
       firstName: new FormControl('', [
         Validators.pattern('[а-яёА-яa-zA-z]+-?[а-яёА-яa-zA-z]+'),
-        Validators.maxLength(16)
+        Validators.maxLength(30)
       ]),
 
       secondName: new FormControl('', [
         Validators.pattern('[а-яёА-яa-zA-z]+-?[а-яёА-яa-zA-z]+'),
-        Validators.maxLength(16)
+        Validators.maxLength(30)
       ]),
 
       age: new FormControl('', [
         Validators.pattern('[0-9]*'),
         Validators.max(100),
-        Validators.min(6),
+        Validators.min(12),
       ]),
 
       admissionYear: new FormControl('', [
